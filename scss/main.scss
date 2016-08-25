@@ -1,0 +1,32 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+body { 
+  background: url(../assets/backgrounds/background.jpeg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow: hidden;
+}
+
+#log {
+  background-color: white;
+  position: absolute;
+  padding: 10px;
+  top: 0;
+  left: 0;
+}
+
+.laukia {
+  position: absolute;
+  background: silver;
+  width: 150px;
+  height: 150px;
+  text-align: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}

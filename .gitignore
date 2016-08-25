@@ -1,0 +1,9 @@
+.tmp
+.sass-cache
+bower_components/
+*.komodoproject
+node_modules/
+www/build/
+platforms/
+plugins/
+.DS_Store
