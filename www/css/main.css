@@ -25,8 +25,8 @@ body {
 .laukia {
   position: absolute;
   background: silver;
-  width: 150px;
-  height: 150px;
+  max-width: 150px;
+  max-height: 150px;
   text-align: center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -37,4 +37,10 @@ body {
   max-width: 80px;
   max-height: 80px;
   margin-left: 10px;
+}
+.goiko-menua{
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 100%;
 }

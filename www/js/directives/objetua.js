@@ -2,17 +2,21 @@ app.directive('objetua',['$cordovaDialogs', function ($cordovaDialogs) {
   return {
     restrict : 'AE',
     scope: {},
-    template : '<div class="laukia" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)" hm-pinchend="onPinchEnd()" hm-pinch="onPinch($event)" hm-panmove="onPan($event)" hm-press="onPress($event)"></div>',
-    link : function (scope, element, attrs) {
-      var elementWidth = 75,
-          elementHeight = 225,
-          transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: 1, angle: 0, rx: 0, ry: 0, rz: 0 },
+    template : '<img class="laukia" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)" hm-pinchend="onPinchEnd()" hm-pinch="onPinch($event)" hm-panmove="onPan($event)" hm-press="onPress($event)">',
+    link : function (scope, element, attrs) {     
+      var transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: 1, angle: 0, rx: 0, ry: 0, rz: 0 },
           initScale = 1,
           initAngle = 0,
           rotationInit = 0;
-      
-      element.children().css({ 'background-image': 'url('+attrs.background+')',
+      element.children().attr('src', attrs.background);     
+      element.children().css({ //'background-image': 'url('+ attrs.background +')',
                                 transform: 'translate3d(' + attrs.x + 'px, ' + attrs.y + 'px, 0)'});
+      
+      
+      var elementWidth= 75, 
+          elementHeight = 75;                           
+      console.log('elementWidth', element.children());
+      console.log('elementHeight', element.children()[0].offsetWidth);
       var updateElementTransform = function() {
         var value = 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0) '+
                     'scale(' + transform.scale + ', ' + transform.scale + ') ' +

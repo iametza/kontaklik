@@ -74,4 +74,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', 'Kamera', 'Audio', 'Files', '
   $scope.playRecord = function(){
     Audio.playRecord();
   };
+  document.addEventListener('deviceready', function() {
+    Audio.stop('sarrera');
+  }, false);
 }]);
