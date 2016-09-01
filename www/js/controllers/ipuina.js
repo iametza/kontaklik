@@ -4,25 +4,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', 'Kamera', 'Audio', 'Files', '
   var onError = function(err) {
     console.log('err', err);
   };
-  Database.getFiles().then(function(files){ console.log(files); $scope.slides = files; }, onError);
-
-  $scope.backgrounds = [
-    {
-      image: 'assets/backgrounds/background.jpeg',
-      text: 'bat',
-      id: 1
-    },
-    {
-      image: 'assets/backgrounds/background2.jpeg',
-      text: 'Bigarrena',
-      id: 2
-    },
-    {
-      image: 'assets/backgrounds/background3.jpeg',
-      text: 'Hirugarrena',
-      id: 3
-    }
-  ];
+  Database.getFiles('pertsonaia').then(function(files){ console.log(files); $scope.slides = files; }, onError);
+  Database.getFiles('background').then(function(files){ console.log(files); $scope.backgrounds = files; }, onError);
+ 
   $scope.addObjetua = function(slide){   
     var objetua = angular.element('<div objetua="objetua" background="'+slide.path+'" x="200" y="200"></div>');
     var el = $compile(objetua)($scope);
@@ -30,7 +14,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', 'Kamera', 'Audio', 'Files', '
     $scope.insertHere = el;
   };
   $scope.addBackground = function(background){
-    document.body.style.backgroundImage = 'url('+background.image+')';
+    document.body.style.backgroundImage = 'url('+background.path+')';
   };
   $scope.takeGallery = function(atala){
      var options = {
@@ -38,6 +22,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', 'Kamera', 'Audio', 'Files', '
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,     
       encodingType: Camera.EncodingType.JPEG,
+      allowEdit: true,
       saveToPhotoAlbum: false,
       correctOrientation:true
     };
@@ -54,13 +39,22 @@ app.controller('IpuinaCtrl',['$scope', '$compile', 'Kamera', 'Audio', 'Files', '
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,     
-      saveToPhotoAlbum: false,
+      saveToPhotoAlbum: true,
       correctOrientation:true
     };
     Kamera.getPicture(options).then(function(image) {
       Files.saveFile(image).then(function(image){
         Database.saveFile(image, 'irudia', atala).then(function(slide){
-          $scope.slides.push(slide);
+          switch(atala){
+            case 'pertsonaia':
+              $scope.slides.push(slide);
+              break;
+            case 'background':
+              $scope.backgrounds.push(slide);
+              break;
+            default:
+              break;
+          }
         }, onError);
       });
     }, onError);

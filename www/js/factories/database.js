@@ -42,12 +42,12 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
     }, false);
     return d.promise;    
   };
-  Database.getFiles = function() {
+  Database.getFiles = function(mota) {
     var d = $q.defer();
-    var query = 'SELECT * FROM files';
+    var query = 'SELECT * FROM files WHERE atala = ?';
     document.addEventListener('deviceready', function() {
       if(db == undefined) init();
-      $cordovaSQLite.execute(db, query, []).then( function(res) {
+      $cordovaSQLite.execute(db, query, [mota]).then( function(res) {
         var files = [];
         if (res.rows.length > 0) {
            for(var i=0; i<res.rows.length; i++){            

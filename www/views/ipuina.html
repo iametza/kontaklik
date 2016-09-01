@@ -19,11 +19,11 @@
       </uib-tab-heading>
       <div class="row">
         <div class="col-xs-9">
-          <a ng-click="addBackground(background)" ng-repeat="background in backgrounds"><img ng-src="{{background.image}}" style="margin:auto;width:100px;"></a>
+          <a ng-click="addBackground(background)" ng-repeat="background in backgrounds"><img ng-src="{{background.path}}" style="margin:auto;width:100px;"></a>
         </div>          
         <div class="col-xs-3">
-          <button ng-click="takeGallery('pertsonaia')" class="btn btn-default pull-right btn-lg">Galeria</button>
-          <button ng-click="takePicture('pertsonaia')" class="btn btn-default pull-right btn-lg">Argazkia</button>
+          <button ng-click="takeGallery('background')" class="btn btn-default pull-right btn-lg">Galeria</button>
+          <button ng-click="takePicture('background')" class="btn btn-default pull-right btn-lg">Argazkia</button>
         </div>
       </div>
   </uib-tab>
