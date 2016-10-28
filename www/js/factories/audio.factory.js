@@ -1,11 +1,14 @@
 app.factory('Audio', ['$cordovaMedia', '$cordovaNativeAudio', function($cordovaMedia, $cordovaNativeAudio){
   var Audio = {},
-      src = cordova.file.dataDirectory + "/myrecording.mp3",
+      src,
       media,
       iOSPlayOptions = {
-        numberOfLoops: 2,
-        playAudioWhenScreenIsLocked : false
+          numberOfLoops: 2,
+          playAudioWhenScreenIsLocked : false
       };
+  document.addEventListener("deviceready",function() {
+    src = cordova.file.dataDirectory + "/myrecording.mp3";    
+  }, false);
   var onError = function(err) {
     console.log('err', err);
   };

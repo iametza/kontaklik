@@ -22,8 +22,8 @@ var app = angular.module('haziakApp', [
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/menua.html',
-        controller: 'MenuaCtrl'
+        templateUrl: 'views/erabiltzaileak.html',
+        controller: 'ErabiltzaileakCtrl'
       })
       .when('/ipuinak', {
         templateUrl: 'views/ipuinak.html',
