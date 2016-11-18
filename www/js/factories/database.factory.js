@@ -23,10 +23,22 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
                 "`atala` TEXT NOT NULL," +
                 "`mota` TEXT NOT NULL," +
                 "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
+     var query_erabiltzaileak = "CREATE TABLE IF NOT EXISTS `erabiltzaileak` (" +
+                "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "`izena` TEXT NOT NULL," +                
+                "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
+    var query_ipuinak = "CREATE TABLE IF NOT EXISTS `erabiltzaileak` (" +
+                "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "`izena` TEXT NOT NULL," +                
+                "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
     document.addEventListener('deviceready', function() {
       if(db == undefined) init();
       $cordovaSQLite.execute(db, query_files, []).then( function(res) {
-        d.resolve();
+        $cordovaSQLite.execute(db, query_erabiltzaileak, []).then( function(res) {
+          $cordovaSQLite.execute(db, query_ipuinak, []).then( function(res) {
+            d.resolve();
+          }, function(err) { d.reject(err); });
+        }, function(err) { d.reject(err); });
       }, function(err) { d.reject(err); });
     }, false);
     return d.promise;
