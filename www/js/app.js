@@ -25,11 +25,11 @@ var app = angular.module('haziakApp', [
         templateUrl: 'views/erabiltzaileak.html',
         controller: 'ErabiltzaileakCtrl'
       })
-      .when('/ipuinak', {
+      .when('/ipuinak/:erabiltzailea_id', {
         templateUrl: 'views/ipuinak.html',
         controller: 'IpuinakCtrl'
       })
-      .when('/ipuinak/:id', {
+      .when('/ipuinak/:erabiltzailea_id/:ipuina_id', {
         templateUrl: 'views/ipuina.html',
         controller: 'IpuinaCtrl'
       })
