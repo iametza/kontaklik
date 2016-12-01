@@ -11,18 +11,22 @@ app.controller('ModalErabiltzaileBerriaCtrl',['$scope', '$uibModalInstance', 'Da
     
     if (form.$valid){
       
-      // Comprobamos que no exista el usuario
+      // Comprobamos que no exista el erabiltzaile
       Database.getRows ('erabiltzaileak', {'izena': $scope.eremuak.izena}).then (function (emaitza){
         
         if (emaitza.length === 0){
           
+          // Creamos el nuevo erabiltzaile
           Database.insertRow ('erabiltzaileak', {'izena': $scope.eremuak.izena}).then (function (emaitza){
             
+            // Cerramos la ventana modal
             $uibModalInstance.close ();
+            
+            // Redireccionamos a la pantalla con la lista de ipuinak del usuario 
             window.location = "#/ipuinak/" + emaitza.insertId;
             
           }, function (error){
-            console.log ("ErabiltzaileakCtrl, erabiltzailea sortzerakoan", error);
+            console.log ("ModalErabiltzaileBerriaCtrl, erabiltzailea sortzerakoan", error);
           });
           
         }
@@ -30,7 +34,7 @@ app.controller('ModalErabiltzaileBerriaCtrl',['$scope', '$uibModalInstance', 'Da
           $scope.errore_mezua = 'Erabiltzailea existitzen da. Ezin da errepikatu.';
         
       }, function (error){
-        console.log ("ErabiltzaileakCtrl, erabiltzailea existitzen dela konprobatzen", error);
+        console.log ("ModalErabiltzaileBerriaCtrl, erabiltzailea existitzen dela konprobatzen", error);
       });
       
     }

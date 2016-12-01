@@ -1,4 +1,4 @@
-app.directive('objetua',['$cordovaDialogs', function ($cordovaDialogs) {
+app.directive('objektua',['$cordovaDialogs', function ($cordovaDialogs) {
   return {
     restrict : 'AE',
     scope: {},

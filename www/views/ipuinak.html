@@ -14,7 +14,9 @@
   </div>
   
   <div class="row">
-    <div class="col-xs-12"><a href="#/ipuinak/0" class="btn btn-primary btn-block btn-lg">SORTU IPUIN BERRIA</a></div>
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-primary btn-block btn-lg" ng-click="modal_ireki_ipuin_berria ()">SORTU IPUIN BERRIA</button>
+    </div>
   </div>
   
   <div class="row">
@@ -22,10 +24,9 @@
       <h1>IPUINAK</h1>
       
       <ul class="list-group">
-        <li class="list-group-item">TXANAGORRITXU</li>
-        <li class="list-group-item">HIRU TXERRITXOAK</li>
-        <li class="list-group-item">EDURNE ZURI ETA ZAZPI IPOTXAK</li>
-        <li class="list-group-item">JOKIN ETA ANTIOJUAK</li>
+        <li class="list-group-item" ng-repeat="ipuina in ipuinak">
+          <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}">{{ipuina.izenburua}}</a>
+        </li>
       </ul>
     </div>
   </div>

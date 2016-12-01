@@ -1,10 +1,11 @@
 'use strict';
-app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$q', '$uibModal', function($scope, Database, $q, $uibModal){
+app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', '$window', function($scope, Database, $uibModal, $window){
   
   $scope.erabiltzaileak = [];
   
   $scope.init = function () {
     
+    // Recogemos los erabiltzaileak
     Database.getRows ('erabiltzaileak', '', ' ORDER BY izena ASC').then (function (emaitza){
       
       $scope.erabiltzaileak = emaitza;
