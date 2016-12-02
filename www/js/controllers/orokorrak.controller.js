@@ -1,4 +1,3 @@
-'use strict';
 app.controller('OrokorraCtrl', ['Audio', function(Audio){
   /*
    document.addEventListener('deviceready', function() {

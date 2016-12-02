@@ -7,7 +7,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
     document.addEventListener ('deviceready', function (){
       
       if ($cordovaSQLite !== undefined){
-        db = $cordovaSQLite.openDB ({ name: 'haziak.db', iosDatabaseLocation: 'Library', bgType: 1 });
+        db = $cordovaSQLite.openDB ({ name: 'kontaklik.db', iosDatabaseLocation: 'Library', bgType: 1 });
       }
       else{
         init ();
@@ -51,6 +51,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
     var query_eszenak = "CREATE TABLE IF NOT EXISTS `eszenak` (" +
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`fk_ipuina` INTEGER NOT NULL," +
+      "`fk_fondoa` INTEGER NOT NULL," +
       "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
       "CREATE INDEX fk_ipuina ON eszenak (fk_ipuina);";
                 
@@ -73,35 +74,23 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
     return d.promise;
   };
   
-  /*Database.saveFile = function(name, mota, atala) {
-    var d = $q.defer();
-    var query = 'INSERT INTO files(izena, path, atala, mota) VALUES(?, ?, ?, ?)';
-    document.addEventListener('deviceready', function() {
-      if(db === undefined) init();
-      $cordovaSQLite.execute(db, query, [name.split('/').pop(), name, atala, mota]).then( function(res) {
-        d.resolve({ path: name, id: res.insertedId });
-      }, function(err) { d.reject(err); });
-    }, false);
-    return d.promise;    
-  };*/
-  
-  /*Database.getFiles = function(mota) {
-    var d = $q.defer();
-    var query = 'SELECT * FROM files WHERE atala = ?';
-    document.addEventListener('deviceready', function() {
-      if(db === undefined) init();
-      $cordovaSQLite.execute(db, query, [mota]).then( function(res) {
-        var files = [];
-        if (res.rows.length > 0) {
-           for(var i=0; i<res.rows.length; i++){            
-              files.push(res.rows.item(i));      
-           }
-        }
-        d.resolve(files);
-      }, function(err) { d.reject(err); });
-    }, false);
-    return d.promise;    
-  };*/
+  Database.query = function (query, params=[]){
+    var d = $q.defer ();
+    var emaitza = [];
+    
+    $cordovaSQLite.execute (db, query, params).then (function (res){
+      
+      for (i=0; i < res.rows.length; i++)
+        emaitza.push (res.rows.item (i));
+        
+      d.resolve (emaitza);
+      
+    }, function (err){
+      d.reject (err);
+    });
+    
+    return d.promise;
+  };
   
   Database.getRows = function (table, args, extra){
     var d = $q.defer ();
@@ -198,30 +187,6 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
     return d.promise;
   };
 
-  Database.insertRow = function (table, args){
-    var d = $q.defer ();
-    var keys = [] , values= [], galderak = [];
-    var query = 'INSERT INTO ' + table;
-    
-    Object.keys (args).forEach (function (key){
-      keys.push (key);
-      galderak.push ('?');
-      values.push (args[key]);
-    });
-    
-    query = query + '(' + keys.join (',') + ') values ('+ galderak.join (',') +')';
-    
-    document.addEventListener ('deviceready', function (){
-      
-      if (db === undefined) init ();
-      
-      $cordovaSQLite.execute (db, query, values).then (function (res) { d.resolve (res); }, function (err){ d.reject (err); });
-      
-    });
-    
-    return d.promise;
-  };
-  
   Database.dropTables = function (){
     var d = $q.defer ();
     var query = "DROP TABLES";

@@ -1,4 +1,3 @@
-'use strict';
 app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', '$window', function($scope, Database, $uibModal, $window){
   
   $scope.erabiltzaileak = [];

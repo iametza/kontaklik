@@ -1,4 +1,3 @@
-'use strict';
 app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', function($scope, $route, Database, $uibModal){
   
   $scope.erabiltzailea = {};

@@ -1,4 +1,3 @@
-'use strict';
 app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', function($scope, $compile, $route, Kamera, Audio, Files, Database){
   
   $scope.erabiltzailea = {};
@@ -6,6 +5,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.eszenak = [];
   $scope.objektuak = [];
   $scope.fondoak = [];
+  $scope.uneko_eszena_id = 0;
   
   $scope.init = function () {
     
@@ -28,19 +28,23 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
               
               if ($scope.eszenak.length === 0){
                 // Creamos una eszena por defecto
-                Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id}).then (function (emaitza){
+                Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0}).then (function (emaitza){
                   // Guardamos la eszena en el array
-                  $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id});
+                  $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
                   
                   // Ponemos el fondo en blanco
                   angular.element ('#eszenatoki').css ('background-color', '#fff');
+                  
+                  $scope.uneko_eszena_id = emaitza.insertId;
                 }, function (error){
                   console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
                 });
               }
               else{
-                angular.element ('#eszenatoki').css ('background-color', '#fff');
-                console.log ("lehen eszenaren datuak kargatu!");
+                // Cargamos la primera eszena
+                $scope.changeEszena ($scope.eszenak[0]);
+                
+                $scope.uneko_eszena_id = $scope.eszenak[0].id;
               }
               
             }, function (error){
@@ -75,32 +79,97 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.$on ("$destroy", function (){
     
+    $scope.removeEszena ();
+    
+  });
+  
+  $scope.removeEszena = function (){
+    
     angular.element ('#eszenatoki').css ('background-color', 'transparent');
     angular.element ('#eszenatoki').css ('background', 'none');
     
     angular.element ('.objektua').remove ();
     
-    
-  });
+  };
   
   var onError = function (err) {
     console.log ('err', err);
   };
   
   $scope.addObjektua = function (objektua){
-    var objektua = angular.element ('<div objektua="objektua" class="objektua" background="' + objektua.path + '" x="200" y="200"></div>');
-    var el = $compile(objektua)($scope);
+    var elem = angular.element ('<div objektua="objektua" class="objektua" background="' + objektua.path + '" x="200" y="200"></div>');
+    var el = $compile(elem)($scope);
     
-    angular.element ('#eszenatoki').append (objektua);
+    angular.element ('#eszenatoki').append (elem);
     
     $scope.insertHere = el;
   };
   
-  $scope.addBackground = function (background){
+  $scope.addFondoa = function (fondoa){
     
-    angular.element ('#eszenatoki').css ('background', 'url(' + background.path + ')');
+    // Cambiamos el fondo
+    $scope.changeFondoa (fondoa);
+    
+    // Guardamos el fondo en la base de datos
+    Database.query ('UPDATE eszenak SET fk_fondoa=? WHERE id=?', [fondoa.id, $scope.uneko_eszena_id]).then (function (){
+      
+      // Cambiamos el fondo en la lista
+      angular.forEach ($scope.eszenak, function (eszena){
+        
+        if (eszena.id === $scope.uneko_eszena_id)
+          eszena.fk_fondoa = fondoa.id;
+          
+      });
+      
+    }, function (error){
+      console.log ("IpuinaCtrl, fondoa datu basean aldatzen", error);
+    });
+    
+  };
+  
+  $scope.addEszena = function (){
+    
+    Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0}).then (function (emaitza){
+      // Guardamos la eszena en el array
+      $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
+      
+      // Limpiamos la eszena anterior
+      $scope.removeEszena ();
+      
+      // Ponemos el fondo en blanco
+      angular.element ('#eszenatoki').css ('background-color', '#fff');
+      
+      $scope.uneko_eszena_id = emaitza.insertId;
+    }, function (error){
+      console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+    });
+    
+  };
+  
+  $scope.changeFondoa = function (fondoa){
+    angular.element ('#eszenatoki').css ('background', 'url(' + fondoa.path + ')');
     angular.element ('#eszenatoki').css ('background-size', 'cover');
-    
+  };
+  
+  $scope.changeEszena = function (eszena){
+    // Empezamos con el fondo
+    Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
+      
+      // Limpiamos la eszena anterior
+      $scope.removeEszena ();
+      
+      if (emaitza.length === 1){
+        $scope.changeFondoa (emaitza[0]);
+      }
+      else{
+        angular.element ('#eszenatoki').css ('background-color', '#fff');
+      }
+      
+      $scope.uneko_eszena_id = eszena.id;
+      
+    }, function (error){
+      console.log ("IpuinaCtrl, ipuina datuak jasotzen", error);
+    });
   };
   
   $scope.takeGallery = function (atala){

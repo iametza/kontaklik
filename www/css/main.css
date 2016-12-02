@@ -39,21 +39,25 @@ body {
 }
 
 .karrusela-irudia {
-  max-width: 80px;
-  max-height: 80px;
-  margin-left: 10px;
+  max-width: 100px;
+  max-height: 100px;
+  margin: 5px;
 }
 
 .goiko-menua {
   position: fixed;
   top: 15px;
   left: 15px;
-  width: 90%;
+  right: 15px;
   background-color: #ccc;
-  padding-bottom: 5px;
 }
 
 .list-group-item a {
   display: block;
   color: #333;
+}
+
+.uneko-eszena {
+  background-color: yellow !important;
+  color: #000 !important;
 }
