@@ -117,7 +117,16 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         
         if (objektua[0].style !== null){
           var objektua_style = JSON.parse (objektua[0].style);
-          elem[0].children[0].style.transform = objektua_style.transform;
+          //elem[0].children[0].style.transform = objektua_style.transform;
+          
+          // Aplicamos todos las propiedades que tenga (no he encontrado manera de hacerlo de una sola vez...)
+          angular.forEach (objektua_style, function (balioa, gakoa){
+            
+            if (elem[0].children[0].style.hasOwnProperty (gakoa))
+              elem[0].children[0].style[gakoa] = balioa;
+              
+          });
+          
         }
         
         angular.element ('#eszenatoki').append (elem);
