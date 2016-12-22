@@ -28,14 +28,6 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
   Database.createTables = function (){
     var d = $q.defer();
     
-    var query_files = "CREATE TABLE IF NOT EXISTS `irudiak` (" +
-      "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
-      "`path` TEXT NOT NULL," +
-      "`atala` TEXT NOT NULL," + // objektua edo fondoa
-      "`fk_ipuina` INTEGER NOT NULL," +
-      "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
-      "CREATE INDEX fk_ipuina ON irudiak (fk_ipuina);";
-      
     var query_erabiltzaileak = "CREATE TABLE IF NOT EXISTS `erabiltzaileak` (" +
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`izena` TEXT NOT NULL," +
@@ -54,16 +46,33 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`fk_fondoa` INTEGER NOT NULL," +
       "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
       "CREATE INDEX fk_ipuina ON eszenak (fk_ipuina);";
+      
+    var query_eszena_objektuak = "CREATE TABLE IF NOT EXISTS `eszena_objektuak` (" +
+      "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
+      "`fk_eszena` INTEGER NOT NULL," +
+      "`fk_objektua` INTEGER NOT NULL," +
+      "`style` TEXT);" +
+      "CREATE INDEX fk_eszena_objektua ON eszenak (fk_eszena, fk_objektua);";
+      
+    var query_irudiak = "CREATE TABLE IF NOT EXISTS `irudiak` (" +
+      "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
+      "`path` TEXT NOT NULL," +
+      "`atala` TEXT NOT NULL," + // objektua edo fondoa
+      "`fk_ipuina` INTEGER NOT NULL," +
+      "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
+      "CREATE INDEX fk_ipuina ON irudiak (fk_ipuina);";
                 
     document.addEventListener ('deviceready', function (){
       
       if (db === undefined) init ();
       
-      $cordovaSQLite.execute (db, query_files, []).then (function (){
-        $cordovaSQLite.execute (db, query_erabiltzaileak, []).then (function (){
-          $cordovaSQLite.execute (db, query_ipuinak, []).then (function (){
-            $cordovaSQLite.execute (db, query_eszenak, []).then (function (){
-              d.resolve ();
+      $cordovaSQLite.execute (db, query_erabiltzaileak, []).then (function (){
+        $cordovaSQLite.execute (db, query_ipuinak, []).then (function (){
+          $cordovaSQLite.execute (db, query_eszenak, []).then (function (){
+            $cordovaSQLite.execute (db, query_eszena_objektuak, []).then (function (){
+              $cordovaSQLite.execute (db, query_irudiak, []).then (function (){
+                d.resolve ();
+              }, function (err) { d.reject (err); });
             }, function (err) { d.reject (err); });
           }, function (err) { d.reject (err); });
         }, function (err) { d.reject (err); });

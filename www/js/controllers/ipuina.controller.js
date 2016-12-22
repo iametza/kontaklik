@@ -79,6 +79,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.$on ("$destroy", function (){
     
+    $scope.eszenarenObjektuakGorde ();
+    
     $scope.removeEszena ();
     
   });
@@ -92,17 +94,41 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  var onError = function (err) {
-    console.log ('err', err);
+  $scope.addObjektua = function (objektua){
+    
+    // Guardamos la relación en la base de datos y creamos el objeto
+    Database.insertRow ('eszena_objektuak', {'fk_eszena': $scope.uneko_eszena_id, 'fk_objektua': objektua.id}).then (function (emaitza){
+      
+      $scope.objektuaEszenara (emaitza.insertId);
+      
+    }, function (error){
+      console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+    });
+    
   };
   
-  $scope.addObjektua = function (objektua){
-    var elem = angular.element ('<div objektua="objektua" class="objektua" background="' + objektua.path + '" x="200" y="200"></div>');
-    var el = $compile(elem)($scope);
+  $scope.objektuaEszenara = function (eszena_objektua_id){
     
-    angular.element ('#eszenatoki').append (elem);
+    Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
+      
+      if (objektua.length === 1){
+        var elem = angular.element ('<div objektua="objektua" class="objektua" data-eo-id="' + eszena_objektua_id + '" background="' + objektua[0].path + '" x="200" y="200"></div>');
+        var el = $compile(elem)($scope);
+        
+        if (objektua[0].style !== null){
+          var objektua_style = JSON.parse (objektua[0].style);
+          elem[0].children[0].style.transform = objektua_style.transform;
+        }
+        
+        angular.element ('#eszenatoki').append (elem);
+        
+        $scope.insertHere = el;
+      }
+      
+    }, function (error){
+      console.log ("IpuinaCtrl, objektuaEszenara", error);
+    });
     
-    $scope.insertHere = el;
   };
   
   $scope.addFondoa = function (fondoa){
@@ -147,11 +173,17 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   };
   
   $scope.changeFondoa = function (fondoa){
+    
     angular.element ('#eszenatoki').css ('background', 'url(' + fondoa.path + ')');
     angular.element ('#eszenatoki').css ('background-size', 'cover');
+    
   };
   
   $scope.changeEszena = function (eszena){
+    
+    // Guardamos el estado actual de los objetos de la eszena actual
+    $scope.eszenarenObjektuakGorde ();
+    
     // Empezamos con el fondo
     Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
       
@@ -165,11 +197,41 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         angular.element ('#eszenatoki').css ('background-color', '#fff');
       }
       
+      // Cargamos sus objetos
+      //Database.query ('SELECT eo.id, i.path FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.fk_eszena=? ORDER BY eo.id ASC', [eszena.id]).then (function (objektuak){
+      Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
+        
+        angular.forEach (objektuak, function (objektua){
+          $scope.objektuaEszenara (objektua.id);
+        });
+        
+      }, onError);
+      
+      
       $scope.uneko_eszena_id = eszena.id;
       
     }, function (error){
       console.log ("IpuinaCtrl, ipuina datuak jasotzen", error);
     });
+    
+  };
+  
+  $scope.eszenarenObjektuakGorde = function (){
+    
+    angular.forEach (angular.element ('.objektua'), function (objektua){
+      
+      var elem = angular.element (objektua);
+      var id = parseInt (elem[0].attributes['data-eo-id'].value);
+      var style = JSON.stringify (elem[0].children[0].style);
+      
+      Database.query ('UPDATE eszena_objektuak SET style=? WHERE id=?', [style, id]).then (function (){
+        //console.log ("objektuaren egoera aldatua!", id, style);
+      }, function (error){
+        console.log ("IpuinaCtrl, eszenarenObjektuakGorde", error);
+      });
+      
+    });
+    
   };
   
   $scope.takeGallery = function (atala){
@@ -239,6 +301,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   document.addEventListener('deviceready', function() {
     Audio.stop('sarrera');
   }, false);
+  
+  var onError = function (err) {
+    console.log ('err', err);
+  };
   
   document.addEventListener ('deviceready', function (){
     

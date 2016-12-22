@@ -15,8 +15,8 @@ app.directive('objektua',['$cordovaDialogs', function ($cordovaDialogs) {
       
       var elementWidth= 75, 
           elementHeight = 75;                           
-      console.log('elementWidth', element.children());
-      console.log('elementHeight', element.children()[0].offsetWidth);
+      /*console.log('elementWidth', element.children());
+      console.log('elementHeight', element.children()[0].offsetWidth);*/
       var updateElementTransform = function() {
         var value = 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0) '+
                     'scale(' + transform.scale + ', ' + transform.scale + ') ' +
