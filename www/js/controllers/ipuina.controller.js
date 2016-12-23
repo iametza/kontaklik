@@ -81,11 +81,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     $scope.eszenarenObjektuakGorde ();
     
-    $scope.removeEszena ();
+    $scope.clearEszena ();
     
   });
   
-  $scope.removeEszena = function (){
+  $scope.clearEszena = function (){
     
     angular.element ('#eszenatoki').css ('background-color', 'transparent');
     angular.element ('#eszenatoki').css ('background', 'none');
@@ -116,18 +116,20 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         var el = $compile(elem)($scope);
         
         if (objektua[0].style !== null){
-          var objektua_style = JSON.parse (objektua[0].style);
-          //elem[0].children[0].style.transform = objektua_style.transform;
-          
-          // Aplicamos todos las propiedades que tenga (no he encontrado manera de hacerlo de una sola vez...)
-          angular.forEach (objektua_style, function (balioa, gakoa){
+          var style_object = JSON.parse (objektua[0].style);
+          // Aplicamos todas las propiedades que tenga
+          /*angular.forEach (style_object, function (balioa, gakoa){
             
             if (elem[0].children[0].style.hasOwnProperty (gakoa))
               elem[0].children[0].style[gakoa] = balioa;
               
-          });
+          });*/
+          
+          elem.children ().css (style_object);
           
         }
+        
+        //console.log ("objektuaEszenara", elem.children());
         
         angular.element ('#eszenatoki').append (elem);
         
@@ -169,7 +171,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
       
       // Limpiamos la eszena anterior
-      $scope.removeEszena ();
+      $scope.clearEszena ();
       
       // Ponemos el fondo en blanco
       angular.element ('#eszenatoki').css ('background-color', '#fff');
@@ -197,7 +199,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
       
       // Limpiamos la eszena anterior
-      $scope.removeEszena ();
+      $scope.clearEszena ();
       
       if (emaitza.length === 1){
         $scope.changeFondoa (emaitza[0]);
@@ -230,8 +232,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     angular.forEach (angular.element ('.objektua'), function (objektua){
       
       var elem = angular.element (objektua);
-      var id = parseInt (elem[0].attributes['data-eo-id'].value);
+      var id = parseInt (elem.attr ('data-eo-id'));
       var style = JSON.stringify (elem[0].children[0].style);
+      
+      //console.log ("eszenarenObjektuakGorde", elem);
       
       Database.query ('UPDATE eszena_objektuak SET style=? WHERE id=?', [style, id]).then (function (){
         //console.log ("objektuaren egoera aldatua!", id, style);
