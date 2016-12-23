@@ -113,26 +113,33 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       if (objektua.length === 1){
         var elem = angular.element ('<div objektua="objektua" class="objektua" data-eo-id="' + eszena_objektua_id + '" background="' + objektua[0].path + '" x="200" y="200"></div>');
-        var el = $compile(elem)($scope);
         
         if (objektua[0].style !== null){
+          
           var style_object = JSON.parse (objektua[0].style);
-          // Aplicamos todas las propiedades que tenga
-          /*angular.forEach (style_object, function (balioa, gakoa){
+          
+          // Sacamos la scale y el rotate del objeto para pasársela a la directiva
+          console.log (style_object.transform);
+          //translate3d(683px, 356px, 0px) scale(3.10071, 3.10071) rotate(-17.6443deg)
+          var patroia_scale = /^.* scale\((.*?),.*$/g;
+          var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
+          
+          if (style_object.transform.match (patroia_scale))
+            elem.attr ('scale', style_object.transform.replace (patroia_scale, "$1"));
             
-            if (elem[0].children[0].style.hasOwnProperty (gakoa))
-              elem[0].children[0].style[gakoa] = balioa;
-              
-          });*/
+          if (style_object.transform.match (patroia_rotate))
+            elem.attr ('rotate', style_object.transform.replace (patroia_rotate, "$1"));
+            
+          // Ojo que el orden es importante: 'el' tiene que estar después de asignar skala y antes de darle el CSS
+          el = $compile(elem)($scope);
           
           elem.children ().css (style_object);
           
         }
-        
-        //console.log ("objektuaEszenara", elem.children());
+        else
+          el = $compile(elem)($scope);
         
         angular.element ('#eszenatoki').append (elem);
-        
         $scope.insertHere = el;
       }
       
