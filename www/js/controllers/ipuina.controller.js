@@ -119,10 +119,16 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           var style_object = JSON.parse (objektua[0].style);
           
           // Sacamos la scale y el rotate del objeto para pasársela a la directiva
-          console.log (style_object.transform);
+          //console.log (style_object.transform);
           //translate3d(683px, 356px, 0px) scale(3.10071, 3.10071) rotate(-17.6443deg)
+          var patroia_xy = /^translate3d\((.*?)px, (.*?)px,.*$/g;
           var patroia_scale = /^.* scale\((.*?),.*$/g;
           var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
+          
+          if (style_object.transform.match (patroia_xy)){
+            elem.attr ('x', style_object.transform.replace (patroia_xy, "$1"));
+            elem.attr ('y', style_object.transform.replace (patroia_xy, "$2"));
+          }
           
           if (style_object.transform.match (patroia_scale))
             elem.attr ('scale', style_object.transform.replace (patroia_scale, "$1"));
@@ -130,7 +136,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           if (style_object.transform.match (patroia_rotate))
             elem.attr ('rotate', style_object.transform.replace (patroia_rotate, "$1"));
             
-          // Ojo que el orden es importante: 'el' tiene que estar después de asignar skala y antes de darle el CSS
+          // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
           el = $compile(elem)($scope);
           
           elem.children ().css (style_object);
@@ -242,7 +248,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       var id = parseInt (elem.attr ('data-eo-id'));
       var style = JSON.stringify (elem[0].children[0].style);
       
-      //console.log ("eszenarenObjektuakGorde", elem);
+      //console.log ("eszenarenObjektuakGorde", elem[0].children[0].style.transform);
       
       Database.query ('UPDATE eszena_objektuak SET style=? WHERE id=?', [style, id]).then (function (){
         //console.log ("objektuaren egoera aldatua!", id, style);

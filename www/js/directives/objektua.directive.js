@@ -6,15 +6,15 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
     template : '<img class="laukia" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)" hm-pinchend="onPinchEnd()" hm-pinch="onPinch($event)" hm-panmove="onPan($event)" hm-press="onPress($event)">',
     link: function (scope, element, attrs){
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
-          rotationInit = attrs.rotate !== undefined ? attrs.rotate : 0,
-          transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: rotationInit, rx: 0, ry: 0, rz: 0 },
-          initAngle = 0,
+          initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
+          rotationInit = 0,
+          transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
           elementWidth = 75,
           elementHeight = 75;
       
       element.children ().attr ('src', attrs.background);
       
-      if (initScale === 1)
+      if (attrs.scale === undefined)
         element.children ().css ({ transform: 'translate3d(' + attrs.x + 'px, ' + attrs.y + 'px, 0)'});
       
       var updateElementTransform = function (){
@@ -67,7 +67,7 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
       scope.onRotate = function onRotate (event){
         
         if (event.target === element[0].children[0]){
-          transform.angle = initAngle + (event.rotation - rotationInit);
+          transform.angle = parseFloat (initAngle) + parseFloat (event.rotation - rotationInit);
           transform.rz = 1;
           updateElementTransform ();
         }
