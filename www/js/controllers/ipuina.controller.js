@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', function($scope, $compile, $route, Kamera, Audio, Files, Database){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', '$cordovaDialogs', function($scope, $compile, $route, Kamera, Audio, Files, Database, $cordovaDialogs){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -22,34 +22,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             $scope.ipuina = emaitza[0];
             
             // Recogemos las eszenak del ipuina
-            Database.getRows ('eszenak', {'fk_ipuina': $scope.ipuina.id}, ' ORDER BY timestamp ASC').then (function (emaitza){
-              
-              $scope.eszenak = emaitza;
-              
-              if ($scope.eszenak.length === 0){
-                // Creamos una eszena por defecto
-                Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0}).then (function (emaitza){
-                  // Guardamos la eszena en el array
-                  $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
-                  
-                  // Ponemos el fondo en blanco
-                  angular.element ('#eszenatoki').css ('background-color', '#fff');
-                  
-                  $scope.uneko_eszena_id = emaitza.insertId;
-                }, function (error){
-                  console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
-                });
-              }
-              else{
-                // Cargamos la primera eszena
-                $scope.changeEszena ($scope.eszenak[0]);
-                
-                $scope.uneko_eszena_id = $scope.eszenak[0].id;
-              }
-              
-            }, function (error){
-              console.log ("IpuinaCtrl, ipuina datuak jasotzen", error);
-            });
+            $scope.getEszenak ();
             
             // Recogemos los objektuak
             Database.getRows ('irudiak', {'atala': 'objektua'}, ' ORDER BY timestamp DESC').then (function (irudiak){
@@ -84,6 +57,39 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     $scope.clearEszena ();
     
   });
+  
+  $scope.getEszenak = function (){
+    
+    Database.getRows ('eszenak', {'fk_ipuina': $scope.ipuina.id}, ' ORDER BY timestamp ASC').then (function (emaitza){
+              
+      $scope.eszenak = emaitza;
+      
+      if ($scope.eszenak.length === 0){
+        // Creamos una eszena por defecto
+        Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0}).then (function (emaitza){
+          // Guardamos la eszena en el array
+          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
+          
+          // Ponemos el fondo en blanco
+          angular.element ('#eszenatoki').css ('background-color', '#fff');
+          
+          $scope.uneko_eszena_id = emaitza.insertId;
+        }, function (error){
+          console.log ("IpuinaCtrl, getEszenak defektuzko eszena sortzerakoan", error);
+        });
+      }
+      else{
+        // Cargamos la primera eszena
+        $scope.changeEszena ($scope.eszenak[0]);
+        
+        $scope.uneko_eszena_id = $scope.eszenak[0].id;
+      }
+      
+    }, function (error){
+      console.log ("IpuinaCtrl, getEszenak ipuina datuak jasotzen", error);
+    });
+    
+  };
   
   $scope.clearEszena = function (){
     
@@ -183,7 +189,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       // Guardamos la eszena en el array
       $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
       
-      // Limpiamos la eszena anterior
+      // Guardamos y limpiamos la eszena anterior
+      $scope.eszenarenObjektuakGorde ();
       $scope.clearEszena ();
       
       // Ponemos el fondo en blanco
@@ -192,6 +199,39 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       $scope.uneko_eszena_id = emaitza.insertId;
     }, function (error){
       console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+    });
+    
+  };
+  
+  $scope.delEszena = function (){
+    
+    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+      
+      if (buttonIndex == 1){
+        
+        // Empezamos borrando los objetos de la eszena
+        Database.deleteRows ('eszena_objektuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
+          
+          $scope.clearEszena ();
+          
+          // Borramos los datos de la eszena
+          Database.deleteRows ('eszenak', {'id': $scope.uneko_eszena_id}).then (function (){
+            
+            // Recogemos las eszenak del ipuina
+            $scope.getEszenak ();
+                
+          }, function (error){
+            console.log ("IpuinaCtrl, delEszena eszenaren datuak ezabatzerakoan", error);
+          });
+          
+        }, function (error){
+          console.log ("IpuinaCtrl, delEszena objektuak ezabatzerakoan", error);
+        });
+        
+      }
+      
+    }, function (error){
+      console.log ("IpuinaCtrl, delEszena confirm", error);
     });
     
   };
