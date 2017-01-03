@@ -67,11 +67,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       if ($scope.eszenak.length === 0){
         // Creamos una eszena por defecto
         Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0}).then (function (emaitza){
-          // Guardamos la eszena en el array
-          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
+          // Limpiamos la eszena por si acaso (si se viene de delEszena puede que haga falta)
+          $scope.clearEszena ();
           
           // Ponemos el fondo en blanco
           angular.element ('#eszenatoki').css ('background-color', '#fff');
+          
+          // Guardamos la eszena en el array
+          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
           
           $scope.uneko_eszena_id = emaitza.insertId;
         }, function (error){
@@ -93,9 +96,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.clearEszena = function (){
     
+    // Quitamos el fondo
     angular.element ('#eszenatoki').css ('background-color', 'transparent');
     angular.element ('#eszenatoki').css ('background', 'none');
     
+    // Quitamos los objetos
     angular.element ('.objektua').remove ();
     
   };
@@ -215,9 +220,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           // Borramos los datos de la eszena
           Database.deleteRows ('eszenak', {'id': $scope.uneko_eszena_id}).then (function (){
             
-            $scope.clearEszena ();
-            
-            // Recogemos las eszenak del ipuina
+            // Recogemos las eszenak que queden del ipuina
             $scope.getEszenak ();
                 
           }, function (error){
