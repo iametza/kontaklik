@@ -212,10 +212,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         // Empezamos borrando los objetos de la eszena
         Database.deleteRows ('eszena_objektuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
           
-          $scope.clearEszena ();
-          
           // Borramos los datos de la eszena
           Database.deleteRows ('eszenak', {'id': $scope.uneko_eszena_id}).then (function (){
+            
+            $scope.clearEszena ();
             
             // Recogemos las eszenak del ipuina
             $scope.getEszenak ();
