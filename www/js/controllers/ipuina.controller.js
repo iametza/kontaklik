@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', '$cordovaDialogs', function($scope, $compile, $route, Kamera, Audio, Files, Database, $cordovaDialogs){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', '$cordovaDialogs', '$uibModal', function($scope, $compile, $route, Kamera, Audio, Files, Database, $cordovaDialogs, $uibModal){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -102,6 +102,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     // Quitamos los objetos
     angular.element ('.objektua').remove ();
+    
+    // Quitamos los textos
+    angular.element ('.testua').remove ();
     
   };
   
@@ -265,7 +268,6 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       }
       
       // Cargamos sus objetos
-      //Database.query ('SELECT eo.id, i.path FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.fk_eszena=? ORDER BY eo.id ASC', [eszena.id]).then (function (objektuak){
       Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
         
         angular.forEach (objektuak, function (objektua){
@@ -274,6 +276,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         
       }, onError);
       
+      // Cargamos sus textos
+      Database.getRows ('testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
+        
+        angular.forEach (testuak, function (testua){
+          $scope.testuaEszenara (testua.id);
+        });
+        
+      }, onError);
       
       $scope.uneko_eszena_id = eszena.id;
       
@@ -299,6 +309,77 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         console.log ("IpuinaCtrl, eszenarenObjektuakGorde", error);
       });
       
+    });
+    
+  };
+  
+  $scope.addTestua = function (){
+    
+    var modala = $uibModal.open ({
+      animation: true,
+      templateUrl: 'views/modals/eszena_testua.html',
+      controller: 'ModalEszenaTestuaCtrl',
+      resolve: {
+        eszena_id: function () {
+          return $scope.uneko_eszena_id;
+        }
+      }
+    });
+    
+    modala.result.then (function (testua_id){
+      
+      $scope.testuaEszenara (testua_id);
+      
+    }, function (error){
+      console.log ("IpuinaCtrl, addTestua", error);
+    });
+                 
+  };
+  
+  $scope.testuaEszenara = function (testua_id){
+    
+    Database.query ('SELECT testua, style FROM testuak WHERE id=?', [testua_id]).then (function (testua){
+      
+      if (testua.length === 1){
+        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" edukia="' + testua[0].testua + '" x="200" y="200"></div>');
+        
+        /*if (objektua[0].style !== null){
+          
+          var style_object = JSON.parse (objektua[0].style);
+          
+          // Sacamos la scale y el rotate del objeto para pasársela a la directiva
+          //console.log (style_object.transform);
+          //translate3d(683px, 356px, 0px) scale(3.10071, 3.10071) rotate(-17.6443deg)
+          var patroia_xy = /^translate3d\((.*?)px, (.*?)px,.*$/g;
+          var patroia_scale = /^.* scale\((.*?),.*$/g;
+          var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
+          
+          if (style_object.transform.match (patroia_xy)){
+            elem.attr ('x', style_object.transform.replace (patroia_xy, "$1"));
+            elem.attr ('y', style_object.transform.replace (patroia_xy, "$2"));
+          }
+          
+          if (style_object.transform.match (patroia_scale))
+            elem.attr ('scale', style_object.transform.replace (patroia_scale, "$1"));
+            
+          if (style_object.transform.match (patroia_rotate))
+            elem.attr ('rotate', style_object.transform.replace (patroia_rotate, "$1"));
+            
+          // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
+          el = $compile(elem)($scope);
+          
+          elem.children ().css (style_object);
+          
+        }
+        else*/
+          el = $compile(elem)($scope);
+        
+        angular.element ('#eszenatoki').append (elem);
+        $scope.insertHere = el;
+      }
+      
+    }, function (error){
+      console.log ("ModalEszenaTestuaCtrl, eszenara", error);
     });
     
   };

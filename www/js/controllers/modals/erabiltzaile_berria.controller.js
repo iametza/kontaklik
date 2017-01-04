@@ -1,4 +1,3 @@
-'use strict';
 app.controller('ModalErabiltzaileBerriaCtrl',['$scope', '$uibModalInstance', 'Database', function($scope, $uibModalInstance, Database){
   
   $scope.eremuak = {

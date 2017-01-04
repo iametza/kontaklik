@@ -52,7 +52,14 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`fk_eszena` INTEGER NOT NULL," +
       "`fk_objektua` INTEGER NOT NULL," +
       "`style` TEXT);" +
-      "CREATE INDEX fk_eszena_objektua ON eszenak (fk_eszena, fk_objektua);";
+      "CREATE INDEX fk_eszena_objektua ON eszena_objektuak (fk_eszena, fk_objektua);";
+      
+    var query_testuak = "CREATE TABLE IF NOT EXISTS `testuak` (" +
+      "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
+      "`fk_eszena` INTEGER NOT NULL," +
+      "`testua` TEXT," +
+      "`style` TEXT);" +
+      "CREATE INDEX fk_eszena ON testuak (fk_eszena);";
       
     var query_irudiak = "CREATE TABLE IF NOT EXISTS `irudiak` (" +
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -70,8 +77,10 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
         $cordovaSQLite.execute (db, query_ipuinak, []).then (function (){
           $cordovaSQLite.execute (db, query_eszenak, []).then (function (){
             $cordovaSQLite.execute (db, query_eszena_objektuak, []).then (function (){
-              $cordovaSQLite.execute (db, query_irudiak, []).then (function (){
-                d.resolve ();
+              $cordovaSQLite.execute (db, query_testuak, []).then (function (){
+                $cordovaSQLite.execute (db, query_irudiak, []).then (function (){
+                  d.resolve ();
+                }, function (err) { d.reject (err); });
               }, function (err) { d.reject (err); });
             }, function (err) { d.reject (err); });
           }, function (err) { d.reject (err); });
