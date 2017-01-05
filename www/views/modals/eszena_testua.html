@@ -18,9 +18,28 @@
       Testua eremua bete mesedez
     </div>
     
-    <button type="button" class="btn btn-default" ng-click="itxi ()">Itxi</button>
-    <button type="submit" class="btn btn-primary">Gorde</button>
-    <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="testua_ezabatu ()">Ezabatu</button>
+    <label class="radio-inline">
+      <input type="radio" name="color" id="color_1" value="#000000" ng-model="eremuak.color" ng-checked="eremuak.color == '#000000'" />
+      <div style="width:20px;height:20px;background-color:#000000;"></div>
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="color" id="color_2" value="#ff0000" ng-model="eremuak.color" ng-checked="eremuak.color == '#ff0000'" />
+      <div style="width:20px;height:20px;background-color:#ff0000;"></div>
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="color" id="color_3" value="#00ff00" ng-model="eremuak.color" ng-checked="eremuak.color == '#00ff00'" />
+      <div style="width:20px;height:20px;background-color:#00ff00;"></div>
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="color" id="color_4" value="#0000ff" ng-model="eremuak.color" ng-checked="eremuak.color == '#0000ff'" />
+      <div style="width:20px;height:20px;background-color:#0000ff;"></div>
+    </label>
+    
+    <div class="form-group">
+      <button type="button" class="btn btn-default" ng-click="itxi ()">Itxi</button>
+      <button type="submit" class="btn btn-primary">Gorde</button>
+      <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="testua_ezabatu ()">Ezabatu</button>
+    </div>
     
   </form>
   

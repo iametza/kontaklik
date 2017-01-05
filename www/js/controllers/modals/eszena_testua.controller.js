@@ -1,7 +1,8 @@
 app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance', '$cordovaDialogs', 'Database', 'eszena_id', 'testua_id', function($scope, $compile, $uibModalInstance, $cordovaDialogs, Database, eszena_id, testua_id){
   
   $scope.eremuak = {
-    testua: ''
+    testua: '',
+    color: '#000000'
   };
   $scope.submit = false;
   $scope.ezabatu_button = false;
@@ -9,11 +10,12 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
   $scope.init = function () {
     
     // Recogemos los datos del texto
-    Database.query ('SELECT testua FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
+    Database.query ('SELECT testua, color, style FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
       
       if (testua.length === 1){
         
         $scope.eremuak.testua = testua[0].testua;
+        $scope.eremuak.color = testua[0].color;
         $scope.ezabatu_button = true;
         
       }
@@ -32,7 +34,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
       
       // Guardamos los datos en la base de datos (insertar/modificar)
       if (testua_id === 0){
-        Database.insertRow ('testuak', {'fk_eszena': eszena_id, 'testua': $scope.eremuak.testua}).then (function (emaitza){
+        Database.insertRow ('testuak', {'fk_eszena': eszena_id, 'testua': $scope.eremuak.testua, 'color': $scope.eremuak.color}).then (function (emaitza){
       
           $uibModalInstance.close (emaitza.insertId);
           
@@ -42,7 +44,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
         });
       }
       else{
-        Database.query ('UPDATE testuak SET testua=? WHERE id=?', [$scope.eremuak.testua, testua_id]).then (function (){
+        Database.query ('UPDATE testuak SET testua=?, color=? WHERE id=?', [$scope.eremuak.testua, $scope.eremuak.color, testua_id]).then (function (){
           
           // Cambiamos el texto en la escena AHORA SE HACE EN testua.directive.js
           /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');

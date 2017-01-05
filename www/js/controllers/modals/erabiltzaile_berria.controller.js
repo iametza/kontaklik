@@ -21,6 +21,9 @@ app.controller('ModalErabiltzaileBerriaCtrl',['$scope', '$uibModalInstance', 'Da
             // Cerramos la ventana modal
             $uibModalInstance.close ();
             
+            // Desactivamos el control de cambio de estado para poder redireccionar (ver función más abajo)
+            $scope.offLocationChangeStart ();
+            
             // Redireccionamos a la pantalla con la lista de ipuinak del usuario 
             window.location = "#/ipuinak/" + emaitza.insertId;
             
@@ -46,7 +49,8 @@ app.controller('ModalErabiltzaileBerriaCtrl',['$scope', '$uibModalInstance', 'Da
     
   };
   
-  $scope.$on ('$locationChangeStart', function (event){
+  // Controlamos el cambio de estado para cerrar la ventana (cuando se da atrás en el botón del sistema)
+  $scope.offLocationChangeStart = $scope.$on ('$locationChangeStart', function (event){
     
     event.preventDefault();
     $scope.itxi ();

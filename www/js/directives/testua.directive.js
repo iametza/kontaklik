@@ -22,11 +22,12 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       function testua_eguneratu (testua_id){
         
         // Recogemos los datos del texto
-        Database.query ('SELECT testua FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
+        Database.query ('SELECT testua, color FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
           
           if (testua.length === 1){
             
             element.children ().html (Funtzioak.nl2br (testua[0].testua));
+            element[0].children[0].style.color = testua[0].color;
             
           }
           
