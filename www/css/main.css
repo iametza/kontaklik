@@ -13,6 +13,11 @@ body {
   background-size: cover;
   width: 100%;
   height: 100%;
+  /* Lo siguiente impide que se puedan seleccionar los textos */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #eszenatoki {
@@ -68,8 +73,9 @@ body {
   padding: 10px;
   border: 4px solid #000;
   background-color: #fff;
+  /* Lo pongo en el body para que no se pueda seleccionar ningún texto
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
+  user-select: none;*/
 }

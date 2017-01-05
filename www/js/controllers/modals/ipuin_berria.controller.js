@@ -45,5 +45,12 @@ app.controller('ModalIpuinBerriaCtrl',['$scope', '$uibModalInstance', 'Database'
     $uibModalInstance.dismiss ('itxi');
     
   };
+  
+  $scope.$on ('$locationChangeStart', function (event){
+    
+    event.preventDefault();
+    $scope.itxi ();
+    
+  });
 
 }]);

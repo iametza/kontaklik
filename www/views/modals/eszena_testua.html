@@ -2,20 +2,26 @@
   <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
   <h4 class="modal-title" id="myModalLabel">Testua</h4>
 </div>
+
 <div class="modal-body">
-  <div ng-if="errore_mezua !== ''" class="alert alert-warning" role="alert">
-    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    <span class="sr-only">Oharra:</span>
-    {{errore_mezua}}
-  </div>
   
   <form name="formularioa" novalidate="" ng-submit="testua_gorde (formularioa)">
-    <div class="form-group" ng-class="{'has-error': errore_mezua !== ''}">
+    
+    <div class="form-group" ng-class="{'has-error' : submit && formularioa.testua.$invalid, 'has-success' : submit && formularioa.testua.$valid}">
       <label for="tesua">Testua</label>
-      <textarea class="form-control" id="testua" name="testua" ng-model="eremuak.testua" placeholder="Testua" required autofocus></textarea>
+      <textarea class="form-control" rows="5" id="testua" name="testua" ng-model="eremuak.testua" placeholder="Testua" required autofocus></textarea>
+    </div>
+    
+    <div ng-if="submit && formularioa.testua.$invalid" class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Oharra:</span>
+      Testua eremua bete mesedez
     </div>
     
     <button type="button" class="btn btn-default" ng-click="itxi ()">Itxi</button>
     <button type="submit" class="btn btn-primary">Gorde</button>
+    <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="testua_ezabatu ()">Ezabatu</button>
+    
   </form>
+  
 </div>

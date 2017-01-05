@@ -45,5 +45,12 @@ app.controller('ModalErabiltzaileBerriaCtrl',['$scope', '$uibModalInstance', 'Da
     $uibModalInstance.dismiss ('itxi');
     
   };
+  
+  $scope.$on ('$locationChangeStart', function (event){
+    
+    event.preventDefault();
+    $scope.itxi ();
+    
+  });
 
 }]);

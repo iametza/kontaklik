@@ -1,9 +1,9 @@
-app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', function ($cordovaDialogs, Database, Funtzioak){
+app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal', function ($cordovaDialogs, Database, Funtzioak, $uibModal){
   
   return {
     restrict: 'AE',
     scope: {},
-    template : '<div hm-panmove="onPan" hm-press="onPress" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)">hola!<br />kaixo!</div>',
+    template : '<div hm-panmove="onPan" hm-press="onPress" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)"></div>',
     link: function (scope, element, attrs){
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
@@ -11,12 +11,30 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', function (
           transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
           elementWidth = 75,
           elementHeight = 75;
-          
-      if (attrs.edukia !== undefined)
-        element.children ().html (Funtzioak.nl2br (attrs.edukia));
+      
+      /*if (attrs.edukia !== undefined)
+        element.children ().html (Funtzioak.nl2br (attrs.edukia));*/
+      testua_eguneratu (element.attr ('data-testua-id'));
       
       if (attrs.scale === undefined)
         element.children ().css ({ transform: 'translate3d(' + attrs.x + 'px, ' + attrs.y + 'px, 0)'});
+        
+      function testua_eguneratu (testua_id){
+        
+        // Recogemos los datos del texto
+        Database.query ('SELECT testua FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
+          
+          if (testua.length === 1){
+            
+            element.children ().html (Funtzioak.nl2br (testua[0].testua));
+            
+          }
+          
+        }, function (error){
+          console.log ("ModalEszenaTestuaCtrl, select testua", error);
+        });
+        
+      }
       
       var updateElementTransform = function (){
         var value = 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0) ' +
@@ -29,27 +47,46 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', function (
       
       scope.onPress = function onPress (){
         
-        $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+        if (element.attr ('data-testua-id') !== undefined){
           
-          if (buttonIndex == 1){
+          Database.query ('SELECT fk_eszena FROM testuak WHERE id=?', [parseInt (element.attr ('data-testua-id'))]).then (function (testua){
             
-            if (element.attr ('data-testua-id') !== undefined){
+            if (testua.length === 1){
+        
+              var modala = $uibModal.open ({
+                animation: true,
+                templateUrl: 'views/modals/eszena_testua.html',
+                controller: 'ModalEszenaTestuaCtrl',
+                resolve: {
+                  eszena_id: function (){
+                    return testua[0].fk_eszena;
+                  },
+                  testua_id: function (){
+                    return element.attr ('data-testua-id');
+                  }
+                }
+              });
               
-              Database.query ('DELETE FROM testuak WHERE id=?', [parseInt (element.attr ('data-testua-id'))]).then (function (){
+              modala.result.then (function (emaitza){
                 
-                element.remove();
+                if (emaitza === 'ezabatu'){
+                  element.remove();
+                }
+                else if (emaitza !== 'undefined'){
+                  testua_eguneratu (emaitza);
+                }
                 
               }, function (error){
-                console.log ("Testua directive DELETE", error);
+                console.log ("Testua directive onPress, modala", error);
               });
               
             }
             
-          }
+          }, function (error){
+            console.log ("Testua directive onPress, select testua", error);
+          });
           
-        }, function (error){
-          console.log ("Objektua directive onPress", error);
-        });
+        }
         
       };
       

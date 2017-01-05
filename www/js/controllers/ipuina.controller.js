@@ -52,7 +52,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.$on ("$destroy", function (){
     
-    $scope.eszenarenObjektuakGorde ();
+    $scope.saveEszena ();
     
     $scope.clearEszena ();
     
@@ -105,6 +105,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     // Quitamos los textos
     angular.element ('.testua').remove ();
+    
+  };
+  
+  $scope.saveEszena = function (){
+    
+    $scope.eszenarenObjektuakGorde ();
+    
+    $scope.eszenarenTestuakGorde ();
     
   };
   
@@ -198,7 +206,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
       
       // Guardamos y limpiamos la eszena anterior
-      $scope.eszenarenObjektuakGorde ();
+      $scope.saveEszena ();
       $scope.clearEszena ();
       
       // Ponemos el fondo en blanco
@@ -220,14 +228,21 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         // Empezamos borrando los objetos de la eszena
         Database.deleteRows ('eszena_objektuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
           
-          // Borramos los datos de la eszena
-          Database.deleteRows ('eszenak', {'id': $scope.uneko_eszena_id}).then (function (){
+          // Borramos los textos de la eszena
+          Database.deleteRows ('testuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
+          
+            // Borramos los datos de la eszena
+            Database.deleteRows ('eszenak', {'id': $scope.uneko_eszena_id}).then (function (){
+              
+              // Recogemos las eszenak que queden del ipuina
+              $scope.getEszenak ();
+                  
+            }, function (error){
+              console.log ("IpuinaCtrl, delEszena eszenaren datuak ezabatzerakoan", error);
+            });
             
-            // Recogemos las eszenak que queden del ipuina
-            $scope.getEszenak ();
-                
           }, function (error){
-            console.log ("IpuinaCtrl, delEszena eszenaren datuak ezabatzerakoan", error);
+            console.log ("IpuinaCtrl, delEszena testuak ezabatzerakoan", error);
           });
           
         }, function (error){
@@ -251,8 +266,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.changeEszena = function (eszena){
     
-    // Guardamos el estado actual de los objetos de la eszena actual
-    $scope.eszenarenObjektuakGorde ();
+    // Guardamos el estado actual de los objetos y textos de la eszena actual
+    $scope.saveEszena ();
     
     // Empezamos con el fondo
     Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
@@ -320,9 +335,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       templateUrl: 'views/modals/eszena_testua.html',
       controller: 'ModalEszenaTestuaCtrl',
       resolve: {
-        eszena_id: function () {
-          return $scope.uneko_eszena_id;
-        }
+        eszena_id: $scope.uneko_eszena_id,
+        testua_id: 0
       }
     });
     
@@ -341,11 +355,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     Database.query ('SELECT testua, style FROM testuak WHERE id=?', [testua_id]).then (function (testua){
       
       if (testua.length === 1){
-        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" edukia="' + testua[0].testua + '" x="200" y="200"></div>');
+        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" x="200" y="200"></div>');
         
-        /*if (objektua[0].style !== null){
+        if (testua[0].style !== null){
           
-          var style_object = JSON.parse (objektua[0].style);
+          var style_object = JSON.parse (testua[0].style);
           
           // Sacamos la scale y el rotate del objeto para pasársela a la directiva
           //console.log (style_object.transform);
@@ -371,7 +385,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           elem.children ().css (style_object);
           
         }
-        else*/
+        else
           el = $compile(elem)($scope);
         
         angular.element ('#eszenatoki').append (elem);
@@ -380,6 +394,24 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
     }, function (error){
       console.log ("ModalEszenaTestuaCtrl, eszenara", error);
+    });
+    
+  };
+  
+  $scope.eszenarenTestuakGorde = function (){
+    
+    angular.forEach (angular.element ('.testua'), function (testua){
+      
+      var elem = angular.element (testua);
+      var id = parseInt (elem.attr ('data-testua-id'));
+      var style = JSON.stringify (elem[0].children[0].style);
+      
+      Database.query ('UPDATE testuak SET style=? WHERE id=?', [style, id]).then (function (){
+        //console.log ("testuaren egoera aldatua!", id, style);
+      }, function (error){
+        console.log ("IpuinaCtrl, eszenarenTestuakGorde", error);
+      });
+      
     });
     
   };

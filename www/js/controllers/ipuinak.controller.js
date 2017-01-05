@@ -1,4 +1,4 @@
-app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', function($scope, $route, Database, $uibModal){
+app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', '$uibModalStack', function($scope, $route, Database, $uibModal, $uibModalStack){
   
   $scope.erabiltzailea = {};
   $scope.ipuinak = [];
