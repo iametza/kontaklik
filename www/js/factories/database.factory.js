@@ -58,7 +58,11 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`fk_eszena` INTEGER NOT NULL," +
       "`testua` TEXT," +
+      "`fontSize` TEXT," +
       "`color` TEXT," +
+      "`borderColor` TEXT," +
+      "`backgroundColor` TEXT," +
+      "`class` TEXT," +
       "`style` TEXT);" +
       "CREATE INDEX fk_eszena ON testuak (fk_eszena);";
       
