@@ -6,7 +6,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
     color: '#000',
     borderColor: '#000',
     backgroundColor: '#fff',
-    class: ''
+    class: 'bubble none'
   };
   $scope.submit = false;
   $scope.ezabatu_button = false;
@@ -15,7 +15,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
   $scope.init = function () {
     
     // Recogemos los datos del texto
-    Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class, style FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
+    Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class, style FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
       
       if (testua.length === 1){
         
@@ -43,7 +43,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
       
       // Guardamos los datos en la base de datos (insertar/modificar)
       if (testua_id === 0){
-        Database.insertRow ('testuak', {'fk_eszena': eszena_id, 'testua': $scope.eremuak.testua, 'fontSize': $scope.eremuak.fontSize, 'color': $scope.eremuak.color, 'borderColor': $scope.eremuak.borderColor, 'backgroundColor': $scope.eremuak.backgroundColor, 'class': $scope.eremuak.class}).then (function (emaitza){
+        Database.insertRow ('eszena_testuak', {'fk_eszena': eszena_id, 'testua': $scope.eremuak.testua, 'fontSize': $scope.eremuak.fontSize, 'color': $scope.eremuak.color, 'borderColor': $scope.eremuak.borderColor, 'backgroundColor': $scope.eremuak.backgroundColor, 'class': $scope.eremuak.class}).then (function (emaitza){
       
           $uibModalInstance.close (emaitza.insertId);
           
@@ -53,7 +53,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
         });
       }
       else{
-        Database.query ('UPDATE testuak SET testua=?, fontSize=?, color=?, borderColor=?, backgroundColor=?, class=? WHERE id=?', [$scope.eremuak.testua, $scope.eremuak.fontSize, $scope.eremuak.color, $scope.eremuak.borderColor, $scope.eremuak.backgroundColor, $scope.eremuak.class, testua_id]).then (function (){
+        Database.query ('UPDATE eszena_testuak SET testua=?, fontSize=?, color=?, borderColor=?, backgroundColor=?, class=? WHERE id=?', [$scope.eremuak.testua, $scope.eremuak.fontSize, $scope.eremuak.color, $scope.eremuak.borderColor, $scope.eremuak.backgroundColor, $scope.eremuak.class, testua_id]).then (function (){
           
           // Cambiamos el texto en la escena AHORA SE HACE EN testua.directive.js
           /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
@@ -77,7 +77,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
       
       if (buttonIndex == 1){
         
-        Database.query ('DELETE FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (){
+        Database.query ('DELETE FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (){
           
           // Borramos el objeto de la escena AHORA SE HACE EN testua.directive.js
           /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');

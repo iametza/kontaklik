@@ -54,7 +54,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`style` TEXT);" +
       "CREATE INDEX fk_eszena_objektua ON eszena_objektuak (fk_eszena, fk_objektua);";
       
-    var query_testuak = "CREATE TABLE IF NOT EXISTS `testuak` (" +
+    var query_eszena_testuak = "CREATE TABLE IF NOT EXISTS `eszena_testuak` (" +
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`fk_eszena` INTEGER NOT NULL," +
       "`testua` TEXT," +
@@ -64,7 +64,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`backgroundColor` TEXT," +
       "`class` TEXT," +
       "`style` TEXT);" +
-      "CREATE INDEX fk_eszena ON testuak (fk_eszena);";
+      "CREATE INDEX fk_eszena ON eszena_testuak (fk_eszena);";
       
     var query_irudiak = "CREATE TABLE IF NOT EXISTS `irudiak` (" +
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -82,7 +82,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
         $cordovaSQLite.execute (db, query_ipuinak, []).then (function (){
           $cordovaSQLite.execute (db, query_eszenak, []).then (function (){
             $cordovaSQLite.execute (db, query_eszena_objektuak, []).then (function (){
-              $cordovaSQLite.execute (db, query_testuak, []).then (function (){
+              $cordovaSQLite.execute (db, query_eszena_testuak, []).then (function (){
                 $cordovaSQLite.execute (db, query_irudiak, []).then (function (){
                   d.resolve ();
                 }, function (err) { d.reject (err); });

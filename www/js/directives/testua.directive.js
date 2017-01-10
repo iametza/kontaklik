@@ -22,7 +22,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       function testua_eguneratu (testua_id){
         
         // Recogemos los datos del texto
-        Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class FROM testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
+        Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
           
           if (testua.length === 1){
             
@@ -70,7 +70,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
         if (element.attr ('data-testua-id') !== undefined){
           
-          Database.query ('SELECT fk_eszena FROM testuak WHERE id=?', [parseInt (element.attr ('data-testua-id'))]).then (function (testua){
+          Database.query ('SELECT fk_eszena FROM eszena_testuak WHERE id=?', [parseInt (element.attr ('data-testua-id'))]).then (function (testua){
             
             if (testua.length === 1){
         

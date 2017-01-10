@@ -229,7 +229,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         Database.deleteRows ('eszena_objektuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
           
           // Borramos los textos de la eszena
-          Database.deleteRows ('testuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
+          Database.deleteRows ('eszena_testuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
           
             // Borramos los datos de la eszena
             Database.deleteRows ('eszenak', {'id': $scope.uneko_eszena_id}).then (function (){
@@ -238,15 +238,15 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
               $scope.getEszenak ();
                   
             }, function (error){
-              console.log ("IpuinaCtrl, delEszena eszenaren datuak ezabatzerakoan", error);
+              console.log ("IpuinaCtrl, delEszena eszena ezabatzerakoan", error);
             });
             
           }, function (error){
-            console.log ("IpuinaCtrl, delEszena testuak ezabatzerakoan", error);
+            console.log ("IpuinaCtrl, delEszena eszena_testuak ezabatzerakoan", error);
           });
           
         }, function (error){
-          console.log ("IpuinaCtrl, delEszena objektuak ezabatzerakoan", error);
+          console.log ("IpuinaCtrl, delEszena eszena_objektuak ezabatzerakoan", error);
         });
         
       }
@@ -292,7 +292,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       }, onError);
       
       // Cargamos sus textos
-      Database.getRows ('testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
+      Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
         
         angular.forEach (testuak, function (testua){
           $scope.testuaEszenara (testua.id);
@@ -352,7 +352,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.testuaEszenara = function (testua_id){
     
-    Database.query ('SELECT testua, style FROM testuak WHERE id=?', [testua_id]).then (function (testua){
+    Database.query ('SELECT testua, style FROM eszena_testuak WHERE id=?', [testua_id]).then (function (testua){
       
       if (testua.length === 1){
         var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" x="200" y="200"></div>');
@@ -406,7 +406,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       var id = parseInt (elem.attr ('data-testua-id'));
       var style = JSON.stringify (elem[0].children[0].style);
       
-      Database.query ('UPDATE testuak SET style=? WHERE id=?', [style, id]).then (function (){
+      Database.query ('UPDATE eszena_testuak SET style=? WHERE id=?', [style, id]).then (function (){
         //console.log ("testuaren egoera aldatua!", id, style);
       }, function (error){
         console.log ("IpuinaCtrl, eszenarenTestuakGorde", error);

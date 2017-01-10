@@ -1,5 +1,6 @@
 /* Iturria: http://ilikepixels.co.uk/drop/bubbler/ */
 
+/* Estilo general del bocadillo */
 .bubble {
   position: relative;
   border: 4px solid #000;
@@ -18,6 +19,13 @@
   z-index: 1;
 }
 
+/* Bocadillo sin piquito */
+.bubble.none:after {
+  content: none;
+  border-style: none;
+}
+
+/* Bocadillo con piquito abajo */
 .bubble.bottom:after {
   border-width: 15px 15px 0;
   border-color: #000 transparent;
@@ -26,6 +34,7 @@
   left: 50%;
 }
 
+/* Bocadillo con piquito arriba */
 .bubble.top:after {
   border-width: 0 15px 15px;
   border-color: #000 transparent;
@@ -34,6 +43,7 @@
   left: 50%;
 }
 
+/* Bocadillo con piquito a la izquierda */
 .bubble.left:after {
   border-width: 15px 15px 15px 0;
   border-color: transparent #000;
@@ -42,6 +52,7 @@
   top: 50%;
 }
 
+/* Bocadillo con piquito a la derecha */
 .bubble.right:after {
   border-width: 15px 0 15px 15px;
   border-color: transparent #000;
