@@ -86,13 +86,13 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
           $uibModalInstance.close ('ezabatu');
           
         }, function (error){
-          console.log ("Testua directive DELETE", error);
+          console.log ("ModalEszenaTestuaCtrl, testua_ezabatu DELETE", error);
         });
         
       }
       
     }, function (error){
-      console.log ("Objektua directive onPress", error);
+      console.log ("ModalEszenaTestuaCtrl, testua_ezabatu dialog", error);
     });
     
   };

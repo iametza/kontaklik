@@ -1,6 +1,6 @@
 <div class="modal-header">
   <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
-  <h4 class="modal-title" id="myModalLabel">Ipuin berria</h4>
+  <h4 class="modal-title" id="myModalLabel">Ipuina</h4>
 </div>
 <div class="modal-body">
   <div ng-if="errore_mezua !== ''" class="alert alert-warning" role="alert">
@@ -9,7 +9,7 @@
     {{errore_mezua}}
   </div>
   
-  <form name="formularioa" novalidate="" ng-submit="ipuin_berria_sortu (formularioa)">
+  <form name="formularioa" novalidate="" ng-submit="ipuina_gorde (formularioa)">
     <div class="form-group" ng-class="{'has-error': errore_mezua !== ''}">
       <label for="izenburua">Izenburua</label>
       <input type="text" class="form-control" id="izenburua" name="izenburua" ng-model="eremuak.izenburua" placeholder="Izenburua" required autofocus />
