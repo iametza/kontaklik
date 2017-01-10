@@ -3,7 +3,7 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
   return {
     restrict: 'AE',
     scope: {},
-    template : '<img class="laukia" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)" hm-pinchend="onPinchEnd()" hm-pinch="onPinch($event)" hm-panmove="onPan($event)" hm-press="onPress($event)">',
+    template : '<img class="laukia" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)" hm-pinchend="onPinchEnd()" hm-pinch="onPinch($event)" hm-panmove="onPan($event)" hm-press="onPress($event)" ng-dblclick="onDblClick()">',
     link: function (scope, element, attrs){
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
@@ -96,6 +96,17 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
           transform.translate.y = event.center.y - elementHeight;
           updateElementTransform ();
         }
+        
+      };
+      
+      scope.onDblClick = function (){
+        
+        transform.angle = 0;
+        transform.scale = 1;
+        transform.rz = 1;
+        initScale = 1;
+        initAngle = 0;
+        updateElementTransform ();
         
       };
       
