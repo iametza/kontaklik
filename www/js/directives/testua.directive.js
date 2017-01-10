@@ -66,7 +66,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         element.children ().css (css);
       };
       
-      scope.onPress = function onPress (){
+      scope.onPress = function (){
         
         if (element.attr ('data-testua-id') !== undefined){
           
@@ -111,19 +111,19 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
-      scope.onRotateEnd = function onRotateEnd (){
+      scope.onRotateEnd = function (){
         
         initAngle = transform.angle;
         
       };
       
-      scope.onRotateStart = function onRotateEnd (event){
+      scope.onRotateStart = function (event){
         
         rotationInit = event.rotation;
         
       };
       
-      scope.onRotate = function onRotate (event){
+      scope.onRotate = function (event){
         
         if (event.target === element[0].children[0]){
           transform.angle = parseFloat (initAngle) + parseFloat (event.rotation - rotationInit);
@@ -133,7 +133,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
-      scope.onPan = function onPan (event){
+      scope.onPan = function (event){
         
         if (event.target === element[0].children[0]){
           transform.translate.x = event.center.x - elementWidth;

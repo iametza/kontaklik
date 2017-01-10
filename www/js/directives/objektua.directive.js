@@ -26,7 +26,7 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         element.children ().css (css);
       };
       
-      scope.onPress = function onPress (){
+      scope.onPress = function (){
         
         $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
           
@@ -52,19 +52,19 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
-      scope.onRotateEnd = function onRotateEnd (){
+      scope.onRotateEnd = function (){
         
         initAngle = transform.angle;
         
       };
       
-      scope.onRotateStart = function onRotateEnd (event){
+      scope.onRotateStart = function (event){
         
         rotationInit = event.rotation;
         
       };
       
-      scope.onRotate = function onRotate (event){
+      scope.onRotate = function (event){
         
         if (event.target === element[0].children[0]){
           transform.angle = parseFloat (initAngle) + parseFloat (event.rotation - rotationInit);
@@ -74,13 +74,13 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
-      scope.onPinchEnd = function onPinchEnd (){
+      scope.onPinchEnd = function (){
         
         initScale = transform.scale;
         
       };
       
-      scope.onPinch = function onPinch (event){
+      scope.onPinch = function (event){
         
         if (event.target === element[0].children[0]){
           transform.scale = initScale * event.scale;
@@ -89,7 +89,7 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
-      scope.onPan = function onPan (event){
+      scope.onPan = function (event){
         
         if (event.target === element[0].children[0]){
           transform.translate.x = event.center.x - elementWidth;
