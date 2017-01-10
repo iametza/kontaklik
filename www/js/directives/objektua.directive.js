@@ -101,11 +101,8 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
       
       scope.onDblClick = function (){
         
-        transform.angle = 0;
-        transform.scale = 1;
-        transform.rz = 1;
-        initScale = 1;
-        initAngle = 0;
+        initAngle = transform.angle = 0;
+        initScale = transform.scale = transform.rz = 1;
         updateElementTransform ();
         
       };

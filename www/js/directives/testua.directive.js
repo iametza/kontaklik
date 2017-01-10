@@ -145,8 +145,8 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       
       scope.onDblClick = function (){
         
-        transform.angle = 0;
-        transform.rz = 1;
+        initAngle = transform.angle = 0;
+        initScale = transform.scale = transform.rz = 1;
         updateElementTransform ();
         
       };
