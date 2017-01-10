@@ -52,7 +52,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
           }
           
         }, function (error){
-          console.log ("ModalEszenaTestuaCtrl, select testua", error);
+          console.log ("Testua directive testua_eguneratu, SELECT", error);
         });
         
       }

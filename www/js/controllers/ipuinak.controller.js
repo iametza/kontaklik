@@ -30,7 +30,7 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', '$cor
       $scope.ipuinak = emaitza;
       
     }, function (error){
-      console.log ("IpuinakCtrl, ipuin_datuak erabiltzailearen ipuinak jasotzen", error);
+      console.log ("IpuinakCtrl, getIpuinak", error);
     });
     
     

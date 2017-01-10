@@ -393,7 +393,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       }
       
     }, function (error){
-      console.log ("ModalEszenaTestuaCtrl, eszenara", error);
+      console.log ("IpuinaCtrl, testuaEszenara SELECT", error);
     });
     
   };
