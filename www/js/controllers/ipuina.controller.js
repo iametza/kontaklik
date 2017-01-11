@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', '$cordovaDialogs', '$uibModal', function($scope, $compile, $route, Kamera, Audio, Files, Database, $cordovaDialogs, $uibModal){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Ipuinak', '$cordovaDialogs', '$uibModal', function($scope, $compile, $route, Kamera, Audio, Files, Database, Ipuinak, $cordovaDialogs, $uibModal){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -225,28 +225,13 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       if (buttonIndex == 1){
         
-        // Empezamos borrando los objetos de la eszena
-        Database.deleteRows ('eszena_objektuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
+        Ipuinak.ezabatu_eszena ($scope.uneko_eszena_id).then (function (){
           
-          // Borramos los textos de la eszena
-          Database.deleteRows ('eszena_testuak', {'fk_eszena': $scope.uneko_eszena_id}).then (function (){
-          
-            // Borramos los datos de la eszena
-            Database.deleteRows ('eszenak', {'id': $scope.uneko_eszena_id}).then (function (){
-              
-              // Recogemos las eszenak que queden del ipuina
-              $scope.getEszenak ();
-                  
-            }, function (error){
-              console.log ("IpuinaCtrl, delEszena eszena ezabatzerakoan", error);
-            });
-            
-          }, function (error){
-            console.log ("IpuinaCtrl, delEszena eszena_testuak ezabatzerakoan", error);
-          });
+          // Recogemos las eszenak que queden del ipuina
+          $scope.getEszenak ();
           
         }, function (error){
-          console.log ("IpuinaCtrl, delEszena eszena_objektuak ezabatzerakoan", error);
+          console.log ("IpuinaCtrl, delEszena", error);
         });
         
       }

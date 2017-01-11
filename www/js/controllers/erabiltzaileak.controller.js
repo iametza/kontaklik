@@ -1,26 +1,83 @@
-app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', '$window', function($scope, Database, $uibModal, $window){
+app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Ipuinak', '$uibModal', '$cordovaDialogs', function($scope, Database, Ipuinak, $uibModal, $cordovaDialogs){
   
   $scope.erabiltzaileak = [];
   
   $scope.init = function () {
     
     // Recogemos los erabiltzaileak
+    $scope.getErabiltzaileak ();
+    
+  };
+  
+  $scope.getErabiltzaileak = function (){
+    
     Database.getRows ('erabiltzaileak', '', ' ORDER BY izena ASC').then (function (emaitza){
       
       $scope.erabiltzaileak = emaitza;
       
     }, function (error){
-      console.log ("ErabiltzaileakCtrl, erabiltzaileak jasotzen", error);
+      console.log ("ErabiltzaileakCtrl, getErabiltzaileak", error);
     });
     
   };
   
-  $scope.modal_ireki_erabiltzaile_berria = function() {
+  $scope.erabiltzailea_datuak = function (erabiltzailea_id){
     
-    $uibModal.open ({
+    var modala = $uibModal.open ({
       animation: true,
-      templateUrl: 'views/modals/erabiltzaile_berria.html',
-      controller: 'ModalErabiltzaileBerriaCtrl'
+      templateUrl: 'views/modals/erabiltzailea_datuak.html',
+      controller: 'ModalErabiltzaileaDatuakCtrl',
+      resolve: {
+        erabiltzailea_id: function () {
+          return erabiltzailea_id;
+        }
+      }
+    });
+    
+    modala.result.then (function (emaitza){
+                
+      // Recogemos los erabiltzaileak
+      $scope.getErabiltzaileak ();
+      
+    }, function (error){
+      console.log ("ErabiltzaileakCtrl, erabiltzailea_datuak modala", error);
+    });
+    
+  };
+  
+  $scope.erabiltzailea_ezabatu = function (erabiltzailea_id){
+    
+    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+      
+      if (buttonIndex == 1){
+        
+        // Recogemos/Borramos los ipuinak del erabiltzaile
+        Database.getRows ('ipuinak', {'fk_erabiltzailea': erabiltzailea_id}, '').then (function (ipuinak){
+          
+          angular.forEach (ipuinak, function (ipuina){
+            
+            Ipuinak.ezabatu_ipuina (ipuina.id);
+            
+          });
+          
+          // Borramos los datos del erabiltzaile
+          Database.deleteRows ('erabiltzaileak', {'id': erabiltzailea_id}).then (function (){
+            
+            // Recogemos los erabiltzaileak
+            $scope.getErabiltzaileak ();
+            
+          }, function (error){
+            console.log ("ErabiltzaileakCtrl, erabiltzailea_ezabatu erabiltzailea ezabatzerakoan", error);
+          });
+          
+        }, function (error){
+          console.log ("ErabiltzaileakCtrl, erabiltzailea_ezabatu ipuinak jasotzen", error);
+        });
+        
+      }
+      
+    }, function (error){
+      console.log ("ErabiltzaileakCtrl, erabiltzailea_ezabatu dialog", error);
     });
     
   };

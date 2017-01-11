@@ -29,12 +29,12 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database
       
       // Comprobamos que no exista el ipuina para el erabiltzaile
       Database.query ('SELECT id FROM ipuinak WHERE fk_erabiltzailea=? AND izenburua=? AND id<>?', [erabiltzailea_id, $scope.eremuak.izenburua, ipuina_id]).then (function (emaitza){
-      //Database.getRows ('ipuinak', {'fk_erabiltzailea': erabiltzailea_id, 'izenburua': $scope.eremuak.izenburua}).then (function (emaitza){
         
         if (emaitza.length === 0){
           
           // Guardamos los datos en la base de datos (insertar/modificar)
           if (ipuina_id === 0){
+            
             Database.insertRow ('ipuinak', {'izenburua': $scope.eremuak.izenburua, 'fk_erabiltzailea': erabiltzailea_id}).then (function (emaitza){
               
               /*// Cerramos la ventana modal
@@ -51,8 +51,10 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database
             }, function (error){
               console.log ("ModalIpuinaDatuakCtrl, ipuina_gorde insert", error);
             });
+            
           }
           else{
+            
             Database.query ('UPDATE ipuinak SET izenburua=? WHERE id=?', [$scope.eremuak.izenburua, ipuina_id]).then (function (){
           
               $uibModalInstance.close (ipuina_id);
@@ -61,6 +63,7 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database
               console.log ("ModalIpuinaDatuakCtrl, ipuina_gorde update", error);
               $scope.itxi ();
             });
+            
           }
           
         }

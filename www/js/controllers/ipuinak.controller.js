@@ -1,4 +1,4 @@
-app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', '$cordovaDialogs', function($scope, $route, Database, $uibModal, $cordovaDialogs){
+app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Ipuinak', '$uibModal', '$cordovaDialogs', function($scope, $route, Database, Ipuinak, $uibModal, $cordovaDialogs){
   
   $scope.erabiltzailea = {};
   $scope.ipuinak = [];
@@ -69,44 +69,13 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', '$cor
       
       if (buttonIndex == 1){
         
-        // Recogemos las eszenak del ipuina
-        Database.getRows ('eszenak', {'fk_ipuina': ipuina_id}, ' ORDER BY timestamp ASC').then (function (eszenak){
+        Ipuinak.ezabatu_ipuina (ipuina_id).then (function (){
           
-          angular.forEach (eszenak, function (eszena){
-            
-            // Empezamos borrando los objetos de la eszena
-            Database.deleteRows ('eszena_objektuak', {'fk_eszena': eszena.id}).then (function (){
-              
-              // Borramos los textos de la eszena
-              Database.deleteRows ('eszena_testuak', {'fk_eszena': eszena.id}).then (function (){
-              
-                // Borramos los datos de la eszena
-                Database.deleteRows ('eszenak', {'id': eszena.id}).then (function (){}, function (error){
-                  console.log ("IpuinakCtrl, ipuina_ezabatu eszena ezabatzerakoan", error);
-                });
-                
-              }, function (error){
-                console.log ("IpuinakCtrl, ipuina_ezabatu eszena_testuak ezabatzerakoan", error);
-              });
-              
-            }, function (error){
-              console.log ("IpuinakCtrl, ipuina_ezabatu eszena_objektuak ezabatzerakoan", error);
-            });
-        
-          });
-          
-          // Borramos los datos del ipuina
-          Database.deleteRows ('ipuinak', {'id': ipuina_id}).then (function (){
-            
-            // Recogemos los ipuinak del erabiltzaile
-            $scope.getIpuinak ();
-            
-          }, function (error){
-            console.log ("IpuinakCtrl, ipuina_ezabatu ipuina ezabatzerakoan", error);
-          });
+          // Recogemos los ipuinak del erabiltzaile
+          $scope.getIpuinak ();
           
         }, function (error){
-          console.log ("IpuinakCtrl, ipuina_ezabatu eszenak jasotzen", error);
+          console.log ("IpuinakCtrl, ipuina_ezabatu", error);
         });
         
       }
