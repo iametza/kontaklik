@@ -39,7 +39,7 @@ app.factory('Ipuinak', ['$q', 'Database', function($q, Database){
     var promiseak = [];
     
     // Recogemos/Borramos las eszenak del ipuina
-    Database.getRows ('eszenak', {'fk_ipuina': ipuina_id}, ' ORDER BY timestamp ASC').then (function (eszenak){
+    Database.getRows ('eszenak', {'fk_ipuina': ipuina_id}, '').then (function (eszenak){
       
       angular.forEach (eszenak, function (eszena){
         

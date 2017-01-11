@@ -44,6 +44,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`fk_ipuina` INTEGER NOT NULL," +
       "`fk_fondoa` INTEGER NOT NULL," +
+      "`orden` INTEGER NOT NULL," +
       "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
       "CREATE INDEX fk_ipuina ON eszenak (fk_ipuina);";
       

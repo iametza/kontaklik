@@ -60,13 +60,13 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.getEszenak = function (){
     
-    Database.getRows ('eszenak', {'fk_ipuina': $scope.ipuina.id}, ' ORDER BY timestamp ASC').then (function (emaitza){
+    Database.getRows ('eszenak', {'fk_ipuina': $scope.ipuina.id}, ' ORDER BY orden ASC').then (function (emaitza){
               
       $scope.eszenak = emaitza;
       
       if ($scope.eszenak.length === 0){
         // Creamos una eszena por defecto
-        Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0}).then (function (emaitza){
+        Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'orden': 1}).then (function (emaitza){
           // Limpiamos la eszena por si acaso (si se viene de delEszena puede que haga falta)
           $scope.clearEszena ();
           
@@ -74,7 +74,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           angular.element ('#eszenatoki').css ('background-color', '#fff');
           
           // Guardamos la eszena en el array
-          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
+          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'orden': 1});
           
           $scope.uneko_eszena_id = emaitza.insertId;
         }, function (error){
@@ -201,9 +201,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.addEszena = function (){
     
-    Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0}).then (function (emaitza){
+    Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'orden': $scope.eszenak.length+1}).then (function (emaitza){
       // Guardamos la eszena en el array
-      $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0});
+      $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'orden': $scope.eszenak.length+1});
       
       // Guardamos y limpiamos la eszena anterior
       $scope.saveEszena ();
@@ -399,6 +399,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
     });
     
+  };
+  
+  $scope.eszenaAurreratu = function (){
+    console.log ("eszena aurreratu", $scope.uneko_eszena_id);
+  };
+  
+  $scope.eszenaAtzeratu = function (){
+    console.log ("eszena atzeratu", $scope.uneko_eszena_id);
   };
   
   $scope.takeGallery = function (atala){
