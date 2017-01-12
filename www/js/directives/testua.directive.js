@@ -3,17 +3,14 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
   return {
     restrict: 'AE',
     scope: {},
-    template : '<div hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-rotatestart="onRotateStart" ng-dblclick="onDblClick()"></div>',
+    template : '<div hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" ng-dblclick="onDblClick()"></div>',
     link: function (scope, element, attrs){
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
-          elementWidth = 75,
-          elementHeight = 75;
-      
-      /*if (attrs.edukia !== undefined)
-        element.children ().html (Funtzioak.nl2br (attrs.edukia));*/
+          offsetX = 0, offsetY = 0;
+          
       testua_eguneratu (element.attr ('data-testua-id'));
       
       if (attrs.scale === undefined)
@@ -146,11 +143,18 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
+      scope.onPanStart = function (event){
+        
+        offsetX = event.changedPointers[0].offsetX;
+        offsetY = event.changedPointers[0].offsetY;
+        
+      };
+      
       scope.onPan = function (event){
         
         if (event.target === element[0].children[0]){
-          transform.translate.x = event.center.x - elementWidth;
-          transform.translate.y = event.center.y - elementHeight;
+          transform.translate.x = event.center.x - offsetX;
+          transform.translate.y = event.center.y - offsetY;
           updateElementTransform ();
         }
         

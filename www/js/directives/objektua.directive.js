@@ -3,14 +3,13 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
   return {
     restrict: 'AE',
     scope: {},
-    template : '<img class="laukia" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-rotatestart="onRotateStart" hm-pinchend="onPinchEnd" hm-pinch="onPinch" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()">',
+    template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()">',
     link: function (scope, element, attrs){
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
-          elementWidth = 75,
-          elementHeight = 75;
+          offsetX = 0, offsetY = 0;
       
       element.children ().attr ('src', attrs.background);
       
@@ -103,11 +102,18 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
+      scope.onPanStart = function (event){
+        
+        offsetX = event.changedPointers[0].offsetX;
+        offsetY = event.changedPointers[0].offsetY;
+        
+      };
+      
       scope.onPan = function (event){
         
         if (event.target === element[0].children[0]){
-          transform.translate.x = event.center.x - elementWidth;
-          transform.translate.y = event.center.y - elementHeight;
+          transform.translate.x = event.center.x - offsetX;
+          transform.translate.y = event.center.y - offsetY;
           updateElementTransform ();
         }
         
