@@ -92,3 +92,7 @@ body {
 .laukitxo.aukeratuta {
   border-color: yellow;
 }
+
+a.disabled {
+  background-color: #f00;
+}

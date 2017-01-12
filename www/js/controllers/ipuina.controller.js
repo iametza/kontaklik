@@ -3,6 +3,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
   $scope.eszenak = [];
+  $scope.eszenak_nabigazioa = {'aurrera': false, 'atzera': false};
   $scope.objektuak = [];
   $scope.fondoak = [];
   $scope.uneko_eszena_id = 0;
@@ -77,6 +78,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'orden': 1});
           
           $scope.uneko_eszena_id = emaitza.insertId;
+          
+          $scope.eszenak_nabigazioa.aurrera = $scope.eszenak_nabigazioa.atzera = false;
         }, function (error){
           console.log ("IpuinaCtrl, getEszenak defektuzko eszena sortzerakoan", error);
         });
@@ -86,6 +89,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         $scope.changeEszena ($scope.eszenak[0]);
         
         $scope.uneko_eszena_id = $scope.eszenak[0].id;
+        $scope.eszenak_nabigazioa.aurrera = false;
+        $scope.eszenak_nabigazioa.atzera = ($scope.eszenak.length > 1);
       }
       
     }, function (error){
@@ -213,6 +218,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       angular.element ('#eszenatoki').css ('background-color', '#fff');
       
       $scope.uneko_eszena_id = emaitza.insertId;
+      
+      $scope.eszenak_nabigazioa.aurrera = true;
+      $scope.eszenak_nabigazioa.atzera = false;
     }, function (error){
       console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
     });
@@ -286,6 +294,17 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       }, onError);
       
       $scope.uneko_eszena_id = eszena.id;
+      
+      // Eszenen nabigazioa eguneratu (aurrera eta atzera botoiak aktibo bai/ez)
+      for (var ind = 0; ind < $scope.eszenak.length; ind++){
+        
+        if ($scope.eszenak[ind].id == eszena.id)
+          break;
+        
+      }
+      
+      $scope.eszenak_nabigazioa.aurrera = (ind > 0);
+      $scope.eszenak_nabigazioa.atzera = (ind < $scope.eszenak.length-1);
       
     }, function (error){
       console.log ("IpuinaCtrl, ipuina datuak jasotzen", error);
@@ -402,11 +421,91 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   };
   
   $scope.eszenaAurreratu = function (){
-    console.log ("eszena aurreratu", $scope.uneko_eszena_id);
+    
+    if ($scope.eszenak_nabigazioa.aurrera){
+    
+      for (var ind = 0; ind < $scope.eszenak.length; ind++){
+        
+        if ($scope.eszenak[ind].id == $scope.uneko_eszena_id)
+          break;
+        
+      }
+      
+      if (ind > 0){
+            
+        // Cambiamos el orden del elemento en la base de datos
+        Database.query ('UPDATE eszenak SET orden=orden-1 WHERE id=?', [$scope.eszenak[ind].id]).then (function (){
+          
+          // Cambiamos el orden del elemento anterior en la base de datos
+          Database.query ('UPDATE eszenak SET orden=orden+1 WHERE id=?', [$scope.eszenak[ind-1].id]).then (function (){
+          
+            // Cambiamos el orden de los elementos en la lista y la reordenamos
+            $scope.eszenak[ind].orden--;
+            $scope.eszenak[ind-1].orden++;
+            
+            var temp = $scope.eszenak[ind];
+            $scope.eszenak[ind] = $scope.eszenak[ind-1];
+            $scope.eszenak[ind-1] = temp;
+            
+            $scope.eszenak_nabigazioa.aurrera = (ind-1 > 0);
+            $scope.eszenak_nabigazioa.atzera = true;
+        
+          }, function (error){
+            console.log ("IpuinaCtrl, eszenaAurreratu second update", error);
+          });
+          
+        }, function (error){
+          console.log ("IpuinaCtrl, eszenaAurreratu first update", error);
+        });
+        
+      }
+      
+    }
+    
   };
   
   $scope.eszenaAtzeratu = function (){
-    console.log ("eszena atzeratu", $scope.uneko_eszena_id);
+    
+    if ($scope.eszenak_nabigazioa.atzera){
+    
+      for (var ind = 0; ind < $scope.eszenak.length; ind++){
+        
+        if ($scope.eszenak[ind].id == $scope.uneko_eszena_id)
+          break;
+        
+      }
+      
+      if (ind < ($scope.eszenak.length-1)){
+            
+        // Cambiamos el orden del elemento en la base de datos
+        Database.query ('UPDATE eszenak SET orden=orden+1 WHERE id=?', [$scope.eszenak[ind].id]).then (function (){
+          
+          // Cambiamos el orden del elemento siguiente en la base de datos
+          Database.query ('UPDATE eszenak SET orden=orden-1 WHERE id=?', [$scope.eszenak[ind+1].id]).then (function (){
+          
+            // Cambiamos el orden de los elementos en la lista y la reordenamos
+            $scope.eszenak[ind].orden++;
+            $scope.eszenak[ind+1].orden--;
+            
+            var temp = $scope.eszenak[ind];
+            $scope.eszenak[ind] = $scope.eszenak[ind+1];
+            $scope.eszenak[ind+1] = temp;
+            
+            $scope.eszenak_nabigazioa.aurrera = true;
+            $scope.eszenak_nabigazioa.atzera = (ind+1 < $scope.eszenak.length-1);
+        
+          }, function (error){
+            console.log ("IpuinaCtrl, eszenaAtzeratu second update", error);
+          });
+          
+        }, function (error){
+          console.log ("IpuinaCtrl, eszenaAtzeratu first update", error);
+        });
+        
+      }
+      
+    }
+    
   };
   
   $scope.takeGallery = function (atala){
