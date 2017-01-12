@@ -145,8 +145,8 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       
       scope.onPanStart = function (event){
         
-        offsetX = event.changedPointers[0].offsetX;
-        offsetY = event.changedPointers[0].offsetY;
+        offsetX = event.srcEvent.offsetX;
+        offsetY = event.srcEvent.offsetY;
         
       };
       
