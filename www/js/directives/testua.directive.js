@@ -3,7 +3,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
   return {
     restrict: 'AE',
     scope: {},
-    template : '<div hm-panmove="onPan" hm-press="onPress" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)" ng-dblclick="onDblClick()"></div>',
+    template : '<div hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-rotatestart="onRotateStart" ng-dblclick="onDblClick()"></div>',
     link: function (scope, element, attrs){
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
@@ -57,13 +57,25 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       }
       
-      var updateElementTransform = function (){
+      var updateElementTransform = function (dbGorde){
+        dbGorde = typeof dbGorde !== 'undefined' ? dbGorde : false;
+        
         var value = 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0) ' +
                     'scale(' + transform.scale + ', ' + transform.scale + ') ' +
                     'rotate('+  transform.angle + 'deg)';
+                    
         var css = { 'transform': value, '-webkit-transform': value, '-moz-transform': value, '-o-transform': value };
         
         element.children ().css (css);
+        
+        if (dbGorde){
+          var id = parseInt (element.attr ('data-testua-id'));
+          var style = JSON.stringify (element[0].children[0].style);
+      
+          Database.query ('UPDATE eszena_testuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
+            console.log ("Testua directive UPDATE eszena_testuak", error);
+          });
+        }
       };
       
       scope.onPress = function (){
@@ -111,12 +123,6 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
-      scope.onRotateEnd = function (){
-        
-        initAngle = transform.angle;
-        
-      };
-      
       scope.onRotateStart = function (event){
         
         rotationInit = event.rotation;
@@ -133,6 +139,13 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
+      scope.onRotateEnd = function (){
+        
+        initAngle = transform.angle;
+        updateElementTransform (true);
+        
+      };
+      
       scope.onPan = function (event){
         
         if (event.target === element[0].children[0]){
@@ -143,11 +156,17 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
+      scope.onPanEnd = function (){
+        
+        updateElementTransform (true);
+        
+      };
+      
       scope.onDblClick = function (){
         
         initAngle = transform.angle = 0;
         initScale = transform.scale = transform.rz = 1;
-        updateElementTransform ();
+        updateElementTransform (true);
         
       };
       

@@ -3,7 +3,7 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
   return {
     restrict: 'AE',
     scope: {},
-    template : '<img class="laukia" hm-rotate="onRotate($event)" hm-rotateend="onRotateEnd()" hm-rotatestart="onRotateStart($event)" hm-pinchend="onPinchEnd()" hm-pinch="onPinch($event)" hm-panmove="onPan($event)" hm-press="onPress($event)" ng-dblclick="onDblClick()">',
+    template : '<img class="laukia" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-rotatestart="onRotateStart" hm-pinchend="onPinchEnd" hm-pinch="onPinch" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()">',
     link: function (scope, element, attrs){
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
@@ -17,13 +17,25 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
       if (attrs.scale === undefined)
         element.children ().css ({ transform: 'translate3d(' + attrs.x + 'px, ' + attrs.y + 'px, 0)'});
       
-      var updateElementTransform = function (){
+      var updateElementTransform = function (dbGorde){
+        dbGorde = typeof dbGorde !== 'undefined' ? dbGorde : false;
+        
         var value = 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0) ' +
                     'scale(' + transform.scale + ', ' + transform.scale + ') ' +
                     'rotate('+  transform.angle + 'deg)';
+                    
         var css = { 'transform': value, '-webkit-transform': value, '-moz-transform': value, '-o-transform': value };
         
         element.children ().css (css);
+        
+        if (dbGorde){
+          var id = parseInt (element.attr ('data-eo-id'));
+          var style = JSON.stringify (element[0].children[0].style);
+      
+          Database.query ('UPDATE eszena_objektuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
+            console.log ("Objektua directive UPDATE eszena_objektuak", error);
+          });
+        }
       };
       
       scope.onPress = function (){
@@ -52,12 +64,6 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
-      scope.onRotateEnd = function (){
-        
-        initAngle = transform.angle;
-        
-      };
-      
       scope.onRotateStart = function (event){
         
         rotationInit = event.rotation;
@@ -74,9 +80,10 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
-      scope.onPinchEnd = function (){
+      scope.onRotateEnd = function (){
         
-        initScale = transform.scale;
+        initAngle = transform.angle;
+        updateElementTransform (true);
         
       };
       
@@ -86,6 +93,13 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
           transform.scale = initScale * event.scale;
           updateElementTransform();
         }
+        
+      };
+      
+      scope.onPinchEnd = function (){
+        
+        initScale = transform.scale;
+        updateElementTransform (true);
         
       };
       
@@ -99,11 +113,17 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
+      scope.onPanEnd = function (){
+        
+        updateElementTransform (true);
+        
+      };
+      
       scope.onDblClick = function (){
         
         initAngle = transform.angle = 0;
         initScale = transform.scale = transform.rz = 1;
-        updateElementTransform ();
+        updateElementTransform (true);
         
       };
       
