@@ -70,7 +70,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           $scope.clearEszena ();
           
           // Ponemos el fondo en blanco
-          angular.element ('#eszenatoki').css ('background-color', '#fff');
+          angular.element ('#eszenatokia').css ('background-color', '#fff');
           
           // Guardamos la eszena en el array
           $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'orden': 1});
@@ -100,8 +100,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.clearEszena = function (){
     
     // Quitamos el fondo
-    angular.element ('#eszenatoki').css ('background-color', 'transparent');
-    angular.element ('#eszenatoki').css ('background', 'none');
+    angular.element ('#eszenatokia').css ('background-color', 'transparent');
+    angular.element ('#eszenatokia').css ('background', 'none');
     
     // Quitamos los objetos
     angular.element ('.objektua').remove ();
@@ -162,7 +162,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         else
           el = $compile(elem)($scope);
         
-        angular.element ('#eszenatoki').append (elem);
+        angular.element ('#eszenatokia').append (elem);
         $scope.insertHere = el;
       }
       
@@ -204,7 +204,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       $scope.clearEszena ();
       
       // Ponemos el fondo en blanco
-      angular.element ('#eszenatoki').css ('background-color', '#fff');
+      angular.element ('#eszenatokia').css ('background-color', '#fff');
       
       $scope.uneko_eszena_id = emaitza.insertId;
       
@@ -241,8 +241,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.changeFondoa = function (fondoa){
     
-    angular.element ('#eszenatoki').css ('background', 'url(' + fondoa.path + ')');
-    angular.element ('#eszenatoki').css ('background-size', 'cover');
+    angular.element ('#eszenatokia').css ('background', 'url(' + fondoa.path + ')');
+    angular.element ('#eszenatokia').css ('background-size', 'cover');
     
   };
   
@@ -258,7 +258,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         $scope.changeFondoa (emaitza[0]);
       }
       else{
-        angular.element ('#eszenatoki').css ('background-color', '#fff');
+        angular.element ('#eszenatokia').css ('background-color', '#fff');
       }
       
       // Cargamos sus objetos
@@ -358,7 +358,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         else
           el = $compile(elem)($scope);
         
-        angular.element ('#eszenatoki').append (elem);
+        angular.element ('#eszenatokia').append (elem);
         $scope.insertHere = el;
       }
       

@@ -9,7 +9,13 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
-          offsetX = 0, offsetY = 0;
+          offset = {'x': 0, 'y': 0}, minBound = {'x': 0, 'y': 0}, maxBound = {'x': 0, 'y': 0},
+          eszenatokia = angular.element ('#eszenatokia');
+          
+      minBound.x = eszenatokia[0].offsetLeft + 10;
+      minBound.y = eszenatokia[0].offsetTop + 10;
+      maxBound.x = eszenatokia[0].offsetWidth - 10;
+      maxBound.y = eszenatokia[0].offsetHeight - 10;
           
       testua_eguneratu (element.attr ('data-testua-id'));
       
@@ -145,17 +151,33 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       
       scope.onPanStart = function (event){
         
-        offsetX = event.srcEvent.offsetX;
-        offsetY = event.srcEvent.offsetY;
+        /*maxBound.x = (minBound.x + eszenatokia[0].offsetWidth - element[0].children[0].offsetWidth) - 30; // teorian 30px hoiek ez ziren kendu behar
+        maxBound.y = (minBound.y + eszenatokia[0].offsetHeight - element[0].children[0].offsetHeight) - 30; // teorian 30px hoiek ez ziren kendu behar*/
+        
+        offset.x = event.srcEvent.offsetX;
+        offset.y = event.srcEvent.offsetY;
         
       };
       
       scope.onPan = function (event){
         
         if (event.target === element[0].children[0]){
-          transform.translate.x = event.center.x - offsetX;
-          transform.translate.y = event.center.y - offsetY;
-          updateElementTransform ();
+          var bounds = document.getElementById ("testua_" + element.attr ('data-testua-id')).getBoundingClientRect ();
+          var newX = event.center.x - offset.x;
+          var newY = event.center.y - offset.y;
+          
+          if ((bounds.top > minBound.y || newY > transform.translate.y) &&
+              (bounds.bottom < maxBound.y || newY < transform.translate.y) &&
+              (bounds.right < maxBound.x || newX < transform.translate.x) &&
+              (bounds.left > minBound.x || newX > transform.translate.x)){
+            transform.translate.x = newX;
+            transform.translate.y = newY;
+            /*transform.translate.x = Math.max (minBound.x, Math.min (event.center.x - offset.x, maxBound.x));
+            transform.translate.y = Math.max (minBound.y, Math.min (event.center.y - offset.y, maxBound.y));*/
+            
+            updateElementTransform ();
+          }
+          
         }
         
       };
