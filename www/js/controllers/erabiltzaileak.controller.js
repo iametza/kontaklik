@@ -4,6 +4,9 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Ipuinak', '$uibModal
   
   $scope.init = function () {
     
+    angular.element ('#eszenatokia').css ('background', "url('assets/backgrounds/background.png') no-repeat center center fixed");
+    angular.element ('#eszenatokia').css ('background-size', "cover");
+    
     // Recogemos los erabiltzaileak
     $scope.getErabiltzaileak ();
     
