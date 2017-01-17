@@ -9,7 +9,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
-          offset = {'x': 0, 'y': 0},
+          abiapuntua = {'x': 0, 'y': 0},
           limits = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
           eszenatokia = angular.element ('#eszenatokia');
           
@@ -168,10 +168,10 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
-      scope.onPanStart = function (event){
+      scope.onPanStart = function (){
         
-        offset.x = event.srcEvent.offsetX;
-        offset.y = event.srcEvent.offsetY;
+        abiapuntua.x = transform.translate.x;
+        abiapuntua.y = transform.translate.y;
         
       };
       
@@ -181,8 +181,8 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
           
           var t = {  translate :{ x: transform.translate.x, y: transform.translate.y   }, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
           
-          t.translate.x = event.center.x - offset.x;
-          t.translate.y = event.center.y - offset.y;
+          t.translate.x = parseInt (abiapuntua.x) + parseInt (event.deltaX);
+          t.translate.y = parseInt (abiapuntua.y) + parseInt (event.deltaY);
           
           updateElementTransform (t);
           

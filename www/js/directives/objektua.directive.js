@@ -9,7 +9,7 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
-          offset = {'x': 0, 'y': 0},
+          abiapuntua = {'x': 0, 'y': 0},
           limits = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
           eszenatokia = angular.element ('#eszenatokia');
           
@@ -29,15 +29,20 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
       var updateElementTransform = function (transform_new, dbGorde){
         dbGorde = typeof dbGorde !== 'undefined' ? dbGorde : false;
         
+        // Aplicamos los cambios en el CSS
         element.children ().css (transform2css (transform_new));
         
+        // Pase lo que pase, vayas donde vayas, hagas lo que hagas, ponte bragas
+        // Comprobamos que tras los cambios el objeto no se salga de los limites
         var bounds = document.getElementById ("objektua_" + element.attr ('data-eo-id')).getBoundingClientRect ();
         if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.right > limits.right || bounds.left < limits.left){
+          // Sale de los limites -> restablecemos los valores (nos quedamos como estabamos)
           element.children ().css (transform2css (transform));
           
           return (false);
         }
         else{
+          // No se sale de los limites -> guardamos los valores nuevos y palante
           transform = transform_new;
         
           if (dbGorde){
@@ -120,7 +125,7 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
           
           var t = {  translate :{ x: transform.translate.x, y: transform.translate.y   }, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
           
-          t.scale = initScale * event.scale;
+          t.scale = parseFloat (initScale) * parseFloat (event.scale);
           
           updateElementTransform (t);
           
@@ -135,10 +140,10 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
-      scope.onPanStart = function (event){
+      scope.onPanStart = function (){
         
-        offset.x = event.srcEvent.offsetX;
-        offset.y = event.srcEvent.offsetY;
+        abiapuntua.x = transform.translate.x;
+        abiapuntua.y = transform.translate.y;
         
       };
       
@@ -148,8 +153,8 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
           
           var t = {  translate :{ x: transform.translate.x, y: transform.translate.y   }, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
           
-          t.translate.x = event.center.x - offset.x;
-          t.translate.y = event.center.y - offset.y;
+          t.translate.x = parseInt (abiapuntua.x) + parseInt (event.deltaX);
+          t.translate.y = parseInt (abiapuntua.y) + parseInt (event.deltaY);
           
           updateElementTransform (t);
           
