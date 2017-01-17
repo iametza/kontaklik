@@ -34,7 +34,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
             element.children ().attr ('id', 'testua_' + testua_id);
             
             // Cargamos el texto del elemento
-            element.children ().html (Funtzioak.nl2br (testua[0].testua));
+            element.children ().html (Funtzioak.nl2br (testua[0].testua.split (" ").splice (0, 50).join (" ")));
             
             // Cargamos el estilo del elemento
             element[0].children[0].style.fontSize = testua[0].fontSize + "px";

@@ -7,8 +7,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.objektuak = [];
   $scope.fondoak = [];
   $scope.uneko_eszena_id = 0;
+  $scope.menuaCollapsed = false;
   
-  $scope.init = function () {
+  $scope.init = function (){
     
     // Recogemos los datos del erabiltzaile
     Database.getRows ('erabiltzaileak', {'id': $route.current.params.erabiltzailea_id}, '').then (function (emaitza){
@@ -453,6 +454,12 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       }
       
     }
+    
+  };
+  
+  $scope.menuaCollapse = function (){
+    
+    $scope.menuaCollapsed = !$scope.menuaCollapsed;
     
   };
   

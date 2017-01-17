@@ -57,6 +57,14 @@ body {
   left: 15px;
   right: 15px;
   background-color: #ccc;
+  z-index: 1001;
+}
+
+#goiko-menua-collapsed {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
 }
 
 .list-group-item a {
@@ -69,10 +77,20 @@ body {
   color: #000 !important;
 }
 
+.objektua {
+  z-index: 10;
+}
+
+.testua {
+  z-index: 20;
+}
+
 .testua div {
   display: inline;
   position: absolute;
   padding: 10px;
+  max-width: 90%;
+  max-height: 50%;
   
   /* El resto de propiedades están en la clase .bubble definida en el archivo css/speech_bubbles.css
   
