@@ -7,7 +7,7 @@ app.factory('Audio', ['$cordovaMedia', '$cordovaNativeAudio', function($cordovaM
           playAudioWhenScreenIsLocked : false
       };
   document.addEventListener("deviceready",function() {
-    src = cordova.file.dataDirectory + "/myrecording.mp3";    
+    src = "myrecording.mp3";    
   }, false);
   var onError = function(err) {
     console.log('err', err);

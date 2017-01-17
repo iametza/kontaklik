@@ -527,9 +527,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.playRecord = function(){
     Audio.playRecord();
   };
-  document.addEventListener('deviceready', function() {
+  /*document.addEventListener('deviceready', function() {
     Audio.stop('sarrera');
-  }, false);
+  }, false);*/
   
   var onError = function (err) {
     console.log ('err', err);
