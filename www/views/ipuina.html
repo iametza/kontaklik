@@ -1,7 +1,7 @@
 <button type="button" class="btn btn-default" ng-click="menuaCollapse()" ng-hide="!menuaCollapsed" id="goiko-menua-collapsed"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
 
 <div uib-collapse="menuaCollapsed">
-  <uib-tabset active="active" class="goiko-menua">
+  <uib-tabset active="active" class="goiko-menua" ng-hide="bideo_modua.playing">
     
     <uib-tab index="0">
       <uib-tab-heading>
@@ -15,7 +15,11 @@
           <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera" class="btn btn-default btn-lg" ng-class="{disabled: !eszenak_nabigazioa.atzera}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></a>
         </div>
         
-        <div class="col-xs-3">
+        <div class="col-xs-1">
+          <button class="btn btn-default btn-lg" ng-click="play_ipuina ()"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+        </div>
+        
+        <div class="col-xs-2">
           <button ng-click="delEszena ()" class="btn btn-danger pull-right btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
           <button ng-click="addEszena ()" class="btn btn-default pull-right btn-lg"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
         </div>

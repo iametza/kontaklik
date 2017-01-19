@@ -116,30 +116,35 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   Audio.getDuration = function (audioa){
     var d = $q.defer ();
     
-    media = new Media (cordova.file.dataDirectory + audioa, function (){}, function (error){
-      d.reject (error);
-      console.log ("Audio factory, getDuration", error);
-    });
-    
-    // ojo que sin hacer play/stop no funtziona....
-    media.play ();
-    media.stop ();
-    
-    var counter = 0;
-    var timerDur = setInterval (function (){
+    if (audioa.trim () !== ''){
+      media = new Media (cordova.file.dataDirectory + audioa, function (){}, function (error){
+        d.reject (error);
+        console.log ("Audio factory, getDuration", error);
+      });
       
-      counter = counter + 100;
+      // ojo que sin hacer play/stop no funtziona....
+      media.play ();
+      media.stop ();
       
-      var duration = media.getDuration ();
+      var counter = 0;
+      var timerDur = setInterval (function (){
+        
+        counter = counter + 100;
+        
+        var duration = media.getDuration ();
+        
+        if (duration > 0 || counter > 2000){
+          clearInterval (timerDur);
+          media.release ();
+          media = undefined;
+          d.resolve (Math.ceil (duration));
+        }
+        
+      }, 100);
       
-      if (duration > 0 || counter > 2000){
-        clearInterval (timerDur);
-        media.release ();
-        media = undefined;
-        d.resolve (Math.ceil (duration));
-      }
-      
-    }, 100);
+    }
+    else
+      d.resolve (0);
     
     return d.promise;
     

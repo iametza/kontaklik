@@ -9,8 +9,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.uneko_eszena_id = 0;
   $scope.uneko_audioa = {'izena': '', 'iraupena': 0, 'counter': 0};
   $scope.menuaCollapsed = false;
-  
-  var kontador;
+  $scope.kontador = undefined;
+  $scope.bideo_modua = {'playing': false, 'interval': undefined};
   
   $scope.init = function (){
     
@@ -57,7 +57,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.$on ("$destroy", function (){
     
-    // Limpiamos la escena
+    // Limpiamos la eszena
     $scope.clearEszena ();
     
     
@@ -542,11 +542,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.audioa_startRecord = function (){
     
-    kontador = $timeout ($scope.time_counter, 1000);
+    $scope.kontador = $timeout ($scope.time_counter, 1000);
     
     Audio.startRecord ('audioa_' + $scope.uneko_eszena_id).then (function (audioa){
       
-      $timeout.cancel (kontador);
+      $timeout.cancel ($scope.kontador);
       
       // Mover desde la carpeta temporal a una persistente
       $cordovaFile.moveFile (audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then (function (){
@@ -579,7 +579,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       });
 
     }, function (error){
-      $timeout.cancel (kontador);
+      $timeout.cancel ($scope.kontador);
       console.log ("IpuinaCtrl, startRecord", error);
     });
     
@@ -588,7 +588,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.time_counter = function (){
     
     $scope.uneko_audioa.counter++;
-    kontador = $timeout ($scope.time_counter, 1000);
+    $scope.kontador = $timeout ($scope.time_counter, 1000);
     
   };
   
@@ -604,15 +604,15 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       if (Audio.egoera () == 'stopped' || Audio.egoera () == 'paused'){
         
-        kontador = $timeout ($scope.time_counter, 1000);
+        $scope.kontador = $timeout ($scope.time_counter, 1000);
       
         Audio.play ($scope.uneko_audioa.izena).then (function (){
           
-          $timeout.cancel (kontador);
+          $timeout.cancel ($scope.kontador);
           $scope.uneko_audioa.counter = 0;
           
         }, function (error){
-          $timeout.cancel (kontador);
+          $timeout.cancel ($scope.kontador);
           console.log ("IpuinaCtrl, startRecord", error);
         });
         
@@ -628,8 +628,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       Audio.pause ();
       
-      if (kontador !== undefined)
-        $timeout.cancel (kontador);
+      if ($scope.kontador !== undefined)
+        $timeout.cancel ($scope.kontador);
       
     }
     
@@ -639,8 +639,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     Audio.stop ();
     
-    if (kontador !== undefined){
-      $timeout.cancel (kontador);
+    if ($scope.kontador !== undefined){
+      $timeout.cancel ($scope.kontador);
       $scope.uneko_audioa.counter = 0;
     }
     
@@ -705,14 +705,42 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     $scope.uneko_audioa.counter = 0;
     
     // Si está el contador en marcha lo paramos
-    if (kontador !== undefined)
-      $timeout.cancel (kontador);
+    if ($scope.kontador !== undefined)
+      $timeout.cancel ($scope.kontador);
     
   };
   
-  /*document.addEventListener('deviceready', function() {
-    Audio.stop('sarrera');
-  }, false);*/
+  $scope.play_ipuina = function (){
+    
+    $scope.play_eszena (0);
+    
+  };
+  
+  $scope.play_eszena = function (ind){
+    
+    if (ind < $scope.eszenak.length){
+      $scope.bideo_modua.playing = true;
+      
+      $scope.changeEszena ($scope.eszenak[ind]);
+      
+      if ($scope.bideo_modua.interval !== undefined)
+        clearInterval ($scope.bideo_modua.interval);
+      
+      $scope.bideo_modua.interval = setInterval (function (){ $scope.play_eszena (ind+1); }, 5000);
+    }
+    else{
+      // Hemos llegado al final -> desactivamos el interval y nos quedamos en la última eszena
+      if ($scope.bideo_modua.interval !== undefined)
+        clearInterval ($scope.bideo_modua.interval);
+        
+      $scope.uneko_eszena_id = $scope.eszenak[($scope.eszenak.length-1)].id;
+      $scope.eszenak_nabigazioa.aurrera = ($scope.eszenak.length > 1);
+      $scope.eszenak_nabigazioa.atzera = false;
+      
+      $scope.bideo_modua.playing = false;
+    }
+    
+  };
   
   var onError = function (err){
     
