@@ -1,41 +1,181 @@
-app.factory('Audio', ['$cordovaMedia', '$cordovaNativeAudio', function($cordovaMedia, $cordovaNativeAudio){
+app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($q, $cordovaMedia, $cordovaNativeAudio){
+  
   var Audio = {},
-      src,
       media,
+      egoera = 'stopped',
+      extension = '',
+      tmp_path = '';
+      /*,
       iOSPlayOptions = {
-          numberOfLoops: 2,
-          playAudioWhenScreenIsLocked : false
-      };
-  document.addEventListener("deviceready",function() {
-    src = "myrecording.mp3";    
+        numberOfLoops: 2,
+        playAudioWhenScreenIsLocked : false
+      }*/
+      
+  document.addEventListener ("deviceready",function (){
+    
+    switch (device.platform){
+      case 'iOS':
+        extension = ".wav";
+        tmp_path = cordova.file.tempDirectory;
+        break;
+      case 'Android':
+        extension = ".amr";
+        tmp_path = cordova.file.externalRootDirectory;
+        break;
+    }
+    
   }, false);
-  var onError = function(err) {
-    console.log('err', err);
+  
+  Audio.startRecord = function (audioa){
+    var d = $q.defer ();
+    
+    media = new Media (audioa + extension, function (){
+      
+      d.resolve ({'path': tmp_path, 'izena': audioa + extension});
+      
+    }, function (error){
+      d.reject (error);
+      console.log ("Audio factory, recordAudio", error);
+    });
+    
+    media.startRecord ();
+    egoera = 'recording';
+    
+    return d.promise;
+    
   };
-  var onSuccess = function(success) {
-    console.log('success', success);
-  };
-  var onStatus = function(status) {
-    console.log('status', status);
-  };
-  Audio.startRecord = function() {    
-     media = new Media(src, onSuccess, onError, onStatus);
-     media.startRecord();
-     console.log(media);
-  };
-  Audio.stopRecord = function(){
-    if(media != undefined) {
-      media.stopRecord();
-      console.log(media);
+  
+  Audio.stopRecord = function (){
+    
+    if (media !== undefined){
+      
+      media.stopRecord ();
+      media.release ();
+      media = undefined;
+      egoera = 'stopped';
+      
     }
+    
   };
-  Audio.playRecord = function(){
-    if(media != undefined) {
-      media.play();
-      console.log(media);
+  
+  Audio.play = function (audioa){
+    var d = $q.defer ();
+    
+    if (media === undefined || media.src != cordova.file.dataDirectory + audioa){
+      if (media !== undefined)
+        media.release ();
+        
+      media = new Media (cordova.file.dataDirectory + audioa, function (){
+        
+        if (media !== undefined)
+          media.release ();
+          
+        media = undefined;
+        egoera = 'stopped';
+        
+        d.resolve ();
+        
+      }, function (error){
+        d.reject (error);
+        console.log ("Audio factory, play", error);
+      });
     }
+    
+    if (media !== undefined){
+      media.play ();
+      egoera = 'playing';
+    }
+    
+    return d.promise;
+      
   };
-  Audio.play = function(izena, src) {
+  
+  Audio.pause = function (){
+    
+    if (media !== undefined){
+      media.pause ();
+      egoera = 'paused';
+    }
+    
+  };
+  
+  Audio.stop = function (){
+    
+    if (media !== undefined){
+      
+      media.stop ();
+      /* Lo siguiente no hace falta ya que se hace en el promise de Audio.play
+       *media.release ();
+      media = undefined;*/
+      egoera = 'stopped';
+      
+    }
+    
+  };
+  
+  Audio.getDuration = function (audioa){
+    var d = $q.defer ();
+    
+    media = new Media (cordova.file.dataDirectory + audioa, function (){}, function (error){
+      d.reject (error);
+      console.log ("Audio factory, getDuration", error);
+    });
+    
+    // ojo que sin hacer play/stop no funtziona....
+    media.play ();
+    media.stop ();
+    
+    var counter = 0;
+    var timerDur = setInterval (function (){
+      
+      counter = counter + 100;
+      
+      var duration = media.getDuration ();
+      
+      if (duration > 0 || counter > 2000){
+        clearInterval (timerDur);
+        media.release ();
+        media = undefined;
+        d.resolve (Math.ceil (duration));
+      }
+      
+    }, 100);
+    
+    return d.promise;
+    
+  };
+  
+  Audio.geratuMakinak = function (){
+    
+    if (media !== undefined){
+      
+      switch (egoera){
+      
+        case 'recording':
+          media.stopRecord ();
+          break;
+        
+        case 'playing':
+          media.stop ();
+          break;
+        
+      }
+      
+      media.release ();
+      media = undefined;
+      egoera = 'stopped';
+      
+    }
+    
+  };
+  
+  Audio.egoera = function (){
+    
+    return (egoera);
+  
+  };
+  
+  /*Audio.play = function(izena, src) {
     if(src != undefined && izena != undefined) {
       $cordovaNativeAudio.preloadSimple(izena, src).then(function() {
         $cordovaNativeAudio.loop(izena);
@@ -47,6 +187,8 @@ app.factory('Audio', ['$cordovaMedia', '$cordovaNativeAudio', function($cordovaM
       $cordovaNativeAudio.stop(izena);
       $cordovaNativeAudio.unload(izena);
     }
-  };
+  };*/
+  
   return Audio;
+
 }]);

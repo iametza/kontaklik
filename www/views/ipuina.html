@@ -64,14 +64,24 @@
       <button class="btn btn-default btn-lg" ng-click="addTestua ()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
     </uib-tab>
     
-    <uib-tab index="4">
+    <uib-tab index="4" deselect="audioa_tab_desaukeratua()">
       <uib-tab-heading>
         <i class="glyphicon glyphicon-music"></i>
       </uib-tab-heading>
       
-      <button class="btn btn-default btn-lg" ng-click="startRecord ()">HASI</button>
-      <button class="btn btn-default btn-lg" ng-click="stopRecord ()">ASKI</button>
-      <button class="btn btn-default btn-lg" ng-click="playRecord ()">ADITU</button>
+      <div ng-hide="uneko_audioa.izena != ''">
+        <button class="btn btn-default btn-lg" ng-click="audioa_startRecord ()"><span class="glyphicon glyphicon-record" aria-hidden="true"></span></button>
+        <button class="btn btn-default btn-lg" ng-click="audioa_stopRecord ()"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>
+        <div ng-hide="uneko_audioa.counter == 0">{{uneko_audioa.counter | kontador}}</div>
+      </div>
+      
+      <div ng-hide="uneko_audioa.izena == ''">
+        <button class="btn btn-default btn-lg" ng-click="audioa_play ()"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+        <button class="btn btn-default btn-lg" ng-click="audioa_pause ()"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>
+        <button class="btn btn-default btn-lg" ng-click="audioa_stop ()"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>
+        <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+        <div>{{uneko_audioa.counter | kontador}} | {{uneko_audioa.iraupena | kontador}}</div>
+      </div>
     </uib-tab>
     
     <div class="pull-right">
