@@ -726,4 +726,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   });
   
+  document.addEventListener ('pause',  function (){
+    
+    // Paramos la posible reproducción/grabación del audio
+    $scope.audioa_kill ();
+    
+  });
+  
 }]);
