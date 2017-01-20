@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', function($scope, $compile, $route, Kamera, Audio, Files, Database, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$interval', function($scope, $compile, $route, Kamera, Audio, Files, Database, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $interval){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -63,6 +63,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     // Paramos la posible reproducción/grabación del audio
     $scope.audioa_kill ();
+    
+    // Paramos la posible reproducción del cuento
+    $scope.bideo_modua_stop ();
     
   });
   
@@ -136,12 +139,13 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.objektuaEszenara = function (eszena_objektua_id){
+  $scope.objektuaEszenara = function (eszena_objektua_id, lock){
+    lock = typeof lock !== 'undefined' ? lock : false;
     
     Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
       
       if (objektua.length === 1){
-        var elem = angular.element ('<div objektua="objektua" class="objektua" data-eo-id="' + eszena_objektua_id + '" background="' + objektua[0].path + '" x="200" y="200"></div>');
+        var elem = angular.element ('<div objektua="objektua" class="objektua" data-eo-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-x="200" data-y="200" data-lock="' + lock + '"></div>');
         
         if (objektua[0].style !== null){
           
@@ -155,15 +159,15 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
           
           if (style_object.transform.match (patroia_xy)){
-            elem.attr ('x', style_object.transform.replace (patroia_xy, "$1"));
-            elem.attr ('y', style_object.transform.replace (patroia_xy, "$2"));
+            elem.attr ('data-x', style_object.transform.replace (patroia_xy, "$1"));
+            elem.attr ('data-y', style_object.transform.replace (patroia_xy, "$2"));
           }
           
           if (style_object.transform.match (patroia_scale))
-            elem.attr ('scale', style_object.transform.replace (patroia_scale, "$1"));
+            elem.attr ('data-scale', style_object.transform.replace (patroia_scale, "$1"));
             
           if (style_object.transform.match (patroia_rotate))
-            elem.attr ('rotate', style_object.transform.replace (patroia_rotate, "$1"));
+            elem.attr ('data-rotate', style_object.transform.replace (patroia_rotate, "$1"));
             
           // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
           el = $compile(elem)($scope);
@@ -261,7 +265,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.changeEszena = function (eszena){
+  $scope.changeEszena = function (eszena, lock){
+    lock = typeof lock !== 'undefined' ? lock : false;
     
     // Empezamos con el fondo
     Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
@@ -280,7 +285,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
         
         angular.forEach (objektuak, function (objektua){
-          $scope.objektuaEszenara (objektua.id);
+          $scope.objektuaEszenara (objektua.id, lock);
         });
         
       }, onError);
@@ -289,7 +294,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
         
         angular.forEach (testuak, function (testua){
-          $scope.testuaEszenara (testua.id);
+          $scope.testuaEszenara (testua.id, lock);
         });
         
       }, onError);
@@ -343,12 +348,13 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
                  
   };
   
-  $scope.testuaEszenara = function (testua_id){
+  $scope.testuaEszenara = function (testua_id, lock){
+    lock = typeof lock !== 'undefined' ? lock : false;
     
     Database.query ('SELECT testua, style FROM eszena_testuak WHERE id=?', [testua_id]).then (function (testua){
       
       if (testua.length === 1){
-        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" x="200" y="200"></div>');
+        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" data-x="200" data-y="200" data-lock="' + lock + '"></div>');
         
         if (testua[0].style !== null){
           
@@ -362,15 +368,15 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
           
           if (style_object.transform.match (patroia_xy)){
-            elem.attr ('x', style_object.transform.replace (patroia_xy, "$1"));
-            elem.attr ('y', style_object.transform.replace (patroia_xy, "$2"));
+            elem.attr ('data-x', style_object.transform.replace (patroia_xy, "$1"));
+            elem.attr ('data-y', style_object.transform.replace (patroia_xy, "$2"));
           }
           
           if (style_object.transform.match (patroia_scale))
-            elem.attr ('scale', style_object.transform.replace (patroia_scale, "$1"));
+            elem.attr ('data-scale', style_object.transform.replace (patroia_scale, "$1"));
             
           if (style_object.transform.match (patroia_rotate))
-            elem.attr ('rotate', style_object.transform.replace (patroia_rotate, "$1"));
+            elem.attr ('data-rotate', style_object.transform.replace (patroia_rotate, "$1"));
             
           // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
           el = $compile(elem)($scope);
@@ -710,34 +716,60 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.play_ipuina = function (){
+  $scope.bideo_modua_play = function (){
     
     $scope.play_eszena (0);
     
   };
   
+  $scope.bideo_modua_stop = function (){
+    
+    $scope.bideo_modua.playing = false;
+    
+    if ($scope.bideo_modua.interval !== undefined)
+        $interval.cancel ($scope.bideo_modua.interval);
+        
+    // Paramos la posible reproducción del audio
+    Audio.geratuMakinak ();
+        
+    console.log ("estamos en....", $scope.uneko_eszena_id);
+        
+  };
+  
   $scope.play_eszena = function (ind){
+    
+    var lapso = 5; // Numero de segundos minimo entre una eszena y la siguiente
     
     if (ind < $scope.eszenak.length){
       $scope.bideo_modua.playing = true;
       
-      $scope.changeEszena ($scope.eszenak[ind]);
-      
       if ($scope.bideo_modua.interval !== undefined)
-        clearInterval ($scope.bideo_modua.interval);
+        $interval.cancel ($scope.bideo_modua.interval);
+        
+      Audio.getDuration ($scope.eszenak[ind].audioa).then (function (iraupena){
+        
+        lapso = Math.max (lapso, iraupena);
+        
+        $scope.changeEszena ($scope.eszenak[ind], true);
+        
+        Audio.play ($scope.eszenak[ind].audioa);
+        
+        $scope.bideo_modua.interval = $interval (function (){ $scope.play_eszena (ind+1); }, lapso * 1000);
+        
+      }, function (){
+        
+        $scope.changeEszena ($scope.eszenak[ind], true);
+        
+        $scope.bideo_modua.interval = $interval (function (){ $scope.play_eszena (ind+1); }, lapso * 1000);
+        
+      });
       
-      $scope.bideo_modua.interval = setInterval (function (){ $scope.play_eszena (ind+1); }, 5000);
     }
     else{
-      // Hemos llegado al final -> desactivamos el interval y nos quedamos en la última eszena
-      if ($scope.bideo_modua.interval !== undefined)
-        clearInterval ($scope.bideo_modua.interval);
-        
-      $scope.uneko_eszena_id = $scope.eszenak[($scope.eszenak.length-1)].id;
-      $scope.eszenak_nabigazioa.aurrera = ($scope.eszenak.length > 1);
-      $scope.eszenak_nabigazioa.atzera = false;
       
-      $scope.bideo_modua.playing = false;
+      // Hemos llegado al final -> desactivamos el interval y nos quedamos en la última eszena
+      $scope.bideo_modua_stop ();
+      
     }
     
   };

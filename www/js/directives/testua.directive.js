@@ -5,13 +5,15 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
     scope: {},
     template : '<div hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" ng-dblclick="onDblClick()"></div>',
     link: function (scope, element, attrs){
+      
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
           abiapuntua = {'x': 0, 'y': 0},
           limits = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
-          eszenatokia = angular.element ('#eszenatokia');
+          eszenatokia = angular.element ('#eszenatokia'),
+          loki = attrs.lock == 'true'; // no se recibe como boolean....
           
       limits.left = eszenatokia[0].offsetLeft + 15;
       limits.top = eszenatokia[0].offsetTop + 15;
@@ -64,28 +66,33 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       var updateElementTransform = function (transform_new, dbGorde){
         dbGorde = typeof dbGorde !== 'undefined' ? dbGorde : false;
         
-        element.children ().css (transform2css (transform_new));
-        
-        var bounds = document.getElementById ("testua_" + element.attr ('data-testua-id')).getBoundingClientRect ();
-        if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.right > limits.right || bounds.left < limits.left){
-          element.children ().css (transform2css (transform));
+        if (!loki){
           
-          return (false);
-        }
-        else{
-          transform = transform_new;
-          
-          if (dbGorde){
-            var id = parseInt (element.attr ('data-testua-id'));
-            var style = JSON.stringify (element[0].children[0].style);
+          element.children ().css (transform2css (transform_new));
         
-            Database.query ('UPDATE eszena_testuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
-              console.log ("Testua directive UPDATE eszena_testuak", error);
-            });
+          var bounds = document.getElementById ("testua_" + element.attr ('data-testua-id')).getBoundingClientRect ();
+          if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.right > limits.right || bounds.left < limits.left){
+            element.children ().css (transform2css (transform));
+            
+            return (false);
+          }
+          else{
+            transform = transform_new;
+            
+            if (dbGorde){
+              var id = parseInt (element.attr ('data-testua-id'));
+              var style = JSON.stringify (element[0].children[0].style);
+          
+              Database.query ('UPDATE eszena_testuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
+                console.log ("Testua directive UPDATE eszena_testuak", error);
+              });
+            }
+            
+            return (true);
           }
           
-          return (true);
         }
+        
       };
       
       var transform2css = function (t){
@@ -98,7 +105,7 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       
       scope.onPress = function (){
         
-        if (element.attr ('data-testua-id') !== undefined){
+        if (!loki && element.attr ('data-testua-id') !== undefined){
           
           Database.query ('SELECT fk_eszena FROM eszena_testuak WHERE id=?', [parseInt (element.attr ('data-testua-id'))]).then (function (testua){
             

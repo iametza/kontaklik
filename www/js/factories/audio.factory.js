@@ -34,6 +34,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
       d.resolve ({'path': tmp_path, 'izena': audioa + extension});
       
     }, function (error){
+      egoera = 'stopped';
       d.reject (error);
       console.log ("Audio factory, recordAudio", error);
     });
@@ -61,7 +62,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   Audio.play = function (audioa){
     var d = $q.defer ();
     
-    if (media === undefined || media.src != cordova.file.dataDirectory + audioa){
+    if (audioa.trim () !== '' && (media === undefined || media.src != cordova.file.dataDirectory + audioa)){
       if (media !== undefined)
         media.release ();
         
@@ -76,6 +77,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
         d.resolve ();
         
       }, function (error){
+        egoera = 'stopped';
         d.reject (error);
         console.log ("Audio factory, play", error);
       });
@@ -151,6 +153,8 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   };
   
   Audio.geratuMakinak = function (){
+    
+    console.log ("olaaaa", egoera, media);
     
     if (media !== undefined){
       

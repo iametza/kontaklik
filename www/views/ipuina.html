@@ -1,5 +1,9 @@
 <button type="button" class="btn btn-default" ng-click="menuaCollapse()" ng-hide="!menuaCollapsed" id="goiko-menua-collapsed"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
 
+<div id="bideo_modua_kontrolak" ng-hide="!bideo_modua.playing">
+  <button class="btn btn-default btn-lg" ng-click="bideo_modua_stop ()"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+</div>
+
 <div uib-collapse="menuaCollapsed">
   <uib-tabset active="active" class="goiko-menua" ng-hide="bideo_modua.playing">
     
@@ -16,7 +20,7 @@
         </div>
         
         <div class="col-xs-1">
-          <button class="btn btn-default btn-lg" ng-click="play_ipuina ()"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+          <button class="btn btn-default btn-lg" ng-click="bideo_modua_play ()"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
         </div>
         
         <div class="col-xs-2">
