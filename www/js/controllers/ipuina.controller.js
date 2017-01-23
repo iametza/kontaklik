@@ -55,20 +55,6 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.$on ("$destroy", function (){
-    
-    // Limpiamos la eszena
-    $scope.clearEszena ();
-    
-    
-    // Paramos la posible reproducción/grabación del audio
-    $scope.audioa_kill ();
-    
-    // Paramos la posible reproducción del cuento
-    $scope.bideo_modua_stop ();
-    
-  });
-  
   $scope.getEszenak = function (){
     
     Database.getRows ('eszenak', {'fk_ipuina': $scope.ipuina.id}, ' ORDER BY orden ASC').then (function (emaitza){
@@ -724,16 +710,21 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.bideo_modua_stop = function (){
     
-    $scope.bideo_modua.playing = false;
-    
-    if ($scope.bideo_modua.interval !== undefined)
+    if ($scope.bideo_modua.playing){
+      
+      if ($scope.bideo_modua.interval !== undefined)
         $interval.cancel ($scope.bideo_modua.interval);
         
-    // Paramos la posible reproducción del audio
-    Audio.geratuMakinak ();
-        
-    console.log ("estamos en....", $scope.uneko_eszena_id);
-        
+      // Paramos la posible reproducción del audio
+      Audio.geratuMakinak ();
+      
+      // Desbloqueamos los objetos/textos de la eszena
+      $scope.$broadcast ("bideo_modua_off");
+      
+      $scope.bideo_modua.playing = false;
+      
+    }
+    
   };
   
   $scope.play_eszena = function (ind){
@@ -752,7 +743,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         
         $scope.changeEszena ($scope.eszenak[ind], true);
         
-        Audio.play ($scope.eszenak[ind].audioa);
+        if (iraupena > 0)
+          Audio.play ($scope.eszenak[ind].audioa);
         
         $scope.bideo_modua.interval = $interval (function (){ $scope.play_eszena (ind+1); }, lapso * 1000);
         
@@ -790,6 +782,19 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     // Paramos la posible reproducción/grabación del audio
     $scope.audioa_kill ();
+    
+  });
+  
+  $scope.$on ("$destroy", function (){
+    
+    // Limpiamos la eszena
+    $scope.clearEszena ();
+    
+    // Paramos la posible reproducción/grabación del audio
+    $scope.audioa_kill ();
+    
+    // Paramos la posible reproducción del cuento
+    $scope.bideo_modua_stop ();
     
   });
   

@@ -63,6 +63,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
     var d = $q.defer ();
     
     if (audioa.trim () !== '' && (media === undefined || media.src != cordova.file.dataDirectory + audioa)){
+      
       if (media !== undefined)
         media.release ();
         
@@ -116,29 +117,29 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   };
   
   Audio.getDuration = function (audioa){
+    // Ojete: en esta función no uso la variable 'media' para que no interfiera en las otras funciones.
     var d = $q.defer ();
     
     if (audioa.trim () !== ''){
-      media = new Media (cordova.file.dataDirectory + audioa, function (){}, function (error){
+      var m = new Media (cordova.file.dataDirectory + audioa, function (){}, function (error){
         d.reject (error);
         console.log ("Audio factory, getDuration", error);
       });
       
       // ojo que sin hacer play/stop no funtziona....
-      media.play ();
-      media.stop ();
+      m.play ();
+      m.stop ();
       
       var counter = 0;
       var timerDur = setInterval (function (){
         
         counter = counter + 100;
         
-        var duration = media.getDuration ();
+        var duration = m.getDuration ();
         
         if (duration > 0 || counter > 2000){
           clearInterval (timerDur);
-          media.release ();
-          media = undefined;
+          m.release ();
           d.resolve (Math.ceil (duration));
         }
         
@@ -153,8 +154,6 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   };
   
   Audio.geratuMakinak = function (){
-    
-    console.log ("olaaaa", egoera, media);
     
     if (media !== undefined){
       

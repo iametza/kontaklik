@@ -195,6 +195,12 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
         
       };
       
+      scope.$on ("bideo_modua_off", function (){
+        
+        loki = false;
+        
+      });
+      
     } // link
     
   }; // return

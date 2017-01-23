@@ -219,6 +219,12 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         
       };
       
+      scope.$on ("bideo_modua_off", function (){
+        
+        loki = false;
+        
+      });
+      
     } // link
     
   }; // return
