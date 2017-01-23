@@ -37,16 +37,26 @@ app.directive ('objektua', ['$cordovaDialogs', 'Database', function ($cordovaDia
           element.children ().css (transform2css (transform_new));
           
           // Pase lo que pase, vayas donde vayas, hagas lo que hagas, ponte bragas
-          // Comprobamos que tras los cambios el objeto no se salga de los limites
+          // Comprobamos que tras aplicar los cambios el objeto no trasvase los limites
           var bounds = document.getElementById ("objektua_" + element.attr ('data-eo-id')).getBoundingClientRect ();
-          if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.right > limits.right || bounds.left < limits.left){
-            // Sale de los limites -> restablecemos los valores (nos quedamos como estabamos)
+          if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.left < limits.left || bounds.right > limits.right){
+            // Trasvasa los limites -> no aceptamos pulpo como animal de compañia
+            // Mejora: permitimos el movimiento en un eje que no sea trasvasado
+            if (bounds.top >= limits.top && bounds.bottom <= limits.bottom){
+              transform.translate.y = transform_new.translate.y;
+            }
+            else if (bounds.left >= limits.left && bounds.right <= limits.right){
+              transform.translate.x = transform_new.translate.x;
+            }
+            
             element.children ().css (transform2css (transform));
             
+            // Aunque se mueva en un eje seguimos devolviendo false porque ha trasvasado algún limite
+            // Además hay que tener en cuenta que esta función también se usa para rotar, agrandar...
             return (false);
           }
           else{
-            // No se sale de los limites -> guardamos los valores nuevos y palante
+            // No trasvasa los limites -> guardamos los valores nuevos y palante
             transform = transform_new;
           
             if (dbGorde){

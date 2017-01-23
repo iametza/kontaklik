@@ -69,14 +69,28 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
         if (!loki){
           
           element.children ().css (transform2css (transform_new));
-        
+          
+          // Pase lo que pase, vayas donde vayas, hagas lo que hagas, ponte bragas
+          // Comprobamos que tras aplicar los cambios el objeto no trasvase los limites
           var bounds = document.getElementById ("testua_" + element.attr ('data-testua-id')).getBoundingClientRect ();
-          if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.right > limits.right || bounds.left < limits.left){
+          if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.left < limits.left || bounds.right > limits.right){
+            // Trasvasa los limites -> no aceptamos pulpo como animal de compañia
+            // Mejora: permitimos el movimiento en un eje que no sea trasvasado
+            if (bounds.top >= limits.top && bounds.bottom <= limits.bottom){
+              transform.translate.y = transform_new.translate.y;
+            }
+            else if (bounds.left >= limits.left && bounds.right <= limits.right){
+              transform.translate.x = transform_new.translate.x;
+            }
+            
             element.children ().css (transform2css (transform));
             
+            // Aunque se mueva en un eje seguimos devolviendo false porque ha trasvasado algún limite
+            // Además hay que tener en cuenta que esta función también se usa para rotar, agrandar...
             return (false);
           }
           else{
+            // No trasvasa los limites -> guardamos los valores nuevos y palante
             transform = transform_new;
             
             if (dbGorde){
