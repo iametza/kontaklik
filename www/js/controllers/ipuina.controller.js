@@ -244,6 +244,37 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
+  $scope.pressEszena = function (object){
+    
+    if (typeof object.element == 'object' &&
+        typeof object.element[0] == 'object' &&
+        typeof object.element[0].attributes == 'object' &&
+        typeof object.element[0].attributes['data-id'] == 'object' &&
+        typeof object.element[0].attributes['data-id'].value == 'string'){
+      var eszena_id = parseInt (object.element[0].attributes['data-id'].value);
+      
+      $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+        
+        if (buttonIndex == 1){
+          
+          Ipuinak.ezabatu_eszena (eszena_id).then (function (){
+            
+            // Recogemos las eszenak que queden del ipuina
+            $scope.getEszenak ();
+            
+          }, function (error){
+            console.log ("IpuinaCtrl, pressEszena", error);
+          });
+          
+        }
+        
+      }, function (error){
+        console.log ("IpuinaCtrl, pressEszena confirm", error);
+      });
+    }
+    
+  };
+  
   $scope.changeFondoa = function (fondoa){
     
     angular.element ('#eszenatokia').css ('background', 'url(' + fondoa.path + ')');

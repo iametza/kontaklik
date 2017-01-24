@@ -5,96 +5,127 @@
 </div>
 
 <div uib-collapse="menuaCollapsed">
+  
   <uib-tabset active="active" class="goiko-menua" ng-hide="bideo_modua.playing">
     
+    <div class="kontaklik">
+      <img src="images/kontaklik.png" />
+    </div>
+    
     <uib-tab index="0">
-      <uib-tab-heading>
-        <i class="glyphicon glyphicon-film"></i>
-      </uib-tab-heading>
+      <uib-tab-heading>Eszenak</uib-tab-heading>
       
-      <div class="row">
-        <div class="col-xs-9">
-          <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera" class="btn btn-default btn-lg" ng-class="{disabled: !eszenak_nabigazioa.aurrera}"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></a>
-          <a ng-click="changeEszena (eszena)" ng-repeat="eszena in eszenak" class="btn btn-primary btn-lg" ng-class="{'uneko-eszena': eszena.id == uneko_eszena_id}">{{$index+1}}</a>
-          <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera" class="btn btn-default btn-lg" ng-class="{disabled: !eszenak_nabigazioa.atzera}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></a>
-        </div>
-        
-        <div class="col-xs-1">
-          <button class="btn btn-default btn-lg" ng-click="bideo_modua_play ()"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-        </div>
-        
-        <div class="col-xs-2">
-          <button ng-click="delEszena ()" class="btn btn-danger pull-right btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-          <button ng-click="addEszena ()" class="btn btn-default pull-right btn-lg"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+      <div class="tab-edukia">
+        <div class="row" id="eszenak">
+          <div class="col-xs-9">
+            <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera" ng-class="{disabled: !eszenak_nabigazioa.aurrera}"><img src="images/ikonoak/prev.png" /></a>
+            
+            <div class="elementuak">
+              <a ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="eszena" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}">{{$index+1}}</a>
+            </div>
+            
+            <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera" ng-class="{disabled: !eszenak_nabigazioa.atzera}"><img src="images/ikonoak/next.png" /></a>
+          </div>
+          
+          <div class="col-xs-1">
+            <a ng-click="bideo_modua_play ()"><img src="images/ikonoak/play.png" /></a>
+          </div>
+          
+          <div class="col-xs-2">
+            <!--<button ng-click="delEszena ()" class="btn btn-danger pull-right btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>-->
+            <button ng-click="addEszena ()" class="btn btn-default pull-right btn-lg"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+          </div>
         </div>
       </div>
     </uib-tab>
     
     <uib-tab index="1">
-      <uib-tab-heading>
-        <i class="glyphicon glyphicon-picture"></i>
-      </uib-tab-heading>
+      <uib-tab-heading>Fondoak</uib-tab-heading>
       
-      <div class="row">
-        <div class="col-xs-9">
-          <a ng-click="addFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.path}}" class="karrusela-irudia" /></a>
-        </div>
-        
-        <div class="col-xs-3">
-          <button ng-click="takeGallery ('fondoa')" class="btn btn-default pull-right btn-lg">Galeria</button>
-          <button ng-click="takePicture ('fondoa')" class="btn btn-default pull-right btn-lg">Argazkia</button>
+      <div class="tab-edukia">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="elementuak">
+              <a ng-click="addFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.path}}" class="irudia" /></a>
+            </div>
+          </div>
+          
+          <div class="col-xs-4">
+            <img src="images/kargatu_zure_argazkiak.jpg" class="kargatu-zure-argazkiak" />
+            <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.jpg" class="ikon" /></a>
+            <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.jpg" class="ikon" /></a>
+          </div>
         </div>
       </div>
     </uib-tab>
     
     <uib-tab index="2">
-      <uib-tab-heading>
-        <i class="glyphicon glyphicon-user"></i>
-      </uib-tab-heading>
+      <uib-tab-heading>Objektuak</uib-tab-heading>
       
-      <div class="row">
-        <div class="col-xs-9">
-          <a ng-click="addObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.path}}" class="karrusela-irudia" /></a>
-        </div>
-        
-        <div class="col-xs-3">
-          <button ng-click="takeGallery ('objektua')" class="btn btn-default pull-right btn-lg">Galeria</button>
-          <button ng-click="takePicture ('objektua')" class="btn btn-default pull-right btn-lg">Argazkia</button>
+      <div class="tab-edukia">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="elementuak">
+              <a ng-click="addObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.path}}" class="irudia" /></a>
+            </div>
+          </div>
+          
+          <div class="col-xs-4">
+            <img src="images/kargatu_zure_argazkiak.jpg" class="kargatu-zure-argazkiak" />
+            <a ng-click="takeGallery ('objektua')"><img src="images/ikonoak/galeria.jpg" class="ikon" /></a>
+            <a ng-click="takePicture ('objektua')"><img src="images/ikonoak/kamara.jpg" class="ikon" /></a>
+          </div>
         </div>
       </div>
     </uib-tab>
     
     <uib-tab index="3">
-      <uib-tab-heading>
-        <i class="glyphicon glyphicon-font"></i>
-      </uib-tab-heading>
+      <uib-tab-heading>Testuak</uib-tab-heading>
       
-      <button class="btn btn-default btn-lg" ng-click="addTestua ()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+      <div class="tab-edukia">
+        <button class="btn btn-default btn-lg" ng-click="addTestua ()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+      </div>
     </uib-tab>
     
     <uib-tab index="4" deselect="audioa_tab_desaukeratua()">
-      <uib-tab-heading>
-        <i class="glyphicon glyphicon-music"></i>
-      </uib-tab-heading>
+      <uib-tab-heading>Audioa</uib-tab-heading>
       
-      <div ng-hide="uneko_audioa.izena != ''">
-        <button class="btn btn-default btn-lg" ng-click="audioa_startRecord ()"><span class="glyphicon glyphicon-record" aria-hidden="true"></span></button>
-        <button class="btn btn-default btn-lg" ng-click="audioa_stopRecord ()"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>
-        <div ng-hide="uneko_audioa.counter == 0">{{uneko_audioa.counter | kontador}}</div>
-      </div>
-      
-      <div ng-hide="uneko_audioa.izena == ''">
-        <button class="btn btn-default btn-lg" ng-click="audioa_play ()"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-        <button class="btn btn-default btn-lg" ng-click="audioa_pause ()"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>
-        <button class="btn btn-default btn-lg" ng-click="audioa_stop ()"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button>
-        <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-        <div>{{uneko_audioa.counter | kontador}} | {{uneko_audioa.iraupena | kontador}}</div>
-        <!--<uib-progressbar max="uneko_audioa.iraupena" value="uneko_audioa.counter+1"><span style="color:white; white-space:nowrap;">{{uneko_audioa.counter | kontador}} / {{uneko_audioa.iraupena | kontador}}</span></uib-progressbar>-->
+      <div class="tab-edukia">
+        <div ng-hide="uneko_audioa.izena != ''">
+          <div class="mikro">
+            <img src="images/ikonoak/mikro.jpg" />
+            <p>{{uneko_audioa.counter | kontador}}</p>
+            <!--<p ng-hide="uneko_audioa.counter == 0">{{uneko_audioa.counter | kontador}}</p>-->
+          </div>
+          
+          <div class="kontrols">
+            <a ng-click="audioa_startRecord ()"><img src="images/ikonoak/play.jpg" /></a>
+            <a ng-click="audioa_stopRecord ()"><img src="images/ikonoak/stop.jpg" /></a>
+          </div>
+        </div>
+        
+        <div ng-hide="uneko_audioa.izena == ''">
+          <div class="mikro">
+            <img src="images/ikonoak/mikro.jpg" />
+            <!--<p>{{uneko_audioa.counter | kontador}} | {{uneko_audioa.iraupena | kontador}}</p>-->
+            <p>{{uneko_audioa.counter | kontador}}</p>
+          </div>
+          
+          <div class="kontrols">
+            <a ng-click="audioa_play ()"><img src="images/ikonoak/play.jpg" /></a>
+            <a ng-click="audioa_pause ()"><img src="images/ikonoak/pause.jpg" /></a>
+            <a ng-click="audioa_stop ()"><img src="images/ikonoak/stop.jpg" /></a>
+            
+            <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+          </div>
+          
+          <!--<uib-progressbar max="uneko_audioa.iraupena" value="uneko_audioa.counter+1"><span style="color:white; white-space:nowrap;">{{uneko_audioa.counter | kontador}} / {{uneko_audioa.iraupena | kontador}}</span></uib-progressbar>-->
+        </div>
       </div>
     </uib-tab>
     
     <div class="pull-right">
-      <a href="#/ipuinak/{{erabiltzailea.id}}">{{erabiltzailea.izena}}</a> &gt; {{ipuina.izenburua}}
+      <!--<a href="#/ipuinak/{{erabiltzailea.id}}">{{erabiltzailea.izena}}</a> &gt; {{ipuina.izenburua}}-->
       <button type="button" class="btn btn-default" ng-click="menuaCollapse()"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
     </div>
   </uib-tabset>

@@ -5,7 +5,7 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Ipuinak', '$uibMo
   
   $scope.init = function () {
     
-    angular.element ('#eszenatokia').css ('background', "url('assets/backgrounds/background.png') no-repeat center center fixed");
+    angular.element ('#eszenatokia').css ('background', "url('images/fondoa.jpg') no-repeat center center fixed");
     angular.element ('#eszenatokia').css ('background-size', "cover");
     
     // Recogemos los datos del erabiltzaile
