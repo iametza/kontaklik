@@ -64,7 +64,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       if ($scope.eszenak.length === 0){
         // Creamos una eszena por defecto
         Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'audioa': '', 'orden': 1}).then (function (emaitza){
-          // Limpiamos la eszena por si acaso (si se viene de delEszena puede que haga falta)
+          // Limpiamos la eszena por si acaso (si se viene de borrar una eszena, por ejemplo, puede que haga falta)
           $scope.clearEszena ();
           
           // Ponemos el fondo en blanco
@@ -221,7 +221,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.delEszena = function (){
+  /*$scope.delEszena = function (){
     
     $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
       
@@ -242,7 +242,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       console.log ("IpuinaCtrl, delEszena confirm", error);
     });
     
-  };
+  };*/
   
   $scope.pressEszena = function (object){
     
@@ -707,7 +707,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         }
         
       }, function (error){
-        console.log ("IpuinaCtrl, delEszena confirm", error);
+        console.log ("IpuinaCtrl, audioa_delete confirm", error);
       });
         
     }
