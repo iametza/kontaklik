@@ -155,12 +155,16 @@ body {
 }
 
 .goiko-menua .tab-edukia .kargatu-zure-argazkiak {
-  height: 80px;
+  max-height: 80px;
+  max-width: 140px;
+  height: auto;
   width: auto;
 }
 
 .goiko-menua .tab-edukia .ikon {
-  height: 80px;
+  max-height: 80px;
+  max-width: 50px;
+  height: auto;
   width: auto;
 }
 

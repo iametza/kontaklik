@@ -3,7 +3,7 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Ipuinak', '$uibModal
   $scope.erabiltzaileak = [];
   
   $scope.init = function () {
-    window.location = "#/ipuinak/1/1";
+    //window.location = "#/ipuinak/1/1";
     
     angular.element ('#eszenatokia').css ('background', "url('images/fondoa.jpg') no-repeat center center fixed");
     angular.element ('#eszenatokia').css ('background-size', "cover");
