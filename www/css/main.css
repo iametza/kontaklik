@@ -51,12 +51,19 @@ body {
   left: 15px;
   right: 15px;
   background-color: #fff;
+  /*border-radius: 4px;
+  box-shadow: 1px 1px 2px #ededec;*/
   z-index: 1001;
 }
 
 .goiko-menua .kontaklik {
   float: left;
-  margin: 10px 20px 10px 10px;
+  margin: 10px;
+}
+
+.goiko-menua .kontaklik img {
+  height: 50px;
+  width: auto;
 }
 
 .goiko-menua .nav-tabs {
@@ -66,8 +73,8 @@ body {
 .goiko-menua .nav-tabs > li > a,
 .goiko-menua .nav-tabs > li > a:hover,
 .goiko-menua .nav-tabs > li > a:focus {
-  min-width: 150px;
-  min-height: 100px;
+  min-width: 100px;
+  min-height: 50px;
   border-color: transparent;
   border-radius: 0px;
   background-color: #ededec;
@@ -75,9 +82,9 @@ body {
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 22px;
-  padding-top: 36px;
-  margin-right: 10px;
+  font-size: 18px;
+  padding-top: 18px;
+  margin-left: 10px;
 }
 
 .goiko-menua .nav-tabs > li.active > a,
@@ -92,69 +99,15 @@ body {
 }
 
 .goiko-menua .tab-edukia {
-  height: 120px;
+  height: 100px; /*120*/
   padding: 10px;
-}
-
-.goiko-menua .tab-edukia .elementuak {
-  width: 100%;
-  height: 100%;
-  white-space: nowrap;
-  overflow-x: scroll;
-}
-
-.goiko-menua .tab-edukia .elementuak .irudia {
-  display: inline-block;
-  height: 100px;
-  width: auto;
-  margin: 5px;
-}
-
-.goiko-menua .tab-edukia .kargatu-zure-argazkiak {
-  width: 200px;
-  height: auto;
-}
-
-.goiko-menua .tab-edukia .ikon {
-  width: 80px;
-  height: auto;
-}
-
-.goiko-menua .tab-edukia .mikro {
-  float: left;
-  margin-left: 10px;
-  margin-right: 40px;
-  text-align: center;
-  padding-top: 0px;
-}
-
-.goiko-menua .tab-edukia .mikro img {
-  height: 70px;
-  width: auto;
-}
-
-.goiko-menua .tab-edukia .mikro p  {
-  color: #e73c68;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.goiko-menua .tab-edukia .kontrols {
-  float: left;
-  padding-top: 15px;
-}
-
-.goiko-menua .tab-edukia .kontrols img {
-  height: 60px;
-  width: auto;
-  margin-right: 10px;
 }
 
 .goiko-menua .tab-edukia #eszenak img {
   float: left;
-  height: 60px;
+  height: 50px;
   width: auto;
-  padding-top: 30px;
+  padding-top: 24px;
   margin-right: 10px;
 }
 
@@ -171,13 +124,13 @@ body {
 .goiko-menua .tab-edukia #eszenak .elementuak .eszena,
 .goiko-menua .tab-edukia #eszenak .elementuak .eszena:focus {
   display: inline-block;
-  height: 100px;
-  width: 100px;
+  height: 80px; /*100*/
+  width: 80px;
   margin-right: 10px;
-  padding-top: 40px;
+  padding-top: 30px;
   text-align: center;
   text-decoration: none;
-  font-size: 22px;
+  font-size: 18px;
   background-color: #ededec;
   color: #92a7ac;
 }
@@ -187,6 +140,60 @@ body {
   text-decoration: none;
   background-color: #e73c68;
   color: #fff;
+}
+
+.goiko-menua .tab-edukia .elementuak {
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  overflow-x: scroll;
+}
+
+.goiko-menua .tab-edukia .elementuak .irudia {
+  display: inline-block;
+  height: 80px;
+  width: auto;
+  margin: 5px;
+}
+
+.goiko-menua .tab-edukia .kargatu-zure-argazkiak {
+  height: 80px;
+  width: auto;
+}
+
+.goiko-menua .tab-edukia .ikon {
+  height: 80px;
+  width: auto;
+}
+
+.goiko-menua .tab-edukia .mikro {
+  float: left;
+  margin-left: 10px;
+  margin-right: 40px;
+  text-align: center;
+  padding-top: 0px;
+}
+
+.goiko-menua .tab-edukia .mikro img {
+  height: 60px;
+  width: auto;
+}
+
+.goiko-menua .tab-edukia .mikro p  {
+  color: #e73c68;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.goiko-menua .tab-edukia .kontrols {
+  float: left;
+  padding-top: 10px;
+}
+
+.goiko-menua .tab-edukia .kontrols img {
+  height: 60px;
+  width: auto;
+  margin-right: 10px;
 }
 
 /*a.disabled {
