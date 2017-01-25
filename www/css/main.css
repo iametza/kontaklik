@@ -83,7 +83,9 @@ body {
 .goiko-menua .nav-tabs > li.active > a,
 .goiko-menua .nav-tabs > li.active > a:hover,
 .goiko-menua .nav-tabs > li.active > a:focus {
-  border-color: transparent;
+  border-top: none;
+  border-right: none;
+  border-left: none;
   border-bottom: 4px solid #e73c68;
   background-color: #fff;
   color: #e73c68;

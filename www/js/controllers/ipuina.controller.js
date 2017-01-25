@@ -131,7 +131,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
       
       if (objektua.length === 1){
-        var elem = angular.element ('<div objektua="objektua" class="objektua" data-eo-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-x="200" data-y="200" data-lock="' + lock + '"></div>');
+        var elem = angular.element ('<div objektua="objektua" class="objektua" data-eo-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '"></div>');
         
         if (objektua[0].style !== null){
           
@@ -371,7 +371,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     Database.query ('SELECT testua, style FROM eszena_testuak WHERE id=?', [testua_id]).then (function (testua){
       
       if (testua.length === 1){
-        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" data-x="200" data-y="200" data-lock="' + lock + '"></div>');
+        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" data-lock="' + lock + '"></div>');
         
         if (testua[0].style !== null){
           

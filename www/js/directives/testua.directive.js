@@ -1,4 +1,4 @@
-app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal', function ($cordovaDialogs, Database, Funtzioak, $uibModal){
+app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funtzioak', '$uibModal', function ($cordovaDialogs, $timeout, $q, Database, Funtzioak, $uibModal){
   
   return {
     restrict: 'AE',
@@ -9,7 +9,8 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       var initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
-          transform = {  translate :{ x: attrs.x, y: attrs.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
+          posizioa = {'x': attrs.x !== undefined ? attrs.x : -1, 'y': attrs.y !== undefined ? attrs.y : -1},
+          transform = {  translate :{ x: posizioa.x, y: posizioa.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
           abiapuntua = {'x': 0, 'y': 0},
           limits = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
           eszenatokia = angular.element ('#eszenatokia'),
@@ -20,12 +21,31 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
       limits.right = eszenatokia[0].offsetWidth - 15;
       limits.bottom = eszenatokia[0].offsetHeight - 15;
           
-      testua_eguneratu (element.attr ('data-testua-id'));
+      testua_eguneratu (element.attr ('data-testua-id')).then (function (){
+        
+        // Si el objeto no tiene posición (recien creado) tratamos de ponerlo en el centro de la pantalla (hace falta saber el tamaño del objeto)
+        if (element[0].children[0].clientWidth > 0 && element[0].children[0].clientHeight > 0 && posizioa.x < 0){
+          posizioa.x = Math.round (eszenatokia[0].offsetWidth / 2) - Math.round (element[0].children[0].clientWidth / 2);
+          posizioa.y = Math.round (eszenatokia[0].offsetHeight / 2) - Math.round (element[0].children[0].clientHeight / 2);
+        }
+        else if (posizioa.x < 0){
+          // No es posible saber el tamaño del objeto y no tiene posición -> le damos una posición elegida por Mr. Julen
+          posizioa.x = 200;
+          posizioa.y = 200;
+        }
+        
+        transform.translate.x = posizioa.x;
+        transform.translate.y = posizioa.y;
+        
+        if (attrs.scale === undefined)
+          element.children ().css ({ transform: 'translate3d(' + posizioa.x + 'px, ' + posizioa.y + 'px, 0)'});
       
-      if (attrs.scale === undefined)
-        element.children ().css ({ transform: 'translate3d(' + attrs.x + 'px, ' + attrs.y + 'px, 0)'});
+      }, function (error){
+        console.log ("Testua directive, testuaren ezaugarriak kargatzen", error);
+      });
         
       function testua_eguneratu (testua_id){
+        var d = $q.defer ();
         
         // Recogemos los datos del texto
         Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
@@ -57,9 +77,14 @@ app.directive ('testua', ['$cordovaDialogs', 'Database', 'Funtzioak', '$uibModal
             
           }
           
+          d.resolve ();
+          
         }, function (error){
+          d.reject (error);
           console.log ("Testua directive testua_eguneratu, SELECT", error);
         });
+        
+        return d.promise;
         
       }
       
