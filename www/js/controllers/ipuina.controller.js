@@ -57,7 +57,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.getEszenak = function (){
     
-    Database.getRows ('eszenak', {'fk_ipuina': $scope.ipuina.id}, ' ORDER BY orden ASC').then (function (emaitza){
+    Database.query ("SELECT e.*, ifnull(i.path, '') path FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then (function (emaitza){
               
       $scope.eszenak = emaitza;
       
@@ -71,7 +71,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           angular.element ('#eszenatokia').css ('background-color', '#fff');
           
           // Guardamos la eszena en el array
-          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'audioa': '', 'orden': 1});
+          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'path': '', 'audioa': '', 'orden': 1});
           
           $scope.uneko_eszena_id = emaitza.insertId;
           
@@ -185,8 +185,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       // Cambiamos el fondo en la lista
       angular.forEach ($scope.eszenak, function (eszena){
         
-        if (eszena.id === $scope.uneko_eszena_id)
+        if (eszena.id === $scope.uneko_eszena_id){
           eszena.fk_fondoa = fondoa.id;
+          eszena.path = fondoa.path;
+        }
           
       });
       
@@ -200,7 +202,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'audioa': '', 'orden': $scope.eszenak.length+1}).then (function (emaitza){
       // Guardamos la eszena en el array
-      $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'audioa': '', 'orden': $scope.eszenak.length+1});
+      $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'path': '', 'audioa': '', 'orden': $scope.eszenak.length+1});
       
       // Limpiamos la eszena anterior
       $scope.clearEszena ();
@@ -216,7 +218,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       $scope.uneko_audioa.izena = '';
       $scope.uneko_audioa.iraupena = $scope.uneko_audioa.counter = 0;
     }, function (error){
-      console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+      console.log ("IpuinaCtrl, addEszena", error);
     });
     
   };
@@ -259,11 +261,17 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           
           Ipuinak.ezabatu_eszena (eszena_id).then (function (){
             
-            // Recogemos las eszenak que queden del ipuina
-            $scope.getEszenak ();
+            Ipuinak.eszenak_ordenatu ($route.current.params.ipuina_id).then (function (){
+              
+              // Recogemos las eszenak que queden del ipuina
+              $scope.getEszenak ();
+              
+            }, function (error){
+              console.log ("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
+            });
             
           }, function (error){
-            console.log ("IpuinaCtrl, pressEszena", error);
+            console.log ("IpuinaCtrl, pressEszena ezabatu_eszena", error);
           });
           
         }
@@ -417,6 +425,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.eszenaAurreratu = function (){
     
     if ($scope.eszenak_nabigazioa.aurrera){
+      
+      // bloqueamos la navegación para que no se cuelen otras peticiones
+      $scope.eszenak_nabigazioa.aurrera = $scope.eszenak_nabigazioa.atzera = false;
     
       for (var ind = 0; ind < $scope.eszenak.length; ind++){
         
@@ -443,7 +454,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             
             $scope.eszenak_nabigazioa.aurrera = (ind-1 > 0);
             $scope.eszenak_nabigazioa.atzera = true;
-        
+            
           }, function (error){
             console.log ("IpuinaCtrl, eszenaAurreratu second update", error);
           });
@@ -461,6 +472,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.eszenaAtzeratu = function (){
     
     if ($scope.eszenak_nabigazioa.atzera){
+      
+      // bloqueamos la navegación para que no se cuelen otras peticiones
+      $scope.eszenak_nabigazioa.aurrera = $scope.eszenak_nabigazioa.atzera = false;
     
       for (var ind = 0; ind < $scope.eszenak.length; ind++){
         
@@ -487,7 +501,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             
             $scope.eszenak_nabigazioa.aurrera = true;
             $scope.eszenak_nabigazioa.atzera = (ind+1 < $scope.eszenak.length-1);
-        
+            
           }, function (error){
             console.log ("IpuinaCtrl, eszenaAtzeratu second update", error);
           });

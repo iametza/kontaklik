@@ -72,6 +72,36 @@ app.factory('Ipuinak', ['$q', 'Database', function($q, Database){
     return d.promise;
   };
   
+  Ipuinak.eszenak_ordenatu = function (ipuina_id){
+    var d = $q.defer ();
+    var promiseak = [];
+    
+    // Recogemos las eszenak del ipuina
+    Database.getRows ('eszenak', {'fk_ipuina': ipuina_id}, ' ORDER BY orden ASC').then (function (eszenak){
+      
+      angular.forEach (eszenak, function (eszena, ind){
+        
+        promiseak.push (Database.query ('UPDATE eszenak SET orden=? WHERE id=?', [ind+1, eszena.id]));
+    
+      });
+      
+      $q.all (promiseak).then (function (){
+        
+        d.resolve ();
+        
+      }, function (error){
+        console.log ("Ipuinak factory, eszenak_ordenatu q.all error", error);
+        d.reject (error);
+      });
+      
+    }, function (error){
+      console.log ("Ipuinak factory, eszenak_ordenatu eszenak jasotzen", error);
+      d.reject (error);
+    });
+    
+    return d.promise;
+  };
+  
   return Ipuinak;
 
 }]);

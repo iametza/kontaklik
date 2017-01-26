@@ -97,19 +97,19 @@ body {
 }
 
 .goiko-menua .tab-edukia {
-  height: 100px; /*120*/
+  height: 100px;
   padding: 5px 10px 5px 10px;
 }
 
-.goiko-menua .tab-edukia #eszenak img {
+.goiko-menua .tab-edukia #eszenak .prevnext {
   float: left;
-  height: 50px;
+  height: 60px;
   width: auto;
   padding-top: 24px;
   margin-right: 10px;
 }
 
-.goiko-menua .tab-edukia #eszenak .elementuak {
+.goiko-menua .tab-edukia #eszenak .fondoak {
   float: left;
   width: auto;
   max-width: 80%;
@@ -119,25 +119,17 @@ body {
   margin-right: 10px;
 }
 
-.goiko-menua .tab-edukia #eszenak .elementuak .eszena,
-.goiko-menua .tab-edukia #eszenak .elementuak .eszena:focus {
+.goiko-menua .tab-edukia #eszenak .fondoak .fondo,
+.goiko-menua .tab-edukia #eszenak .fondoak .fondo:focus {
   display: inline-block;
   height: 90px;
-  width: 90px;
-  margin-right: 5px;
-  padding-top: 30px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 18px;
-  background-color: #ededec;
-  color: #92a7ac;
+  width: auto;
+  margin: 0px 5px 0px 0px;
 }
 
-.goiko-menua .tab-edukia #eszenak .elementuak .eszena.active,
-.goiko-menua .tab-edukia #eszenak .elementuak .eszena.active:focus {
-  text-decoration: none;
-  background-color: #e73c68;
-  color: #fff;
+.goiko-menua .tab-edukia #eszenak .fondoak .fondo.active,
+.goiko-menua .tab-edukia #eszenak .fondoak .fondo.active:focus {
+  border: 4px solid #e73c68;
 }
 
 .goiko-menua .tab-edukia #play {
@@ -209,10 +201,6 @@ body {
   width: auto;
   margin-right: 10px;
 }
-
-/*a.disabled {
-  background-color: #f00;
-}*/
 
 #goiko-menua-collapsed,
 #bideo_modua_kontrolak {

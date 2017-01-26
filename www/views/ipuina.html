@@ -17,13 +17,14 @@
         <div class="row">
           <div class="col-xs-9">
             <div id="eszenak">
-              <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera" ng-class="{disabled: !eszenak_nabigazioa.aurrera}"><img src="images/ikonoak/prev.png" /></a>
+              <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext" /></a>
             
-              <div class="elementuak">
-                <a ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="eszena" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}">{{$index+1}}</a>
+              <div class="fondoak">
+                <!--<a ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="eszena" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}" ng-style="eszena.path != '' && {'background':'url({{eszena.path}}) no-repeat center center fixed','background-size':'cover'}"><span>{{$index+1}}</span></a>-->
+                <img ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}" ng-src="{{eszena.path}}" src="images/fondo_gabe.jpg" />
               </div>
               
-              <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera" ng-class="{disabled: !eszenak_nabigazioa.atzera}"><img src="images/ikonoak/next.png" /></a>
+              <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext" /></a>
             </div>
           </div>
           
