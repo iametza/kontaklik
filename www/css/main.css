@@ -98,7 +98,7 @@ body {
 
 .goiko-menua .tab-edukia {
   height: 100px; /*120*/
-  padding: 10px;
+  padding: 5px 10px 5px 10px;
 }
 
 .goiko-menua .tab-edukia #eszenak img {
@@ -122,9 +122,9 @@ body {
 .goiko-menua .tab-edukia #eszenak .elementuak .eszena,
 .goiko-menua .tab-edukia #eszenak .elementuak .eszena:focus {
   display: inline-block;
-  height: 80px; /*100*/
-  width: 80px;
-  margin-right: 10px;
+  height: 90px;
+  width: 90px;
+  margin-right: 5px;
   padding-top: 30px;
   text-align: center;
   text-decoration: none;
@@ -140,6 +140,12 @@ body {
   color: #fff;
 }
 
+.goiko-menua .tab-edukia #play {
+  height: 70px;
+  width: auto;
+  padding-top: 20px;
+}
+
 .goiko-menua .tab-edukia .elementuak {
   width: 100%;
   height: 100%;
@@ -149,21 +155,27 @@ body {
 
 .goiko-menua .tab-edukia .elementuak .irudia {
   display: inline-block;
-  height: 80px;
+  height: 90px;
   width: auto;
-  margin: 5px;
+  margin: 0px 5px 0px 0px;
 }
 
-.goiko-menua .tab-edukia .kargatu-zure-argazkiak {
-  max-height: 80px;
-  max-width: 140px;
+.goiko-menua .tab-edukia .kargatu {
+  width: 100%;
+  height: 100%;
+  text-align: right;
+}
+
+.goiko-menua .tab-edukia .kargatu .info {
+  max-height: 90px;
+  max-width: 50%;
   height: auto;
   width: auto;
 }
 
-.goiko-menua .tab-edukia .ikon {
-  max-height: 80px;
-  max-width: 50px;
+.goiko-menua .tab-edukia .kargatu .ikon {
+  max-height: 90px;
+  max-width: 25%;
   height: auto;
   width: auto;
 }

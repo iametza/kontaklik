@@ -14,19 +14,21 @@
       <uib-tab-heading>Eszenak</uib-tab-heading>
       
       <div class="tab-edukia">
-        <div class="row" id="eszenak">
+        <div class="row">
           <div class="col-xs-9">
-            <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera" ng-class="{disabled: !eszenak_nabigazioa.aurrera}"><img src="images/ikonoak/prev.png" /></a>
+            <div id="eszenak">
+              <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera" ng-class="{disabled: !eszenak_nabigazioa.aurrera}"><img src="images/ikonoak/prev.png" /></a>
             
-            <div class="elementuak">
-              <a ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="eszena" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}">{{$index+1}}</a>
+              <div class="elementuak">
+                <a ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="eszena" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}">{{$index+1}}</a>
+              </div>
+              
+              <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera" ng-class="{disabled: !eszenak_nabigazioa.atzera}"><img src="images/ikonoak/next.png" /></a>
             </div>
-            
-            <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera" ng-class="{disabled: !eszenak_nabigazioa.atzera}"><img src="images/ikonoak/next.png" /></a>
           </div>
           
           <div class="col-xs-1">
-            <a ng-click="bideo_modua_play ()"><img src="images/ikonoak/play.png" /></a>
+            <a ng-click="bideo_modua_play ()"><img src="images/ikonoak/play.png" id="play" /></a>
           </div>
           
           <div class="col-xs-2">
@@ -49,9 +51,11 @@
           </div>
           
           <div class="col-xs-4">
-            <img src="images/kargatu_zure_argazkiak.jpg" class="kargatu-zure-argazkiak" />
-            <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.jpg" class="ikon" /></a>
-            <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.jpg" class="ikon" /></a>
+            <div class="kargatu">
+              <img src="images/kargatu_zure_argazkiak.jpg" class="info" />
+              <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.jpg" class="ikon" /></a>
+              <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.jpg" class="ikon" /></a>
+            </div>
           </div>
         </div>
       </div>
@@ -69,9 +73,11 @@
           </div>
           
           <div class="col-xs-4">
-            <img src="images/kargatu_zure_argazkiak.jpg" class="kargatu-zure-argazkiak" />
-            <a ng-click="takeGallery ('objektua')"><img src="images/ikonoak/galeria.jpg" class="ikon" /></a>
-            <a ng-click="takePicture ('objektua')"><img src="images/ikonoak/kamara.jpg" class="ikon" /></a>
+            <div class="kargatu">
+              <img src="images/kargatu_zure_argazkiak.jpg" class="info" />
+              <a ng-click="takeGallery ('objektua')"><img src="images/ikonoak/galeria.jpg" class="ikon" /></a>
+              <a ng-click="takePicture ('objektua')"><img src="images/ikonoak/kamara.jpg" class="ikon" /></a>
+            </div>
           </div>
         </div>
       </div>
