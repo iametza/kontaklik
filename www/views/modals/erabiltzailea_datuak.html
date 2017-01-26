@@ -10,9 +10,15 @@
   </div>
   
   <form name="formularioa" novalidate="" ng-submit="erabiltzailea_gorde (formularioa)">
-    <div class="form-group" ng-class="{'has-error': errore_mezua !== ''}">
+    <div class="form-group" ng-class="{'has-error': errore_mezua !== '' || (submit && formularioa.izena.$invalid)}">
       <label for="izena">Izena</label>
       <input type="text" class="form-control" id="izena" name="izena" ng-model="eremuak.izena" placeholder="Izena" required autofocus />
+    </div>
+    
+    <div ng-if="submit && formularioa.izena.$invalid" class="alert alert-warning" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Oharra:</span>
+      Izena eremua bete mesedez
     </div>
     
     <button type="button" class="btn btn-default" ng-click="itxi ()">Itxi</button>

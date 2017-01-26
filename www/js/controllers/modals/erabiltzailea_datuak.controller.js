@@ -3,6 +3,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', 'D
   $scope.eremuak = {
     izena: ''
   };
+  $scope.submit = false;
   $scope.errore_mezua = '';
   
   $scope.init = function () {
@@ -24,6 +25,8 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', 'D
   
   $scope.erabiltzailea_gorde = function (form){
     //console.log ("time", Math.floor(Date.now() / 1000));
+    
+    $scope.submit = true;
     
     if (form.$valid){
       

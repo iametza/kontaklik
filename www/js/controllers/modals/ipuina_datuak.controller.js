@@ -3,6 +3,7 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database
   $scope.eremuak = {
     izenburua: ''
   };
+  $scope.submit = false;
   $scope.errore_mezua = '';
   
   $scope.init = function () {
@@ -24,6 +25,8 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database
   
   $scope.ipuina_gorde = function (form){
     //console.log ("time", Math.floor(Date.now() / 1000));
+    
+    $scope.submit = true;
     
     if (form.$valid){
       
