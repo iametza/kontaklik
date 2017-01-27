@@ -67,6 +67,12 @@ body {
   margin-right: 0;
 }
 
+#menua-kutxa #elementuak .elementua a,
+#menua-kutxa #elementuak .elementua a:hover,
+#menua-kutxa #elementuak .elementua a:focus {
+  text-decoration: none;
+}
+
 #menua-kutxa #elementuak .elementua img {
   max-width: 100%;
   max-height: 190px;
@@ -74,12 +80,9 @@ body {
   height: auto;
 }
 
-#menua-kutxa #elementuak .elementua a,
-#menua-kutxa #elementuak .elementua a:hover,
-#menua-kutxa #elementuak .elementua a:focus {
+#menua-kutxa #elementuak .elementua p {
   white-space: normal;
   text-transform: uppercase;
-  text-decoration: none;
   font-weight: bold;
   font-size: 18px;
   padding-top: 10px;
