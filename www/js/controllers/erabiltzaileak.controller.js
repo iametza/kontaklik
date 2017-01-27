@@ -1,4 +1,4 @@
-app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Ipuinak', '$uibModal', function($scope, Database, Ipuinak, $uibModal){
+app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function($scope, Database, $uibModal){
   
   $scope.erabiltzaileak = [];
   
