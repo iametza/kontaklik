@@ -7,7 +7,7 @@
   <uib-tabset active="active" class="goiko-menua" ng-hide="bideo_modua.playing">
     
     <div class="kontaklik">
-      <img src="images/kontaklik.png" />
+      <a href="#/"><img src="images/kontaklik.png" /></a>
     </div>
     
     <uib-tab index="0">
@@ -20,8 +20,9 @@
               <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext" /></a>
             
               <div class="fondoak">
-                <!--<a ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="eszena" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}" ng-style="eszena.path != '' && {'background':'url({{eszena.path}}) no-repeat center center fixed','background-size':'cover'}"><span>{{$index+1}}</span></a>-->
-                <img ng-click="changeEszena (eszena)" hm-press="pressEszena" ng-repeat="eszena in eszenak" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" data-id="{{eszena.id}}" ng-src="{{eszena.path}}" src="images/eszena_fondo_gabe.jpg" />
+                
+                <img ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)" ng-repeat="eszena in eszenak" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.path}}" src="images/eszena_fondo_gabe.jpg" />
+                
               </div>
               
               <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext" /></a>
@@ -33,7 +34,6 @@
           </div>
           
           <div class="col-xs-2">
-            <!--<button ng-click="delEszena ()" class="btn btn-danger pull-right btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>-->
             <button ng-click="addEszena ()" class="btn btn-default pull-right btn-lg"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
           </div>
         </div>

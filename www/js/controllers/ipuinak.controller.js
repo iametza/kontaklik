@@ -1,4 +1,4 @@
-app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Ipuinak', '$uibModal', '$cordovaDialogs', function($scope, $route, Database, Ipuinak, $uibModal, $cordovaDialogs){
+app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', function($scope, $route, Database, $uibModal){
   
   $scope.erabiltzailea = {};
   $scope.ipuinak = [];
@@ -27,15 +27,36 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Ipuinak', '$uibMo
   };
   
   $scope.getIpuinak = function (){
+    var ipuinak = [];
     
-    Database.getRows ('ipuinak', {'fk_erabiltzailea': $scope.erabiltzailea.id}, ' ORDER BY izenburua ASC').then (function (emaitza){
+    Database.query ("SELECT ipuinak.*, ifnull(irudiak.path, '') path FROM ipuinak LEFT JOIN eszenak ON eszenak.fk_ipuina=ipuinak.id LEFT JOIN irudiak ON irudiak.id=eszenak.fk_fondoa AND irudiak.atala='fondoa' WHERE ipuinak.fk_erabiltzailea=? ORDER BY ipuinak.izenburua ASC, eszenak.orden ASC", [$scope.erabiltzailea.id]).then (function (emaitza){
+      
+      angular.forEach (emaitza, function (ipuina){
         
-      $scope.ipuinak = emaitza;
+        if ((pos = $scope.ipuina_pos (ipuinak, ipuina.id)) < 0)
+          ipuinak.push ({'id': ipuina.id, 'izenburua': ipuina.izenburua, 'path': ipuina.path});
+        else if (ipuinak[pos].path.trim () === '')
+          ipuinak[pos].path = ipuina.path;
+          
+      });
+      
+      $scope.ipuinak = ipuinak;
       
     }, function (error){
       console.log ("IpuinakCtrl, getIpuinak", error);
     });
     
+    
+  };
+  
+  $scope.ipuina_pos = function (lista, id){
+    
+    for (var i = 0; i < lista.length; i++){
+      if (lista[i].id == id)
+        return (i);
+    }
+    
+    return (-1);
     
   };
   
@@ -55,36 +76,13 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Ipuinak', '$uibMo
       }
     });
     
-    modala.result.then (function (emaitza){
+    modala.result.then (function (){
                 
       // Recogemos los ipuinak del erabiltzaile
       $scope.getIpuinak ();
       
     }, function (error){
-      console.log ("IpuinakCtrl, ipuin_datuak modala", error);
-    });
-    
-  };
-  
-  $scope.ipuina_ezabatu = function (ipuina_id){
-    
-    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
-      
-      if (buttonIndex == 1){
-        
-        Ipuinak.ezabatu_ipuina (ipuina_id).then (function (){
-          
-          // Recogemos los ipuinak del erabiltzaile
-          $scope.getIpuinak ();
-          
-        }, function (error){
-          console.log ("IpuinakCtrl, ipuina_ezabatu", error);
-        });
-        
-      }
-      
-    }, function (error){
-      console.log ("IpuinakCtrl, ipuina_ezabatu dialog", error);
+      console.log ("IpuinakCtrl, ipuina_datuak modala", error);
     });
     
   };

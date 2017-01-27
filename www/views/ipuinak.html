@@ -1,36 +1,65 @@
-<div class="container" id="menua">
+<div class="container">
   
   <div class="row">
+    
     <div class="col-xs-12">
-      <h1>
-        <a href="#/">
-          <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-          <span class="sr-only">Hasiera</span>
-        </a>
-        
-        {{erabiltzailea.izena}}
-      </h1>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-xs-12">
-      <button type="button" class="btn btn-primary btn-block btn-lg" ng-click="ipuina_datuak (0)">SORTU IPUIN BERRIA</button>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-xs-12">
-      <h1>IPUINAK</h1>
       
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="ipuina in ipuinak">
-          <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}">{{ipuina.izenburua}}</a>
-          <button ng-click="ipuina_datuak (ipuina.id)" class="btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-          <button ng-click="ipuina_ezabatu (ipuina.id)" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-        </li>
-      </ul>
+      <div id="menua-burua">
+      
+        <div id="kontaklik">
+          <a href="#/"><img src="images/kontaklik.png" /></a>
+        </div>
+        
+        <div class="pull-left">
+          {{erabiltzailea.izena}}
+        </div>
+        
+      </div>
+      
     </div>
+    
+  </div>
+  
+  <div id="menua-kutxa">
+    
+    <div class="row">
+      
+      <div class="col-xs-9" style="padding-right: 0px">
+        
+        <div id="elementuak">
+          
+          <div class="elementua" ng-repeat="ipuina in ipuinak">
+            
+            <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}" hm-press="ipuina_datuak (ipuina.id)">
+              
+              <img ng-src="{{ipuina.path}}" src="images/eszena_fondo_gabe.jpg" />
+              
+              <p>{{ipuina.izenburua}}</p>
+              
+            </a>
+            
+          </div>
+          
+        </div>
+        
+      </div>
+      
+      <div class="col-xs-3">
+        
+        <div id="berria">
+          
+          <a ng-click="ipuina_datuak (0)">
+            
+            <img src="images/ikonoak/plus.png" />
+            
+            <p>Ipuin berria sortu!</p>
+            
+          </a>
+          
+        </div>
+        
+      </div>
+    
   </div>
   
 </div>

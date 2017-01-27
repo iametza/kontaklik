@@ -1,9 +1,10 @@
-app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database', 'erabiltzailea_id', 'ipuina_id', function($scope, $uibModalInstance, Database, erabiltzailea_id, ipuina_id){
+app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', '$cordovaDialogs', 'Database', 'Ipuinak', 'erabiltzailea_id', 'ipuina_id', function($scope, $uibModalInstance, $cordovaDialogs, Database, Ipuinak, erabiltzailea_id, ipuina_id){
   
   $scope.eremuak = {
     izenburua: ''
   };
   $scope.submit = false;
+  $scope.ezabatu_button = false;
   $scope.errore_mezua = '';
   
   $scope.init = function () {
@@ -14,6 +15,7 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database
       if (ipuina.length === 1){
         
         $scope.eremuak.izenburua = ipuina[0].izenburua;
+        $scope.ezabatu_button = true;
         
       }
       
@@ -78,6 +80,28 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', 'Database
       });
       
     }
+    
+  };
+  
+  $scope.ipuina_ezabatu = function (){
+    
+    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+      
+      if (buttonIndex == 1){
+        
+        Ipuinak.ezabatu_ipuina (ipuina_id).then (function (){
+          
+          $uibModalInstance.close ('ezabatu');
+          
+        }, function (error){
+          console.log ("ModalIpuinaDatuakCtrl, ezabatu_ipuina", error);
+        });
+        
+      }
+      
+    }, function (error){
+      console.log ("ModalIpuinaDatuakCtrl, ipuina_ezabatu dialog", error);
+    });
     
   };
   

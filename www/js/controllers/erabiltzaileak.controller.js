@@ -1,4 +1,4 @@
-app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Ipuinak', '$uibModal', '$cordovaDialogs', function($scope, Database, Ipuinak, $uibModal, $cordovaDialogs){
+app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Ipuinak', '$uibModal', function($scope, Database, Ipuinak, $uibModal){
   
   $scope.erabiltzaileak = [];
   
@@ -37,50 +37,13 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Ipuinak', '$uibModal
       }
     });
     
-    modala.result.then (function (emaitza){
+    modala.result.then (function (){
                 
       // Recogemos los erabiltzaileak
       $scope.getErabiltzaileak ();
       
     }, function (error){
       console.log ("ErabiltzaileakCtrl, erabiltzailea_datuak modala", error);
-    });
-    
-  };
-  
-  $scope.erabiltzailea_ezabatu = function (erabiltzailea_id){
-    
-    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
-      
-      if (buttonIndex == 1){
-        
-        // Recogemos/Borramos los ipuinak del erabiltzaile
-        Database.getRows ('ipuinak', {'fk_erabiltzailea': erabiltzailea_id}, '').then (function (ipuinak){
-          
-          angular.forEach (ipuinak, function (ipuina){
-            
-            Ipuinak.ezabatu_ipuina (ipuina.id);
-            
-          });
-          
-          // Borramos los datos del erabiltzaile
-          Database.deleteRows ('erabiltzaileak', {'id': erabiltzailea_id}).then (function (){
-            
-            // Recogemos los erabiltzaileak
-            $scope.getErabiltzaileak ();
-            
-          }, function (error){
-            console.log ("ErabiltzaileakCtrl, erabiltzailea_ezabatu erabiltzailea ezabatzerakoan", error);
-          });
-          
-        }, function (error){
-          console.log ("ErabiltzaileakCtrl, erabiltzailea_ezabatu ipuinak jasotzen", error);
-        });
-        
-      }
-      
-    }, function (error){
-      console.log ("ErabiltzaileakCtrl, erabiltzailea_ezabatu dialog", error);
     });
     
   };

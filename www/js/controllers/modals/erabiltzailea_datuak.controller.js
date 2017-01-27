@@ -1,9 +1,10 @@
-app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', 'Database', 'erabiltzailea_id', function($scope, $uibModalInstance, Database, erabiltzailea_id){
+app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', '$cordovaDialogs', 'Database', 'Ipuinak', 'erabiltzailea_id', function($scope, $uibModalInstance, $cordovaDialogs, Database, Ipuinak, erabiltzailea_id){
   
   $scope.eremuak = {
     izena: ''
   };
   $scope.submit = false;
+  $scope.ezabatu_button = false;
   $scope.errore_mezua = '';
   
   $scope.init = function () {
@@ -14,6 +15,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', 'D
       if (erabiltzailea.length === 1){
         
         $scope.eremuak.izena = erabiltzailea[0].izena;
+        $scope.ezabatu_button = true;
         
       }
       
@@ -78,6 +80,42 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', 'D
       });
       
     }
+    
+  };
+  
+  $scope.erabiltzailea_ezabatu = function (){
+    
+    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+      
+      if (buttonIndex == 1){
+        
+        // Recogemos/Borramos los ipuinak del erabiltzaile
+        Database.getRows ('ipuinak', {'fk_erabiltzailea': erabiltzailea_id}, '').then (function (ipuinak){
+          
+          angular.forEach (ipuinak, function (ipuina){
+            
+            Ipuinak.ezabatu_ipuina (ipuina.id);
+            
+          });
+          
+          // Borramos los datos del erabiltzaile
+          Database.deleteRows ('erabiltzaileak', {'id': erabiltzailea_id}).then (function (){
+            
+            $uibModalInstance.close ('ezabatu');
+            
+          }, function (error){
+            console.log ("ModalErabiltzaileaDatuakCtrl, erabiltzailea_ezabatu erabiltzailea ezabatzerakoan", error);
+          });
+          
+        }, function (error){
+          console.log ("ModalErabiltzaileaDatuakCtrl, erabiltzailea_ezabatu ipuinak jasotzen", error);
+        });
+        
+      }
+      
+    }, function (error){
+      console.log ("ModalErabiltzaileaDatuakCtrl, erabiltzailea_ezabatu dialog", error);
+    });
     
   };
   
