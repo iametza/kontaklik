@@ -10,7 +10,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           posizioa = {'x': attrs.x !== undefined ? attrs.x : -1, 'y': attrs.y !== undefined ? attrs.y : -1},
-          transform = {  translate :{ x: posizioa.x, y: posizioa.y   }, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
+          transform = { translate: {'x': posizioa.x, 'y': posizioa.y}, scale: initScale, angle: initAngle, rx: 0, ry: 0, rz: 0 },
           abiapuntua = {'x': 0, 'y': 0},
           limits = {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
           eszenatokia = angular.element ('#eszenatokia'),
@@ -144,7 +144,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
         
         if (event.target === element[0].children[0]){
           
-          var t = {  translate :{ x: transform.translate.x, y: transform.translate.y   }, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
+          var t = { translate: {'x': transform.translate.x, 'y': transform.translate.y}, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
           
           t.angle = parseFloat (initAngle) + parseFloat (event.rotation - rotationInit);
           
@@ -165,7 +165,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
         
         if (event.target === element[0].children[0]){
           
-          var t = {  translate :{ x: transform.translate.x, y: transform.translate.y   }, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
+          var t = { translate: {'x': transform.translate.x, 'y': transform.translate.y}, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
           
           t.scale = parseFloat (initScale) * parseFloat (event.scale);
           
@@ -193,7 +193,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
         
         if (event.target === element[0].children[0]){
           
-          var t = {  translate :{ x: transform.translate.x, y: transform.translate.y   }, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
+          var t = { translate: {'x': transform.translate.x, 'y': transform.translate.y}, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
           
           t.translate.x = parseInt (abiapuntua.x) + parseInt (event.deltaX);
           t.translate.y = parseInt (abiapuntua.y) + parseInt (event.deltaY);
@@ -212,7 +212,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       
       scope.onDblClick = function (){
         
-        var t = {  translate :{ x: transform.translate.x, y: transform.translate.y   }, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
+        var t = { translate: {'x': transform.translate.x, 'y': transform.translate.y}, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
         
         t.angle = 0;
         t.scale = 1;
