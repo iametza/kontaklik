@@ -29,22 +29,12 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       // Parece ser que con hacer "$timeout a 0ms." se asegura que el elemento está cargado en el DOM.... (necesario para obtener el tamaño)
       $timeout (function (){
         
-        // Si el objeto no tiene posición (recien creado) tratamos de ponerlo en el centro de la pantalla (hace falta saber el tamaño del objeto)
-        if (element[0].children[0].clientWidth > 0 && element[0].children[0].clientHeight > 0 && posizioa.x < 0){
-          posizioa.x = Math.round (eszenatokia[0].offsetWidth / 2) - Math.round (element[0].children[0].clientWidth / 2);
-          posizioa.y = Math.round (eszenatokia[0].offsetHeight / 2) - Math.round (element[0].children[0].clientHeight / 2);
-        }
-        else if (posizioa.x < 0){
-          // No es posible saber el tamaño del objeto y no tiene posición -> le damos una posición elegida por Mr. Julen
-          posizioa.x = 200;
-          posizioa.y = 200;
-        }
-        
-        transform.translate.x = posizioa.x;
-        transform.translate.y = posizioa.y;
+        // Si el objeto no tiene posición (recien creado) tratamos de ponerlo en el centro de la pantalla
+        if (posizioa.x < 0)
+          transform.translate = erdian_kokatu ();
         
         if (attrs.scale === undefined)
-          element.children ().css ({ transform: 'translate3d(' + posizioa.x + 'px, ' + posizioa.y + 'px, 0)'});
+          element.children ().css ({ transform: 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0)'});
         
       });
       
@@ -101,6 +91,17 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
                     'rotate('+  t.angle + 'deg)';
                     
         return ({ 'transform': value, '-webkit-transform': value, '-moz-transform': value, '-o-transform': value });
+      };
+      
+      var erdian_kokatu = function (){
+        var p = {'x': 200, 'y': 200}; // random position chosen by Mr. Julem
+        
+        if (element[0].children[0].clientWidth > 0 && element[0].children[0].clientHeight > 0){
+          p.x = Math.round (eszenatokia[0].offsetWidth / 2) - Math.round (element[0].children[0].clientWidth / 2);
+          p.y = Math.round (eszenatokia[0].offsetHeight / 2) - Math.round (element[0].children[0].clientHeight / 2);
+        }
+        
+        return (p);
       };
       
       scope.onPress = function (){
