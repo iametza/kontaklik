@@ -5,6 +5,12 @@
 
 <div class="modal-body">
   
+  <div ng-if="errore_mezua !== ''" class="alert alert-warning" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Oharra:</span>
+    {{errore_mezua}}
+  </div>
+  
   <form name="formularioa" novalidate="" ng-submit="testua_gorde (formularioa)">
     
     <div class="form-group" ng-class="{'has-error' : submit && formularioa.testua.$invalid, 'has-success' : submit && formularioa.testua.$valid}">

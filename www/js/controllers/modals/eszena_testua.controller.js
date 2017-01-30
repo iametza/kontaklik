@@ -10,6 +10,8 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
   };
   $scope.submit = false;
   $scope.ezabatu_button = false;
+  $scope.errore_mezua = '';
+  $scope.lerro_kopurua = 0;
   $scope.koloreak = ['#000', '#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#fff'];
   
   $scope.init = function () {
@@ -26,6 +28,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
         $scope.eremuak.backgroundColor = testua[0].backgroundColor;
         $scope.eremuak.class = testua[0].class;
         $scope.ezabatu_button = true;
+        $scope.lerro_kopurua = $scope.eremuak.testua.split ("\n").length;
         
       }
       
@@ -41,31 +44,39 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
     
     if (form.$valid){
       
-      // Guardamos los datos en la base de datos (insertar/modificar)
-      if (testua_id === 0){
-        Database.insertRow ('eszena_testuak', {'fk_eszena': eszena_id, 'testua': $scope.eremuak.testua, 'fontSize': $scope.eremuak.fontSize, 'color': $scope.eremuak.color, 'borderColor': $scope.eremuak.borderColor, 'backgroundColor': $scope.eremuak.backgroundColor, 'class': $scope.eremuak.class}).then (function (emaitza){
+      $scope.lerro_kopurua = $scope.eremuak.testua.split ("\n").length;
+      if ($scope.lerro_kopurua <= 5){
+        
+        // Guardamos los datos en la base de datos (insertar/modificar)
+        if (testua_id === 0){
+          Database.insertRow ('eszena_testuak', {'fk_eszena': eszena_id, 'testua': $scope.eremuak.testua, 'fontSize': $scope.eremuak.fontSize, 'color': $scope.eremuak.color, 'borderColor': $scope.eremuak.borderColor, 'backgroundColor': $scope.eremuak.backgroundColor, 'class': $scope.eremuak.class}).then (function (emaitza){
+        
+            $uibModalInstance.close (emaitza.insertId);
+            
+          }, function (error){
+            console.log ("ModalEszenaTestuaCtrl, testua_gorde insert", error);
+            $scope.itxi ();
+          });
+        }
+        else{
+          Database.query ('UPDATE eszena_testuak SET testua=?, fontSize=?, color=?, borderColor=?, backgroundColor=?, class=? WHERE id=?', [$scope.eremuak.testua, $scope.eremuak.fontSize, $scope.eremuak.color, $scope.eremuak.borderColor, $scope.eremuak.backgroundColor, $scope.eremuak.class, testua_id]).then (function (){
+            
+            // Cambiamos el texto en la escena AHORA SE HACE EN testua.directive.js
+            /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
+            angular.element (elementua).children ().html (Funtzioak.nl2br ($scope.eremuak.testua));*/
+        
+            $uibModalInstance.close (testua_id);
+            
+          }, function (error){
+            console.log ("ModalEszenaTestuaCtrl, testua_gorde update", error);
+            $scope.itxi ();
+          });
+        }
       
-          $uibModalInstance.close (emaitza.insertId);
-          
-        }, function (error){
-          console.log ("ModalEszenaTestuaCtrl, testua_gorde insert", error);
-          $scope.itxi ();
-        });
+        
       }
-      else{
-        Database.query ('UPDATE eszena_testuak SET testua=?, fontSize=?, color=?, borderColor=?, backgroundColor=?, class=? WHERE id=?', [$scope.eremuak.testua, $scope.eremuak.fontSize, $scope.eremuak.color, $scope.eremuak.borderColor, $scope.eremuak.backgroundColor, $scope.eremuak.class, testua_id]).then (function (){
-          
-          // Cambiamos el texto en la escena AHORA SE HACE EN testua.directive.js
-          /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
-          angular.element (elementua).children ().html (Funtzioak.nl2br ($scope.eremuak.testua));*/
-      
-          $uibModalInstance.close (testua_id);
-          
-        }, function (error){
-          console.log ("ModalEszenaTestuaCtrl, testua_gorde update", error);
-          $scope.itxi ();
-        });
-      }
+      else
+        $scope.errore_mezua = 'Gehienez ere bost lerro idatz ditzazkezu.';
       
     }
     
