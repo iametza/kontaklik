@@ -255,7 +255,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.changeFondoa = function (fondoa){
     
     angular.element ('#eszenatokia').css ('background', 'url(' + fondoa.path + ')');
-    angular.element ('#eszenatokia').css ('background-size', 'cover');
+    //angular.element ('#eszenatokia').css ('background-size', 'cover');
+    angular.element ('#eszenatokia').css ('background-size', '100% 100%');
     
   };
   
