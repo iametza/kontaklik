@@ -620,7 +620,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           
         }, function (error){
           $timeout.cancel ($scope.kontador);
-          console.log ("IpuinaCtrl, startRecord", error);
+          console.log ("IpuinaCtrl, audioa_play", error);
         });
         
       }

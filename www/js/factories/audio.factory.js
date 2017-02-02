@@ -29,17 +29,18 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   Audio.startRecord = function (audioa){
     var d = $q.defer ();
     
-    if (media !== undefined)
-      media.release ();
-      
     if (audioa.trim () !== ''){
       
+      if (media !== undefined)
+        media.release ();
+        
       media = new Media (audioa + extension, function (){
       
         d.resolve ({'path': tmp_path, 'izena': audioa + extension});
         
       }, function (error){
         egoera = 'stopped';
+        media = undefined;
         d.reject (error);
         console.log ("Audio factory, recordAudio", error);
       });
@@ -47,10 +48,12 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
       media.startRecord ();
       egoera = 'recording';
       
+      console.log ("grabatzen....", audioa, media);
+      
     }
     else
       d.reject ('izen hutsa');
-      
+    
     return d.promise;
     
   };
@@ -88,6 +91,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
         
       }, function (error){
         egoera = 'stopped';
+        media = undefined;
         d.reject (error);
         console.log ("Audio factory, play", error);
       });

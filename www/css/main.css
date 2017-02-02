@@ -114,7 +114,7 @@ body {
 
 .laukia {
   position: absolute;
-  background: silver;
+  /*background: silver;*/
   max-width: 150px;
   max-height: 150px;
   text-align: center;
