@@ -29,30 +29,76 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   Audio.startRecord = function (audioa){
     var d = $q.defer ();
     
-    if (audioa.trim () !== ''){
+    cordova.plugins.diagnostic.isMicrophoneAuthorized (function (authorized){
       
-      if (media !== undefined)
-        media.release ();
+      if (authorized){
         
-      media = new Media (audioa + extension, function (){
+        cordova.plugins.diagnostic.isExternalStorageAuthorized (function (authorized){
+          
+          if (authorized){
+            
+            if (audioa.trim () !== ''){
       
-        d.resolve ({'path': tmp_path, 'izena': audioa + extension});
+              if (media !== undefined)
+                media.release ();
+                
+              media = new Media (audioa + extension, function (){
+              
+                d.resolve ({'path': tmp_path, 'izena': audioa + extension});
+                
+              }, function (error){
+                egoera = 'stopped';
+                media = undefined;
+                d.reject (error);
+                console.log ("Audio factory, recordAudio", error);
+              });
+              
+              media.startRecord ();
+              egoera = 'recording';
+              
+              console.log ("grabatzen....", audioa, media);
+              
+            }
+            else
+              d.reject ('izen hutsa');
+          
+          }
+          else{
         
-      }, function (error){
-        egoera = 'stopped';
-        media = undefined;
-        d.reject (error);
-        console.log ("Audio factory, recordAudio", error);
-      });
+            cordova.plugins.diagnostic.requestExternalStorageAuthorization (function (status){
+              
+              d.reject ("ExternalStorage baimen eskaera " + status);
+              
+            }, function(error){
+              console.log ("Audio factory, recordAudio requestMicrophoneAuthorization", error);
+              d.reject (error);
+            });
+            
+          }
       
-      media.startRecord ();
-      egoera = 'recording';
+        }, function (error){
+          console.log ("Audio factory, recordAudio isExternalStorageAuthorized", error);
+          d.reject (error);
+        });
+        
+      }
+      else{
+        
+        cordova.plugins.diagnostic.requestMicrophoneAuthorization (function (status){
+          
+          d.reject ("Microphone baimen eskaera " + status);
+          
+        }, function(error){
+          console.log ("Audio factory, recordAudio requestMicrophoneAuthorization", error);
+          d.reject (error);
+        });
+        
+      }
       
-      console.log ("grabatzen....", audioa, media);
-      
-    }
-    else
-      d.reject ('izen hutsa');
+    }, function (error){
+      console.log ("Audio factory, recordAudio isMicrophoneAuthorized", error);
+      d.reject (error);
+    });
     
     return d.promise;
     

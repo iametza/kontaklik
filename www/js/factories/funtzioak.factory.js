@@ -35,6 +35,60 @@ app.factory('Funtzioak', ['$q', function($q){
     
   };
   
+  Funtzioak.baimenak_txek = function (){
+    var d = $q.defer ();
+    var permissions = ["WRITE_EXTERNAL_STORAGE", "RECORD_AUDIO"];
+    
+    document.addEventListener ('deviceready', function (){
+      
+      txek (permissions, true);
+        
+    });
+    
+    function txek (baimenak, ok){
+    
+      console.log ("txek", baimenak, ok);
+      
+      if (baimenak.length === 0)
+        d.resolve (ok);
+      else{
+        
+        var baimenak_rest = baimenak.shift ();
+        console.log (baimenak_rest);
+        
+        cordova.plugins.diagnostic.getPermissionAuthorizationStatus (function (status){
+          
+          if (status != "GRANTED" && status != "DENIED_ALWAYS"){
+            
+            cordova.plugins.diagnostic.requestRuntimePermission (function (status){
+              
+              if (status == "GRANTED")
+                txek (baimenak_rest, ok);
+              else
+                txek (baimenak_rest, false);
+                
+            }, function (error){
+              d.reject (error);
+            }, baimenak[0]);
+            
+          }
+          else if (status == "GRANTED")
+            txek (baimenak_rest, ok);
+          else
+            txek (baimenak_rest, false);
+              
+        }, function (error){
+          d.reject (error);
+        }, baimenak[0]);
+        
+      }
+      
+    }
+    
+    return d.promise;
+    
+  };
+  
   return Funtzioak;
 
 }]);

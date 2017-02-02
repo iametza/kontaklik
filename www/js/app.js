@@ -84,4 +84,10 @@ var app = angular.module ('haziakApp', [
     console.log ("app.js createTables", error);
   });
   
+  Funtzioak.baimenak_txek ().then (function (emaitza){
+    console.log ("baimenak", emaitza);
+  }, function (error){
+    console.log ("app.js baimenak_txek", error);
+  });
+  
 }]);
