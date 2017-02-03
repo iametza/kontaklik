@@ -61,6 +61,7 @@ body {
   margin-right: 15px;
   vertical-align: top;
   text-align: center;
+  word-wrap: break-word;
 }
 
 #menua-kutxa #elementuak .elementua:last-child {

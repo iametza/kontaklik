@@ -9,8 +9,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.uneko_eszena_id = 0;
   $scope.uneko_audioa = {'izena': '', 'iraupena': 0, 'counter': 0};
   $scope.menuaCollapsed = false;
-  $scope.kontador = undefined;
   $scope.bideo_modua = {'playing': false, 'interval': undefined};
+  
+  var kontador;
   
   $scope.init = function (){
     
@@ -27,7 +28,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             $scope.ipuina = emaitza[0];
             
             // Recogemos las eszenak del ipuina
-            $scope.getEszenak ();
+            getEszenak ();
             
             // Recogemos los objektuak
             Database.getRows ('irudiak', {'atala': 'objektua'}, ' ORDER BY timestamp DESC').then (function (irudiak){
@@ -55,7 +56,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.getEszenak = function (){
+  function getEszenak (){
     
     Database.query ("SELECT e.*, ifnull(i.path, '') path FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then (function (emaitza){
               
@@ -65,7 +66,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         // Creamos una eszena por defecto
         Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'audioa': '', 'orden': 1}).then (function (emaitza){
           // Limpiamos la eszena por si acaso (si se viene de borrar una eszena, por ejemplo, puede que haga falta)
-          $scope.clearEszena ();
+          clearEszena ();
           
           // Ponemos el fondo en blanco
           angular.element ('#eszenatokia').css ('background-color', '#fff');
@@ -96,9 +97,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       console.log ("IpuinaCtrl, getEszenak ipuina datuak jasotzen", error);
     });
     
-  };
+  }
   
-  $scope.clearEszena = function (){
+  function clearEszena (){
     
     // Quitamos el fondo
     angular.element ('#eszenatokia').css ('background-color', 'transparent');
@@ -110,14 +111,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     // Quitamos los textos
     angular.element ('.testua').remove ();
     
-  };
+  }
   
   $scope.addObjektua = function (objektua){
     
     // Guardamos la relación en la base de datos y creamos el objeto
     Database.insertRow ('eszena_objektuak', {'fk_eszena': $scope.uneko_eszena_id, 'fk_objektua': objektua.id}).then (function (emaitza){
       
-      $scope.objektuaEszenara (emaitza.insertId);
+      objektuaEszenara (emaitza.insertId);
       
     }, function (error){
       console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
@@ -125,7 +126,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.objektuaEszenara = function (eszena_objektua_id, lock){
+  function objektuaEszenara (eszena_objektua_id, lock){
     lock = typeof lock !== 'undefined' ? lock : false;
     
     Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
@@ -172,12 +173,12 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       console.log ("IpuinaCtrl, objektuaEszenara", error);
     });
     
-  };
+  }
   
   $scope.addFondoa = function (fondoa){
     
     // Cambiamos el fondo
-    $scope.changeFondoa (fondoa);
+    changeFondoa (fondoa);
     
     // Guardamos el fondo en la base de datos
     Database.query ('UPDATE eszenak SET fk_fondoa=? WHERE id=?', [fondoa.id, $scope.uneko_eszena_id]).then (function (){
@@ -205,7 +206,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'path': '', 'audioa': '', 'orden': $scope.eszenak.length+1});
       
       // Limpiamos la eszena anterior
-      $scope.clearEszena ();
+      clearEszena ();
       
       // Ponemos el fondo en blanco
       angular.element ('#eszenatokia').css ('background-color', '#fff');
@@ -234,7 +235,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           Ipuinak.eszenak_ordenatu ($route.current.params.ipuina_id).then (function (){
             
             // Recogemos las eszenak que queden del ipuina
-            $scope.getEszenak ();
+            getEszenak ();
             
           }, function (error){
             console.log ("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
@@ -252,13 +253,13 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.changeFondoa = function (fondoa){
+  function changeFondoa (fondoa){
     
     angular.element ('#eszenatokia').css ('background', 'url(' + fondoa.path + ')');
     //angular.element ('#eszenatokia').css ('background-size', 'cover');
     angular.element ('#eszenatokia').css ('background-size', '100% 100%');
     
-  };
+  }
   
   $scope.changeEszena = function (eszena, lock){
     lock = typeof lock !== 'undefined' ? lock : false;
@@ -267,10 +268,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
       
       // Limpiamos la eszena anterior
-      $scope.clearEszena ();
+      clearEszena ();
       
       if (emaitza.length === 1){
-        $scope.changeFondoa (emaitza[0]);
+        changeFondoa (emaitza[0]);
       }
       else{
         angular.element ('#eszenatokia').css ('background-color', '#fff');
@@ -280,7 +281,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
         
         angular.forEach (objektuak, function (objektua){
-          $scope.objektuaEszenara (objektua.id, lock);
+          objektuaEszenara (objektua.id, lock);
         });
         
       }, onError);
@@ -289,7 +290,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
         
         angular.forEach (testuak, function (testua){
-          $scope.testuaEszenara (testua.id, lock);
+          testuaEszenara (testua.id, lock);
         });
         
       }, onError);
@@ -335,7 +336,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     modala.result.then (function (testua_id){
       
-      $scope.testuaEszenara (testua_id);
+      testuaEszenara (testua_id);
       
     }, function (error){
       console.log ("IpuinaCtrl, addTestua", error);
@@ -343,7 +344,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
                  
   };
   
-  $scope.testuaEszenara = function (testua_id, lock){
+  function testuaEszenara (testua_id, lock){
     lock = typeof lock !== 'undefined' ? lock : false;
     
     Database.query ('SELECT testua, style FROM eszena_testuak WHERE id=?', [testua_id]).then (function (testua){
@@ -390,7 +391,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       console.log ("IpuinaCtrl, testuaEszenara SELECT", error);
     });
     
-  };
+  }
   
   $scope.eszenaAurreratu = function (){
     
@@ -549,79 +550,91 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.audioa_startRecord = function (){
     
-    // Antes de grabar comprobamos que se tiene permiso, de lo contrario no funciona la grabación. A partir de Android 6, como sabrá usted, no se piden
-    // los permisos necesarios de la alpicación cuando se instala sino en tiempo de ejecución, cuando se necesitan. Pues pasa lo siguiente, cuando vamos
-    // a grabar, al crear el objeto "media", se nos pide el permiso necesario, aceptamos y cuando volvemos a intentar grabar el objeto "media" se crea
-    // corrupto, erróneo. Era necesario salir de la aplicación y volver a entrar para poder grabar. Por lo tanto necesito saber que se tiene permiso antes de
-    // ponerme a grabar. Y no sólo eso, una vez "resuelto" esto, es decir, aun usando un plugin para comprobar/pedir permiso para grabar podia darse el caso
-    // de que siguiera sin funcionar porque, vete tú a saber porqué, si todavia no teniamos permiso para acceder al contenido multimedia seguidamente
-    // se pedia este permiso, lo que volvia a crea el objeto "media" corrupto... Solución, una función que comprueba que se tienen todos los permisos
-    // necesarios. Es lo que hay.
-    
-    Funtzioak.baimenak_txek ().then (function (egoera){
+    if (Audio.egoera () == 'stop'){
       
-      if (egoera == 'ok'){
+      // Antes de grabar comprobamos que se tiene permiso, de lo contrario no funciona la grabación. A partir de Android 6, como sabrá usted, no se piden
+      // los permisos necesarios de la alpicación cuando se instala sino en tiempo de ejecución, cuando se necesitan. Pues pasa lo siguiente, cuando vamos
+      // a grabar, al crear el objeto "media", se nos pide el permiso necesario, aceptamos y cuando volvemos a intentar grabar el objeto "media" se crea
+      // corrupto, erróneo. Era necesario salir de la aplicación y volver a entrar para poder grabar. Por lo tanto necesito saber que se tiene permiso antes de
+      // ponerme a grabar. Y no sólo eso, una vez "resuelto" esto, es decir, aun usando un plugin para comprobar/pedir permiso para grabar podia darse el caso
+      // de que siguiera sin funcionar porque, vete tú a saber porqué, si todavia no teniamos permiso para acceder al contenido multimedia seguidamente
+      // se pedia este permiso, lo que volvia a crea el objeto "media" corrupto... Solución, una función que comprueba que se tienen todos los permisos
+      // necesarios. Es lo que hay.
+      
+      Funtzioak.baimenak_txek ().then (function (egoera){
         
-        $scope.kontador = $timeout ($scope.time_counter, 1000);
-        
-        Audio.startRecord ('audioa_' + $scope.uneko_eszena_id).then (function (audioa){
+        if (egoera == 'ok'){
           
-          $timeout.cancel ($scope.kontador);
+          kontador = $timeout (time_counter, 1000);
           
-          // Mover desde la carpeta temporal a una persistente
-          $cordovaFile.moveFile (audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then (function (){
+          Audio.startRecord ('audioa_' + $scope.uneko_eszena_id).then (function (audioa){
             
-            // Guardamos el audio en la base de datos
-            Database.query ('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then (function (){
+            // Mover desde la carpeta temporal a una persistente
+            $cordovaFile.moveFile (audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then (function (){
               
-              // Cambiamos el audio en la lista
-              angular.forEach ($scope.eszenak, function (eszena){
+              // Guardamos el audio en la base de datos
+              Database.query ('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then (function (){
                 
-                if (eszena.id === $scope.uneko_eszena_id)
-                  eszena.audioa = audioa.izena;
+                // Cambiamos el audio en la lista
+                angular.forEach ($scope.eszenak, function (eszena){
                   
+                  if (eszena.id === $scope.uneko_eszena_id)
+                    eszena.audioa = audioa.izena;
+                    
+                });
+                
+                $scope.uneko_audioa.izena = audioa.izena;
+                Audio.getDuration (audioa.izena).then (function (iraupena){
+                  $scope.uneko_audioa.iraupena = iraupena;
+                }, function (){
+                  $scope.uneko_audioa.iraupena = 0;
+                });
+                
+              }, function (error){
+                console.log ("IpuinaCtrl, startRecord update", error);
               });
-              
-              $scope.uneko_audioa.izena = audioa.izena;
-              Audio.getDuration (audioa.izena).then (function (iraupena){
-                $scope.uneko_audioa.iraupena = iraupena;
-              }, function (){
-                $scope.uneko_audioa.iraupena = 0;
-              });
-              $scope.uneko_audioa.counter = 0;
               
             }, function (error){
-              console.log ("IpuinaCtrl, startRecord update", error);
+              console.log ("IpuinaCtrl, startRecord movefile", error);
             });
             
           }, function (error){
-            console.log ("IpuinaCtrl, startRecord movefile", error);
+            time_counter_reset ();
+            console.log ("IpuinaCtrl, startRecord", error);
           });
           
-        }, function (error){
-          $timeout.cancel ($scope.kontador);
-          console.log ("IpuinaCtrl, startRecord", error);
-        });
+        }
         
-      }
+      }, function (error){
+        d.reject (error);
+        console.log ("IpuinaCtrl, startRecord baimenak_txek", error);
+      });
       
-    }, function (error){
-      d.reject (error);
-      console.log ("IpuinaCtrl, startRecord baimenak_txek", error);
-    });
+    }
     
   };
   
-  $scope.time_counter = function (){
+  function time_counter (){
     
     $scope.uneko_audioa.counter++;
-    $scope.kontador = $timeout ($scope.time_counter, 1000);
+    kontador = $timeout (time_counter, 1000);
     
-  };
+  }
+  
+  function time_counter_reset (){
+    
+    $scope.uneko_audioa.counter = 0;
+    
+    if (kontador !== undefined)
+      $timeout.cancel (kontador);
+      
+  }
   
   $scope.audioa_stopRecord = function (){
     
     Audio.stopRecord ();
+    
+    time_counter_reset ();
     
   };
   
@@ -629,17 +642,16 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     if ($scope.uneko_audioa.izena !== ''){
       
-      if (Audio.egoera () == 'stopped' || Audio.egoera () == 'paused'){
+      if (Audio.egoera () == 'stop' || Audio.egoera () == 'paused'){
         
-        $scope.kontador = $timeout ($scope.time_counter, 1000);
+        kontador = $timeout (time_counter, 1000);
       
         Audio.play ($scope.uneko_audioa.izena).then (function (){
           
-          $timeout.cancel ($scope.kontador);
-          $scope.uneko_audioa.counter = 0;
+          time_counter_reset ();
           
         }, function (error){
-          $timeout.cancel ($scope.kontador);
+          time_counter_reset ();
           console.log ("IpuinaCtrl, audioa_play", error);
         });
         
@@ -655,8 +667,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       Audio.pause ();
       
-      if ($scope.kontador !== undefined)
-        $timeout.cancel ($scope.kontador);
+      if (kontador !== undefined)
+        $timeout.cancel (kontador);
       
     }
     
@@ -666,10 +678,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     Audio.stop ();
     
-    if ($scope.kontador !== undefined){
-      $timeout.cancel ($scope.kontador);
-      $scope.uneko_audioa.counter = 0;
-    }
+    time_counter_reset ();
     
   };
   
@@ -678,7 +687,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     if ($scope.uneko_audioa.izena !== ''){
       
       // Puede que se esté reprodcuciendo en éste momento...
-      $scope.audioa_kill ();
+      audioa_kill ();
       
       $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
         
@@ -720,26 +729,21 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.audioa_tab_desaukeratua = function (){
     
-    $scope.audioa_kill ();
+    audioa_kill ();
     
   };
   
-  $scope.audioa_kill = function (){
+  function audioa_kill (){
     
     Audio.geratuMakinak ();
     
-    // Ponemos el contador a 0
-    $scope.uneko_audioa.counter = 0;
+    time_counter_reset ();
     
-    // Si está el contador en marcha lo paramos
-    if ($scope.kontador !== undefined)
-      $timeout.cancel ($scope.kontador);
-    
-  };
+  }
   
   $scope.bideo_modua_play = function (){
     
-    $scope.play_eszena (0);
+    play_eszena (0);
     
   };
   
@@ -762,7 +766,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  $scope.play_eszena = function (ind){
+  function play_eszena (ind){
     
     var lapso = 5; // Numero de segundos minimo entre una eszena y la siguiente
     
@@ -781,13 +785,13 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         if (iraupena > 0)
           Audio.play ($scope.eszenak[ind].audioa);
         
-        $scope.bideo_modua.interval = $interval (function (){ $scope.play_eszena (ind+1); }, lapso * 1000);
+        $scope.bideo_modua.interval = $interval (function (){ play_eszena (ind+1); }, lapso * 1000);
         
       }, function (){
         
         $scope.changeEszena ($scope.eszenak[ind], true);
         
-        $scope.bideo_modua.interval = $interval (function (){ $scope.play_eszena (ind+1); }, lapso * 1000);
+        $scope.bideo_modua.interval = $interval (function (){ play_eszena (ind+1); }, lapso * 1000);
         
       });
       
@@ -799,7 +803,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
     }
     
-  };
+  }
   
   var onError = function (err){
     
@@ -816,17 +820,17 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   document.addEventListener ('pause',  function (){
     
     // Paramos la posible reproducción/grabación del audio
-    $scope.audioa_kill ();
+    audioa_kill ();
     
   });
   
   $scope.$on ("$destroy", function (){
     
     // Limpiamos la eszena
-    $scope.clearEszena ();
+    clearEszena ();
     
     // Paramos la posible reproducción/grabación del audio
-    $scope.audioa_kill ();
+    audioa_kill ();
     
     // Paramos la posible reproducción del cuento
     $scope.bideo_modua_stop ();

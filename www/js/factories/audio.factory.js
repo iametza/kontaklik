@@ -2,7 +2,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   
   var Audio = {},
       media,
-      egoera = 'stopped',
+      egoera = 'stop',
       extension = '',
       tmp_path = '';
       /*,
@@ -30,7 +30,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
     var d = $q.defer ();
     
     if (audioa.trim () !== ''){
-  
+
       if (media !== undefined)
         media.release ();
         
@@ -39,7 +39,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
         d.resolve ({'path': tmp_path, 'izena': audioa + extension});
         
       }, function (error){
-        egoera = 'stopped';
+        egoera = 'stop';
         media = undefined;
         d.reject (error);
         console.log ("Audio factory, recordAudio", error);
@@ -50,19 +50,19 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
     }
     else
       d.reject ('izen hutsa');
-      
+    
     return d.promise;
     
   };
   
   Audio.stopRecord = function (){
     
-    if (media !== undefined){
+    if (media !== undefined && egoera == 'recording'){
       
       media.stopRecord ();
       media.release ();
       media = undefined;
-      egoera = 'stopped';
+      egoera = 'stop';
       
     }
     
@@ -82,12 +82,12 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
           media.release ();
           
         media = undefined;
-        egoera = 'stopped';
+        egoera = 'stop';
         
         d.resolve ();
         
       }, function (error){
-        egoera = 'stopped';
+        egoera = 'stop';
         media = undefined;
         d.reject (error);
         console.log ("Audio factory, play", error);
@@ -107,7 +107,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   
   Audio.pause = function (){
     
-    if (media !== undefined){
+    if (media !== undefined && egoera == 'playing'){
       media.pause ();
       egoera = 'paused';
     }
@@ -116,13 +116,13 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
   
   Audio.stop = function (){
     
-    if (media !== undefined){
+    if (media !== undefined && egoera == 'playing'){
       
       media.stop ();
       /* Lo siguiente no hace falta ya que se hace en el promise de Audio.play
        *media.release ();
       media = undefined;*/
-      egoera = 'stopped';
+      egoera = 'stop';
       
     }
     
@@ -183,7 +183,7 @@ app.factory ('Audio', ['$q', '$cordovaMedia', '$cordovaNativeAudio', function ($
       
       media.release ();
       media = undefined;
-      egoera = 'stopped';
+      egoera = 'stop';
       
     }
     
