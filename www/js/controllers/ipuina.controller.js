@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$interval', function($scope, $compile, $route, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $interval){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', function($scope, $compile, $route, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -9,7 +9,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.uneko_eszena_id = 0;
   $scope.uneko_audioa = {'izena': '', 'iraupena': 0, 'counter': 0};
   $scope.menuaCollapsed = false;
-  $scope.bideo_modua = {'playing': false, 'interval': undefined};
+  $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};
   
   var kontador;
   
@@ -743,7 +743,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.bideo_modua_play = function (){
     
-    play_eszena (0);
+    $scope.bideo_modua.uneko_eszena = 0;
+    
+    play_ipuina ();
     
   };
   
@@ -751,8 +753,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     if ($scope.bideo_modua.playing){
       
-      if ($scope.bideo_modua.interval !== undefined)
-        $interval.cancel ($scope.bideo_modua.interval);
+      if ($scope.bideo_modua.timer !== undefined)
+        $scope.bideo_modua.timer.stop ();
         
       // Paramos la posible reproducción del audio
       Audio.geratuMakinak ();
@@ -766,39 +768,49 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  function play_eszena (ind){
+  function play_ipuina (){
     
     var lapso = 5; // Numero de segundos minimo entre una eszena y la siguiente
     
-    if (ind < $scope.eszenak.length){
+    if ($scope.bideo_modua.uneko_eszena < $scope.eszenak.length){
       $scope.bideo_modua.playing = true;
       
-      if ($scope.bideo_modua.interval !== undefined)
-        $interval.cancel ($scope.bideo_modua.interval);
+      if ($scope.bideo_modua.timer !== undefined)
+        $scope.bideo_modua.timer.stop ();
         
-      Audio.getDuration ($scope.eszenak[ind].audioa).then (function (iraupena){
+      Audio.getDuration ($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa).then (function (iraupena){
         
         lapso = Math.max (lapso, iraupena);
         
-        $scope.changeEszena ($scope.eszenak[ind], true);
+        $scope.changeEszena ($scope.eszenak[$scope.bideo_modua.uneko_eszena], true);
         
         if (iraupena > 0)
-          Audio.play ($scope.eszenak[ind].audioa);
+          Audio.play ($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa);
         
-        $scope.bideo_modua.interval = $interval (function (){ play_eszena (ind+1); }, lapso * 1000);
+        $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
+          
+          $scope.bideo_modua.uneko_eszena++;
+          play_ipuina ();
+          
+        }, lapso * 1000);
         
       }, function (){
         
-        $scope.changeEszena ($scope.eszenak[ind], true);
+        $scope.changeEszena ($scope.eszenak[$scope.bideo_modua.uneko_eszena], true);
         
-        $scope.bideo_modua.interval = $interval (function (){ play_eszena (ind+1); }, lapso * 1000);
+        $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
+          
+          $scope.bideo_modua.uneko_eszena++;
+          play_ipuina ();
+          
+        }, lapso * 1000);
         
       });
       
     }
     else{
       
-      // Hemos llegado al final -> desactivamos el interval y nos quedamos en la última eszena
+      // Hemos llegado al final -> desactivamos el timer y nos quedamos en la última eszena
       $scope.bideo_modua_stop ();
       
     }
@@ -819,8 +831,31 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   document.addEventListener ('pause',  function (){
     
-    // Paramos la posible reproducción/grabación del audio
-    audioa_kill ();
+    if ($scope.bideo_modua.playing){
+      
+      if ($scope.bideo_modua.timer !== undefined)
+        $scope.bideo_modua.timer.pause ();
+        
+      if (Audio.egoera () == 'playing')
+        Audio.pause ();
+        
+    }
+    else
+      audioa_kill (); // Paramos la posible reproducción/grabación del audio
+    
+  });
+  
+  document.addEventListener ('resume',  function (){
+    
+    if ($scope.bideo_modua.playing){
+      
+      if ($scope.bideo_modua.timer !== undefined)
+        $scope.bideo_modua.timer.resume ();
+        
+      if (Audio.egoera () == 'paused')
+        Audio.play ($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa);
+        
+    }
     
   });
   
