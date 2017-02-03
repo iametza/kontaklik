@@ -22,12 +22,10 @@ app.factory('Funtzioak', ['$q', function($q){
         d.resolve (entries);
         
       }, function (error){
-        console.log("Funtzioak factory listDir, readEntries", error);
         d.reject (error);
       });
       
     }, function (error){
-      console.log("Funtzioak factory listDir, resolveLocalFileSystemURL", error);
       d.reject (error);
     });
     
@@ -41,20 +39,19 @@ app.factory('Funtzioak', ['$q', function($q){
     
     document.addEventListener ('deviceready', function (){
       
-      txek (permissions, true);
+      txek (permissions, 'ok');
         
     });
     
-    function txek (baimenak, ok){
+    function txek (baimenak, egoera){
     
-      console.log ("txek", baimenak, ok);
-      
       if (baimenak.length === 0)
-        d.resolve (ok);
+        d.resolve (egoera);
       else{
         
-        var baimenak_rest = baimenak.shift ();
-        console.log (baimenak_rest);
+        var baimena = baimenak[0];
+        
+        baimenak.shift ();
         
         cordova.plugins.diagnostic.getPermissionAuthorizationStatus (function (status){
           
@@ -63,23 +60,23 @@ app.factory('Funtzioak', ['$q', function($q){
             cordova.plugins.diagnostic.requestRuntimePermission (function (status){
               
               if (status == "GRANTED")
-                txek (baimenak_rest, ok);
+                txek (baimenak, egoera);
               else
-                txek (baimenak_rest, false);
+                txek (baimenak, 'nok');
                 
             }, function (error){
               d.reject (error);
-            }, baimenak[0]);
+            }, baimena);
             
           }
           else if (status == "GRANTED")
-            txek (baimenak_rest, ok);
+            txek (baimenak, egoera);
           else
-            txek (baimenak_rest, false);
+            txek (baimenak, 'nok');
               
         }, function (error){
           d.reject (error);
-        }, baimenak[0]);
+        }, baimena);
         
       }
       

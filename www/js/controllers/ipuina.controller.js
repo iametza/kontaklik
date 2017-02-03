@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$interval', function($scope, $compile, $route, Kamera, Audio, Files, Database, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $interval){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$interval', function($scope, $compile, $route, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $interval){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -549,45 +549,65 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.audioa_startRecord = function (){
     
-    $scope.kontador = $timeout ($scope.time_counter, 1000);
+    // Antes de grabar comprobamos que se tiene permiso, de lo contrario no funciona la grabación. A partir de Android 6, como sabrá usted, no se piden
+    // los permisos necesarios de la alpicación cuando se instala sino en tiempo de ejecución, cuando se necesitan. Pues pasa lo siguiente, cuando vamos
+    // a grabar, al crear el objeto "media", se nos pide el permiso necesario, aceptamos y cuando volvemos a intentar grabar el objeto "media" se crea
+    // corrupto, erróneo. Era necesario salir de la aplicación y volver a entrar para poder grabar. Por lo tanto necesito saber que se tiene permiso antes de
+    // ponerme a grabar. Y no sólo eso, una vez "resuelto" esto, es decir, aun usando un plugin para comprobar/pedir permiso para grabar podia darse el caso
+    // de que siguiera sin funcionar porque, vete tú a saber porqué, si todavia no teniamos permiso para acceder al contenido multimedia seguidamente
+    // se pedia este permiso, lo que volvia a crea el objeto "media" corrupto... Solución, una función que comprueba que se tienen todos los permisos
+    // necesarios. Es lo que hay.
     
-    Audio.startRecord ('audioa_' + $scope.uneko_eszena_id).then (function (audioa){
+    Funtzioak.baimenak_txek ().then (function (egoera){
       
-      $timeout.cancel ($scope.kontador);
-      
-      // Mover desde la carpeta temporal a una persistente
-      $cordovaFile.moveFile (audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then (function (){
+      if (egoera == 'ok'){
         
-        // Guardamos el audio en la base de datos
-        Database.query ('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then (function (){
+        $scope.kontador = $timeout ($scope.time_counter, 1000);
+        
+        Audio.startRecord ('audioa_' + $scope.uneko_eszena_id).then (function (audioa){
           
-          // Cambiamos el audio en la lista
-          angular.forEach ($scope.eszenak, function (eszena){
+          $timeout.cancel ($scope.kontador);
+          
+          // Mover desde la carpeta temporal a una persistente
+          $cordovaFile.moveFile (audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then (function (){
             
-            if (eszena.id === $scope.uneko_eszena_id)
-              eszena.audioa = audioa.izena;
+            // Guardamos el audio en la base de datos
+            Database.query ('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then (function (){
               
+              // Cambiamos el audio en la lista
+              angular.forEach ($scope.eszenak, function (eszena){
+                
+                if (eszena.id === $scope.uneko_eszena_id)
+                  eszena.audioa = audioa.izena;
+                  
+              });
+              
+              $scope.uneko_audioa.izena = audioa.izena;
+              Audio.getDuration (audioa.izena).then (function (iraupena){
+                $scope.uneko_audioa.iraupena = iraupena;
+              }, function (){
+                $scope.uneko_audioa.iraupena = 0;
+              });
+              $scope.uneko_audioa.counter = 0;
+              
+            }, function (error){
+              console.log ("IpuinaCtrl, startRecord update", error);
+            });
+            
+          }, function (error){
+            console.log ("IpuinaCtrl, startRecord movefile", error);
           });
-          
-          $scope.uneko_audioa.izena = audioa.izena;
-          Audio.getDuration (audioa.izena).then (function (iraupena){
-            $scope.uneko_audioa.iraupena = iraupena;
-          }, function (){
-            $scope.uneko_audioa.iraupena = 0;
-          });
-          $scope.uneko_audioa.counter = 0;
           
         }, function (error){
-          console.log ("IpuinaCtrl, startRecord update", error);
+          $timeout.cancel ($scope.kontador);
+          console.log ("IpuinaCtrl, startRecord", error);
         });
         
-      }, function (error){
-        console.log ("IpuinaCtrl, startRecord movefile", error);
-      });
-
+      }
+      
     }, function (error){
-      $timeout.cancel ($scope.kontador);
-      console.log ("IpuinaCtrl, startRecord", error);
+      d.reject (error);
+      console.log ("IpuinaCtrl, startRecord baimenak_txek", error);
     });
     
   };
