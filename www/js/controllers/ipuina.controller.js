@@ -645,14 +645,27 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       if (Audio.egoera () == 'stop' || Audio.egoera () == 'paused'){
         
         kontador = $timeout (time_counter, 1000);
-      
+        
         Audio.play ($scope.uneko_audioa.izena).then (function (){
           
           time_counter_reset ();
           
         }, function (error){
-          time_counter_reset ();
-          console.log ("IpuinaCtrl, audioa_play", error);
+          
+          if (error == 'resume'){
+            
+            Audio.getCurrentPosition ().then (function (posizioa){
+        
+              $scope.uneko_audioa.counter = Math.max ($scope.uneko_audioa.counter, Math.floor (posizioa));
+              
+            }, function (error){
+              console.log ("IpuinaCtrl, audioa_play getCurrentPosition", error);
+            });
+            
+          }
+          else
+            time_counter_reset ();
+            
         });
         
       }
