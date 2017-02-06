@@ -1,33 +1,58 @@
-app.factory('Ipuinak', ['$q', 'Database', function($q, Database){
+app.factory('Ipuinak', ['$q', '$cordovaFile', 'Database', function($q, $cordovaFile, Database){
   
   var Ipuinak = {};
   
   Ipuinak.ezabatu_eszena = function (eszena_id){
     var d = $q.defer ();
     
-    // Empezamos borrando los objetos de la eszena
-    Database.deleteRows ('eszena_objektuak', {'fk_eszena': eszena_id}).then (function (){
+    // Empezamos comprobando/recogiendo los datos de la eszena
+    Database.getRows ('eszenak', {'id': eszena_id}, '').then (function (eszena){
       
-      // Borramos los textos de la eszena
-      Database.deleteRows ('eszena_testuak', {'fk_eszena': eszena_id}).then (function (){
-      
-        // Borramos los datos de la eszena
-        Database.deleteRows ('eszenak', {'id': eszena_id}).then (function (){
+      if (eszena.length === 1){
+        
+        // Empezamos borrando los objetos de la eszena
+        Database.deleteRows ('eszena_objektuak', {'fk_eszena': eszena_id}).then (function (){
           
-          d.resolve ();
+          // Borramos los textos de la eszena
+          Database.deleteRows ('eszena_testuak', {'fk_eszena': eszena_id}).then (function (){
+            
+            // Borramos el audio de la eszena
+            if (eszena[0].audioa.trim () !== ''){
+              
+              $cordovaFile.removeFile (cordova.file.dataDirectory, eszena[0].audioa).then (function (){}, function (error) {
+                console.log ("Ipuinak factory, ezabatu_eszena removeFile audioa", error);
+              });
+              
+            }
+          
+            // Borramos los datos de la eszena
+            Database.deleteRows ('eszenak', {'id': eszena_id}).then (function (){
+              
+              d.resolve ();
+              
+            }, function (error){
+              console.log ("Ipuinak factory, ezabatu_eszena eszena ezabatzerakoan", error);
+              d.reject (error);
+            });
+            
+          }, function (error){
+            console.log ("Ipuinak factory, ezabatu_eszena eszena_testuak ezabatzerakoan", error);
+            d.reject (error);
+          });
           
         }, function (error){
-          console.log ("Ipuinak factory, ezabatu_eszena eszena ezabatzerakoan", error);
+          console.log ("Ipuinak factory, ezabatu_eszena eszena_objektuak ezabatzerakoan", error);
           d.reject (error);
         });
-        
-      }, function (error){
-        console.log ("Ipuinak factory, ezabatu_eszena eszena_testuak ezabatzerakoan", error);
-        d.reject (error);
-      });
+    
+      }
+      else{
+        console.log ("Ipuinak factory, ezabatu_eszena eszena ezin jaso");
+        d.reject ('eszena ezin jaso');
+      }
       
     }, function (error){
-      console.log ("Ipuinak factory, ezabatu_eszena eszena_objektuak ezabatzerakoan", error);
+      console.log ("Ipuinak factory, ezabatu_eszena eszena datuak jasotzerakoan", error);
       d.reject (error);
     });
     
