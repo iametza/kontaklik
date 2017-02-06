@@ -655,7 +655,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           if (error == 'resume'){
             
             Audio.getCurrentPosition ().then (function (posizioa){
-        
+              
               $scope.uneko_audioa.counter = Math.max ($scope.uneko_audioa.counter, Math.floor (posizioa));
               
             }, function (error){
@@ -699,7 +699,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     if ($scope.uneko_audioa.izena !== ''){
       
-      // Puede que se esté reprodcuciendo en éste momento...
+      // Puede que se esté reproduciendo en éste momento...
       audioa_kill ();
       
       $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
