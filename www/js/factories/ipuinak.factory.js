@@ -44,7 +44,7 @@ app.factory('Ipuinak', ['$q', '$cordovaFile', 'Database', function($q, $cordovaF
           console.log ("Ipuinak factory, ezabatu_eszena eszena_objektuak ezabatzerakoan", error);
           d.reject (error);
         });
-    
+        
       }
       else{
         console.log ("Ipuinak factory, ezabatu_eszena eszena ezin jaso");
