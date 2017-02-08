@@ -52,26 +52,29 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', '$cordovaNativeAudio', fun
       
       if (!$scope.audio_fondo.playing){
         
-        $scope.audio_fondo.izena = audio;
-        $scope.audio_fondo.playing = true;
-        
-        $cordovaNativeAudio.loop (audio);
+        fondo_play (audio);
         
       }
       else if ($scope.audio_fondo.izena != audio){
         
         $cordovaNativeAudio.stop ($scope.audio_fondo.izena);
         
-        $scope.audio_fondo.izena = audio;
-        $scope.audio_fondo.playing = true;
-        
-        $cordovaNativeAudio.loop (audio);
+        fondo_play (audio);
         
       }
       
     }
     
   };
+  
+  function fondo_play (audio){
+    
+    $scope.audio_fondo.izena = audio;
+    $scope.audio_fondo.playing = true;
+    
+    $cordovaNativeAudio.loop (audio);
+    
+  }
   
   $scope.audio_fondo_stop = function (audio){
     
