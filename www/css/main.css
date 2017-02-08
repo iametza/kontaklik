@@ -72,8 +72,15 @@ body {
 
 #menua-kutxa #elementuak .elementua a,
 #menua-kutxa #elementuak .elementua a:hover,
-#menua-kutxa #elementuak .elementua a:focus {
+#menua-kutxa #elementuak .elementua a:focus,
+#menua-kutxa #elementuak .elementua a:visited {
+  display: inline-block;
   text-decoration: none;
+}
+
+#menua-kutxa #elementuak .elementua a:active img {
+  border: 4px solid #e73c68 !important;
+  transform: translateZ(4px);
 }
 
 #menua-kutxa #elementuak .elementua img {
