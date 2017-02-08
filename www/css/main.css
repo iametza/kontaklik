@@ -358,7 +358,8 @@ body {
   padding: 6px 24px;
 }
 
-.modal-body .botoiak button:focus {
+.modal-body .botoiak button:focus,
+.modal-body .botoiak button:hover {
   background-color: #e73d64;
   color: #fff;
   border-color: #e73d64;
