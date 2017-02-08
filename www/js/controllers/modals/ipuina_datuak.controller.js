@@ -33,7 +33,7 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', '$cordova
     if (form.$valid){
       
       // Comprobamos que no exista el ipuina para el erabiltzaile
-      Database.query ('SELECT id FROM ipuinak WHERE fk_erabiltzailea=? AND izenburua=? AND id<>?', [erabiltzailea_id, $scope.eremuak.izenburua, ipuina_id]).then (function (emaitza){
+      Database.query ('SELECT id FROM ipuinak WHERE fk_erabiltzailea=? AND UPPER(izenburua)=? AND id<>?', [erabiltzailea_id, $scope.eremuak.izenburua.toUpperCase (), ipuina_id]).then (function (emaitza){
         
         if (emaitza.length === 0){
           
@@ -42,16 +42,16 @@ app.controller('ModalIpuinaDatuakCtrl',['$scope', '$uibModalInstance', '$cordova
             
             Database.insertRow ('ipuinak', {'izenburua': $scope.eremuak.izenburua, 'fk_erabiltzailea': erabiltzailea_id}).then (function (emaitza){
               
-              /*// Cerramos la ventana modal
+              // Cerramos la ventana modal
               $uibModalInstance.close ();
               
               // Desactivamos el control de cambio de estado para poder redireccionar (ver función más abajo)
               $scope.offLocationChangeStart ();
               
               // Redireccionamos a la pantalla del ipuina
-              window.location = "#/ipuinak/" + erabiltzailea_id + "/" + emaitza.insertId;*/
+              window.location = "#/ipuinak/" + erabiltzailea_id + "/" + emaitza.insertId;
               
-              $uibModalInstance.close (emaitza.insertId);
+              //$uibModalInstance.close (emaitza.insertId);
               
             }, function (error){
               console.log ("ModalIpuinaDatuakCtrl, ipuina_gorde insert", error);

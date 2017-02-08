@@ -33,7 +33,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', '$
     if (form.$valid){
       
       // Comprobamos que no exista el erabiltzaile
-      Database.query ('SELECT id FROM erabiltzaileak WHERE izena=? AND id<>?', [$scope.eremuak.izena, erabiltzailea_id]).then (function (emaitza){
+      Database.query ('SELECT id FROM erabiltzaileak WHERE UPPER(izena)=? AND id<>?', [$scope.eremuak.izena.toUpperCase (), erabiltzailea_id]).then (function (emaitza){
         
         if (emaitza.length === 0){
           
@@ -42,16 +42,16 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$scope', '$uibModalInstance', '$
             
             Database.insertRow ('erabiltzaileak', {'izena': $scope.eremuak.izena}).then (function (emaitza){
             
-              /*// Cerramos la ventana modal
+              // Cerramos la ventana modal
               $uibModalInstance.close ();
               
               // Desactivamos el control de cambio de estado para poder redireccionar (ver función más abajo)
               $scope.offLocationChangeStart ();
               
               // Redireccionamos a la pantalla con la lista de ipuinak del usuario 
-              window.location = "#/ipuinak/" + emaitza.insertId;*/
+              window.location = "#/ipuinak/" + emaitza.insertId;
               
-              $uibModalInstance.close (emaitza.insertId);
+              //$uibModalInstance.close (emaitza.insertId);
               
             }, function (error){
               console.log ("ModalErabiltzaileaDatuakCtrl, erabiltzailea_gorde insert", error);
