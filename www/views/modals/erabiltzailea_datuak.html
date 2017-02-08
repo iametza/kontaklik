@@ -1,6 +1,7 @@
 <div class="modal-header">
   <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
   <h4 class="modal-title" id="myModalLabel">Erabiltzailea</h4>
+  <img class="itxi" src="images/ikonoak/itxi.png" ng-click="itxi ()" />
 </div>
 <div class="modal-body">
   <div ng-if="errore_mezua !== ''" class="alert alert-warning" role="alert">
@@ -21,8 +22,9 @@
       Izena eremua bete mesedez
     </div>
     
-    <button type="button" class="btn btn-default" ng-click="itxi ()">Itxi</button>
-    <button type="submit" class="btn btn-primary">Gorde</button>
-    <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="erabiltzailea_ezabatu ()">Ezabatu</button>
+    <div class="botoiak">
+      <button type="submit" class="btn btn-primary">Gorde</button>
+      <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="erabiltzailea_ezabatu ()">Ezabatu</button>
+    </div>
   </form>
 </div>

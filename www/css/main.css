@@ -27,6 +27,8 @@ body {
   margin: 0;
 }
 
+/** Hasiera pantailak (erabiltzaileak/ipuinak) **/
+
 #menua-burua {
   margin-top: 50px;
 }
@@ -113,17 +115,7 @@ body {
   color: #fff;
 }
 
-.laukia {
-  position: absolute;
-  /*background: silver;*/
-  max-width: 150px;
-  max-height: 150px;
-  text-align: center;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
+/** Ipuinak editatzeko menu nagusia **/
 
 .goiko-menua {
   position: fixed;
@@ -171,9 +163,9 @@ body {
   border-top: none;
   border-right: none;
   border-left: none;
-  border-bottom: 4px solid #e73c68;
+  border-bottom: 4px solid #e73d64;
   background-color: #fff;
-  color: #e73c68;
+  color: #e73d64;
 }
 
 .goiko-menua .tab-edukia {
@@ -209,7 +201,7 @@ body {
 
 .goiko-menua .tab-edukia #eszenak .fondoak .fondo.active,
 .goiko-menua .tab-edukia #eszenak .fondoak .fondo.active:focus {
-  border: 4px solid #e73c68;
+  border: 4px solid #e73d64;
 }
 
 .goiko-menua .tab-edukia #eszenak .fondoak .fondo:last-child {
@@ -274,7 +266,7 @@ body {
 }
 
 .goiko-menua .tab-edukia .mikro p  {
-  color: #e73c68;
+  color: #e73d64;
   font-weight: bold;
   font-size: 12px;
 }
@@ -296,6 +288,88 @@ body {
   top: 20px;
   left: 20px;
   z-index: 1001;
+}
+
+/** Leiho modala **/
+
+.modal-dialog {
+  margin: 50px auto !important;
+}
+
+.modal-content {
+  background-color: #9ac140 !important;
+  border-radius: 0px !important;
+}
+
+.modal-header {
+  border-bottom: none !important;
+}
+
+.modal-header h4.modal-title {
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.modal-header .itxi {
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  width: 50px;
+  height: auto;
+}
+
+.modal-body label {
+  color: #fff;
+}
+
+.modal-body .form-control,
+.modal-body .form-control:focus {
+  border-color: #fff;
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+.modal-body .botoiak {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.modal-body .botoiak button {
+  background-color: #fff;
+  color: #e73d64;
+  border-color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 6px 24px;
+}
+
+.modal-body .botoiak button:focus {
+  background-color: #e73d64;
+  color: #fff;
+  border-color: #e73d64;
+}
+
+.modal-body .has-error .form-control {
+  border-color: #e73d64;
+}
+
+.modal-body .alert-warning {
+  color: #e73d64;
+  background-color: #fff;
+  border-color: #e73d64;
+}
+
+.laukia {
+  position: absolute;
+  /*background: silver;*/
+  max-width: 150px;
+  max-height: 150px;
+  text-align: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .objektua {
