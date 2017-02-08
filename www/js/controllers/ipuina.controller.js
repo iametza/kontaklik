@@ -15,7 +15,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.init = function (){
     
-    $scope.audio_fondo_stop ('sarrera');
+    $scope.audio_fondo_stop ();
     
     // Recogemos los datos del erabiltzaile
     Database.getRows ('erabiltzaileak', {'id': $route.current.params.erabiltzailea_id}, '').then (function (emaitza){

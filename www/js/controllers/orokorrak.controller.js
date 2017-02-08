@@ -76,14 +76,14 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', '$cordovaNativeAudio', fun
     
   }
   
-  $scope.audio_fondo_stop = function (audio){
+  $scope.audio_fondo_stop = function (){
     
-    if ($scope.audioak.indexOf (audio) >= 0 && $scope.audio_fondo.playing){
+    if ($scope.audio_fondo.playing){
+      
+      $cordovaNativeAudio.stop ($scope.audio_fondo.izena);
       
       $scope.audio_fondo.izena = '';
       $scope.audio_fondo.playing = false;
-      
-      $cordovaNativeAudio.stop (audio);
       
     }
     
@@ -96,7 +96,7 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', '$cordovaNativeAudio', fun
     $window.localStorage.audio_mutu = JSON.stringify ($scope.audio_mutu);
     
     if ($scope.audio_mutu && $scope.audio_fondo.playing)
-      $scope.audio_fondo_stop ($scope.audio_fondo.izena);
+      $scope.audio_fondo_stop ();
     else if (!$scope.audio_mutu)
       $scope.audio_fondo_play (audio_fondo);
     
