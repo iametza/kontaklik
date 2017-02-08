@@ -30,7 +30,7 @@
           
           <div class="elementua" ng-repeat="ipuina in ipuinak">
             
-            <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}" hm-press="ipuina_datuak (ipuina.id)">
+            <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}" ng-click="audio_play ('click')" hm-press="ipuina_datuak (ipuina.id)">
               
               <img ng-src="{{ipuina.path}}" src="images/eszena_fondo_gabe.jpg" />
               

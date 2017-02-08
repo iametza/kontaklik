@@ -2,7 +2,9 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function
   
   $scope.erabiltzaileak = [];
   
-  $scope.init = function () {
+  $scope.init = function (){
+    
+    $scope.audio_fondo_play ('sarrera');
     
     angular.element ('#eszenatokia').css ('background', "url('images/fondoa.jpg') no-repeat center center fixed");
     angular.element ('#eszenatokia').css ('background-size', "cover");

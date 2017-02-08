@@ -5,6 +5,8 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', funct
   
   $scope.init = function () {
     
+    $scope.audio_fondo_play ('sarrera');
+    
     angular.element ('#eszenatokia').css ('background', "url('images/fondoa.jpg') no-repeat center center fixed");
     angular.element ('#eszenatokia').css ('background-size', "cover");
     
