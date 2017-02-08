@@ -297,6 +297,13 @@ body {
   z-index: 1001;
 }
 
+#audio_on_off {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+}
+
 /** Leiho modala **/
 
 .modal-dialog {

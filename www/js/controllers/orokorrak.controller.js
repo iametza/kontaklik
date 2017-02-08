@@ -1,9 +1,13 @@
-app.controller ('OrokorraCtrl', ['$scope', '$cordovaNativeAudio', function ($scope, $cordovaNativeAudio){
+app.controller ('OrokorraCtrl', ['$scope', '$window', '$cordovaNativeAudio', function ($scope, $window, $cordovaNativeAudio){
   
   $scope.audioak = [];
+  $scope.audio_mutu = false;
   $scope.audio_fondo = {'izena': '', 'playing': false};
   
   $scope.init = function (){
+    
+    if ('audio_mutu' in $window.localStorage)
+      $scope.audio_mutu = JSON.parse ($window.localStorage.audio_mutu);
     
     $cordovaNativeAudio.preloadComplex ('sarrera', 'assets/audio/sarrera.mp3', 1, 1).then (function (msg){
       
@@ -30,7 +34,7 @@ app.controller ('OrokorraCtrl', ['$scope', '$cordovaNativeAudio', function ($sco
   
   $scope.audio_play = function (audio){
     
-    if ($scope.audioak.indexOf (audio) >= 0)
+    if (!$scope.audio_mutu && $scope.audioak.indexOf (audio) >= 0)
       $cordovaNativeAudio.play (audio);
     
   };
@@ -44,7 +48,7 @@ app.controller ('OrokorraCtrl', ['$scope', '$cordovaNativeAudio', function ($sco
   
   $scope.audio_fondo_play = function (audio){
     
-    if ($scope.audioak.indexOf (audio) >= 0){
+    if (!$scope.audio_mutu && $scope.audioak.indexOf (audio) >= 0){
       
       if (!$scope.audio_fondo.playing){
         
@@ -79,6 +83,19 @@ app.controller ('OrokorraCtrl', ['$scope', '$cordovaNativeAudio', function ($sco
       $cordovaNativeAudio.stop (audio);
       
     }
+    
+  };
+  
+  $scope.audio_on_off = function (audio_fondo){
+    
+    $scope.audio_mutu = !$scope.audio_mutu;
+    
+    $window.localStorage.audio_mutu = JSON.stringify ($scope.audio_mutu);
+    
+    if ($scope.audio_mutu && $scope.audio_fondo.playing)
+      $scope.audio_fondo_stop ($scope.audio_fondo.izena);
+    else if (!$scope.audio_mutu)
+      $scope.audio_fondo_play (audio_fondo);
     
   };
   
