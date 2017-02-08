@@ -8,9 +8,9 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', '$cordovaNativeAudio', fun
     
     if ('audio_mutu' in $window.localStorage)
       $scope.audio_mutu = JSON.parse ($window.localStorage.audio_mutu);
-    
-    $cordovaNativeAudio.preloadComplex ('sarrera', 'assets/audio/sarrera.mp3', 1, 1).then (function (msg){
       
+    $cordovaNativeAudio.preloadComplex ('sarrera', 'assets/audio/sarrera.mp3', 1, 1).then (function (msg){
+    
       if (msg == 'OK'){
         $scope.audioak.push ('sarrera');
         
@@ -22,12 +22,21 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', '$cordovaNativeAudio', fun
     });
     
     $cordovaNativeAudio.preloadSimple ('click', 'assets/audio/click.mp3').then (function (msg){
-      
+    
       if (msg == 'OK')
         $scope.audioak.push ('click');
       
     }, function (error){
       console.log ("OrokorraCtrl, preloadSimple click", error);
+    });
+    
+    $cordovaNativeAudio.preloadSimple ('popup', 'assets/audio/popup.mp3').then (function (msg){
+    
+      if (msg == 'OK')
+        $scope.audioak.push ('popup');
+      
+    }, function (error){
+      console.log ("OrokorraCtrl, preloadSimple popup", error);
     });
     
   };

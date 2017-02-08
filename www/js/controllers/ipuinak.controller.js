@@ -78,6 +78,10 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', funct
       }
     });
     
+    modala.rendered.then (function (){
+      $scope.audio_play ('popup');
+    });
+    
     modala.result.then (function (){
                 
       // Recogemos los ipuinak del erabiltzaile

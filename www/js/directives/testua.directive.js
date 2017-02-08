@@ -165,6 +165,10 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
                 }
               });
               
+              modala.rendered.then (function (){
+                scope.$parent.audio_play ('popup');
+              });
+              
               modala.result.then (function (emaitza){
                 
                 if (emaitza === 'ezabatu'){

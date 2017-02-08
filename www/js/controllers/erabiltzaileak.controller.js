@@ -39,6 +39,10 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function
       }
     });
     
+    modala.rendered.then (function (){
+      $scope.audio_play ('popup');
+    });
+    
     modala.result.then (function (){
                 
       // Recogemos los erabiltzaileak

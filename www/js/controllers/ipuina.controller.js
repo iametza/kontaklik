@@ -336,6 +336,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       }
     });
     
+    modala.rendered.then (function (){
+      $scope.audio_play ('popup');
+    });
+    
     modala.result.then (function (testua_id){
       
       testuaEszenara (testua_id);
