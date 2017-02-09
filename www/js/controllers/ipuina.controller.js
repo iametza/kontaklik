@@ -648,7 +648,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     if ($scope.uneko_audioa.izena !== ''){
       
-      if (Audio.egoera () == 'stop' || Audio.egoera () == 'paused'){
+      if (Audio.egoera () == 'stop' || Audio.egoera () == 'pause'){
         
         kontador = $timeout (time_counter, 1000);
         
@@ -682,7 +682,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.audioa_pause = function (){
     
-    if (Audio.egoera () == 'playing'){
+    if (Audio.egoera () == 'play'){
       
       Audio.pause ();
       
@@ -724,8 +724,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             });
             
             $scope.uneko_audioa.izena = '';
-            $scope.uneko_audioa.iraupena = 0;
-            $scope.uneko_audioa.counter = 0;
+            $scope.uneko_audioa.iraupena = $scope.uneko_audioa.counter = 0;
             
             // Updatemos la base de datos
             Database.query ("UPDATE eszenak SET audioa='' WHERE id=?", [$scope.uneko_eszena_id]).then (function (){}, function (error){
@@ -855,7 +854,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       if ($scope.bideo_modua.timer !== undefined)
         $scope.bideo_modua.timer.pause ();
         
-      if (Audio.egoera () == 'playing')
+      if (Audio.egoera () == 'play')
         Audio.pause ();
         
     }
@@ -871,7 +870,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       if ($scope.bideo_modua.timer !== undefined)
         $scope.bideo_modua.timer.resume ();
         
-      if (Audio.egoera () == 'paused')
+      if (Audio.egoera () == 'pause')
         Audio.play ($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa);
         
     }
