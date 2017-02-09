@@ -570,9 +570,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       // se pedia este permiso, lo que volvia a crea el objeto "media" corrupto... Solución, una función que comprueba que se tienen todos los permisos
       // necesarios. Es lo que hay.
       
-      Funtzioak.baimenak_txek ().then (function (egoera){
+      Funtzioak.baimenak_txek ().then (function (baimenak){
         
-        if (egoera == 'ok'){
+        if (baimenak == 'ok'){
           
           $scope.uneko_audioa.egoera = 'record';
           
@@ -670,8 +670,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           
         }, function (error){
           
-          if (error == 'resume'){
+          if (error == 'resume'){ // no hay error, ya se estaba reproduciendo el mismo audio
             
+            // Recogemos el momento donde estaba la reproducción y lo "sincronizamos" con nuestro contador
             Audio.getCurrentPosition ().then (function (posizioa){
               
               $scope.uneko_audioa.counter = Math.max ($scope.uneko_audioa.counter, Math.floor (posizioa));
@@ -681,7 +682,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             });
             
           }
-          else{
+          else{ // aqui si que hay error....
             time_counter_reset ();
             $scope.uneko_audioa.egoera = 'stop';
           }
