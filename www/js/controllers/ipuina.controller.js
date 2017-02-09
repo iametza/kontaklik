@@ -7,7 +7,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.objektuak = [];
   $scope.fondoak = [];
   $scope.uneko_eszena_id = 0;
-  $scope.uneko_audioa = {'izena': '', 'iraupena': 0, 'counter': 0};
+  $scope.uneko_audioa = {'izena': '', 'iraupena': 0, 'counter': 0, 'egoera': 'stop'};
   $scope.menuaCollapsed = false;
   $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};
   
@@ -82,6 +82,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
           
           $scope.uneko_audioa.izena = '';
           $scope.uneko_audioa.iraupena = $scope.uneko_audioa.counter = 0;
+          $scope.uneko_audioa.egoera = 'stop';
         }, function (error){
           console.log ("IpuinaCtrl, getEszenak defektuzko eszena sortzerakoan", error);
         });
@@ -220,6 +221,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       $scope.uneko_audioa.izena = '';
       $scope.uneko_audioa.iraupena = $scope.uneko_audioa.counter = 0;
+      $scope.uneko_audioa.egoera = 'stop';
     }, function (error){
       console.log ("IpuinaCtrl, addEszena", error);
     });
@@ -317,6 +319,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         $scope.uneko_audioa.iraupena = 0;
       });
       $scope.uneko_audioa.counter = 0;
+      $scope.uneko_audioa.egoera = 'stop';
       
     }, function (error){
       console.log ("IpuinaCtrl, ipuina datuak jasotzen", error);
@@ -571,6 +574,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         
         if (egoera == 'ok'){
           
+          $scope.uneko_audioa.egoera = 'record';
+          
           kontador = $timeout (time_counter, 1000);
           
           Audio.startRecord ('audioa_' + $scope.uneko_eszena_id).then (function (audioa){
@@ -606,6 +611,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             
           }, function (error){
             time_counter_reset ();
+            $scope.uneko_audioa.egoera = 'stop';
             console.log ("IpuinaCtrl, startRecord", error);
           });
           
@@ -640,6 +646,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     Audio.stopRecord ();
     
+    $scope.uneko_audioa.egoera = 'stop';
+    
     time_counter_reset ();
     
   };
@@ -650,11 +658,15 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       if (Audio.egoera () == 'stop' || Audio.egoera () == 'pause'){
         
+        $scope.uneko_audioa.egoera = 'play';
+        
         kontador = $timeout (time_counter, 1000);
         
         Audio.play ($scope.uneko_audioa.izena).then (function (){
           
           time_counter_reset ();
+          
+          $scope.uneko_audioa.egoera = 'stop';
           
         }, function (error){
           
@@ -669,8 +681,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             });
             
           }
-          else
+          else{
             time_counter_reset ();
+            $scope.uneko_audioa.egoera = 'stop';
+          }
             
         });
         
@@ -686,6 +700,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
       
       Audio.pause ();
       
+      $scope.uneko_audioa.egoera = 'pause';
+      
       if (kontador !== undefined)
         $timeout.cancel (kontador);
       
@@ -696,6 +712,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.audioa_stop = function (){
     
     Audio.stop ();
+    
+    $scope.uneko_audioa.egoera = 'stop';
     
     time_counter_reset ();
     
@@ -725,6 +743,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
             
             $scope.uneko_audioa.izena = '';
             $scope.uneko_audioa.iraupena = $scope.uneko_audioa.counter = 0;
+            $scope.uneko_audioa.egoera = 'stop';
             
             // Updatemos la base de datos
             Database.query ("UPDATE eszenak SET audioa='' WHERE id=?", [$scope.uneko_eszena_id]).then (function (){}, function (error){
@@ -756,6 +775,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     Audio.geratuMakinak ();
     
     time_counter_reset ();
+    
+    $scope.uneko_audioa.egoera = 'stop';
     
   }
   
