@@ -10,6 +10,8 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', 'Soinuak', function ($scop
     
   };
   
+  $scope.audio_play = Soinuak.audio_play;
+  
   document.addEventListener ('deviceready', function (){
     
     if ('audio_mutu' in $window.localStorage)
