@@ -1,10 +1,10 @@
-app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function($scope, Database, $uibModal){
+app.controller('ErabiltzaileakCtrl',['$scope', 'Database', 'Soinuak', '$uibModal', function($scope, Database, Soinuak, $uibModal){
   
   $scope.erabiltzaileak = [];
   
   $scope.init = function (){
     
-    $scope.audio_fondo_play ('sarrera');
+    Soinuak.audio_fondo_play ('sarrera');
     
     angular.element ('#eszenatokia').css ('background', "url('images/fondoa.jpg') no-repeat center center fixed");
     angular.element ('#eszenatokia').css ('background-size', "cover");
@@ -40,7 +40,7 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function
     });
     
     modala.rendered.then (function (){
-      $scope.audio_play ('popup');
+      Soinuak.audio_play ('popup');
     });
     
     modala.result.then (function (){

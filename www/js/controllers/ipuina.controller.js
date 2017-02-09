@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', function($scope, $compile, $route, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Soinuak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', function($scope, $compile, $route, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Soinuak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -15,7 +15,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.init = function (){
     
-    $scope.audio_fondo_stop ();
+    Soinuak.audio_fondo_stop ();
     
     // Recogemos los datos del erabiltzaile
     Database.getRows ('erabiltzaileak', {'id': $route.current.params.erabiltzailea_id}, '').then (function (emaitza){
@@ -340,7 +340,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     });
     
     modala.rendered.then (function (){
-      $scope.audio_play ('popup');
+      Soinuak.audio_play ('popup');
     });
     
     modala.result.then (function (testua_id){

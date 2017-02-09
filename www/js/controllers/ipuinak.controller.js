@@ -1,11 +1,11 @@
-app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', function($scope, $route, Database, $uibModal){
+app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Soinuak', '$uibModal', function($scope, $route, Database, Soinuak, $uibModal){
   
   $scope.erabiltzailea = {};
   $scope.ipuinak = [];
   
   $scope.init = function () {
     
-    $scope.audio_fondo_play ('sarrera');
+    Soinuak.audio_fondo_play ('sarrera');
     
     angular.element ('#eszenatokia').css ('background', "url('images/fondoa.jpg') no-repeat center center fixed");
     angular.element ('#eszenatokia').css ('background-size', "cover");
@@ -79,7 +79,7 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', funct
     });
     
     modala.rendered.then (function (){
-      $scope.audio_play ('popup');
+      Soinuak.audio_play ('popup');
     });
     
     modala.result.then (function (){
