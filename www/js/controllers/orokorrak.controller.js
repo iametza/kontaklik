@@ -10,7 +10,7 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', 'Soinuak', function ($scop
     
   };
   
-  $scope.audio_play = Soinuak.audio_play;
+  $scope.soinuak = Soinuak;
   
   document.addEventListener ('deviceready', function (){
     

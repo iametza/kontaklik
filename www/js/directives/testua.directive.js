@@ -1,4 +1,4 @@
-app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funtzioak', 'Soinuak', '$uibModal', function ($cordovaDialogs, $timeout, $q, Database, Funtzioak, Soinuak, $uibModal){
+app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funtzioak', '$uibModal', function ($cordovaDialogs, $timeout, $q, Database, Funtzioak, $uibModal){
   
   return {
     restrict: 'AE',
@@ -166,7 +166,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
               });
               
               modala.rendered.then (function (){
-                Soinuak.audio_play ('popup');
+                scope.$parent.soinuak.audio_play ('popup');
               });
               
               modala.result.then (function (emaitza){
