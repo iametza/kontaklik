@@ -12,6 +12,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};
   
   var kontador;
+  var img_play_eszena;
   
   $scope.init = function (){
     
@@ -19,10 +20,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     $scope.soinuak.audio_fondo_stop ();
     
     // Txapuzilla para meter en play de la eszena
-    var elem = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing" ng-click="play_eszena ()" />');
-    var el = $compile (elem)($scope);
+    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing" ng-click="play_eszena ()" />');
+    var el = $compile (img_play_eszena)($scope);
     
-    angular.element ('#eszenatokia').append (elem);
+    angular.element ('#eszenatokia').append (img_play_eszena);
     $scope.insertHere = el;
     
     // Recogemos los datos del erabiltzaile
@@ -945,6 +946,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     // Paramos la posible reproducción del cuento
     $scope.bideo_modua_stop ();
+    
+    // Quitamos el "botón" de reproducción de la eszena
+    img_play_eszena.remove ();
     
   });
   
