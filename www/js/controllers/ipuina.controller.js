@@ -25,6 +25,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
     angular.element ('#eszenatokia').append (img_play_eszena);
     $scope.insertHere = el;
+    // Txapuzilla ends
     
     // Recogemos los datos del erabiltzaile
     Database.getRows ('erabiltzaileak', {'id': $route.current.params.erabiltzailea_id}, '').then (function (emaitza){
