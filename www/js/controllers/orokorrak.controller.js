@@ -19,4 +19,19 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', 'Soinuak', function ($scop
     
   });
   
+  document.addEventListener ('pause',  function (){
+    
+    Soinuak.audioak_unload ();
+    
+  });
+  
+  document.addEventListener ('resume',  function (){
+    
+    Soinuak.audioak_load ();
+    
+    if (Soinuak.is_audio_fondo ())
+      Soinuak.audio_fondo_play (Soinuak.get_audio_fondo ());
+    
+  });
+  
 }]);
