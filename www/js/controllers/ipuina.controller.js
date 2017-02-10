@@ -15,7 +15,15 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
   
   $scope.init = function (){
     
+    // Paramos la musikilla de fondo
     $scope.soinuak.audio_fondo_stop ();
+    
+    // Txapuzilla para meter en play de la eszena
+    var elem = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing" ng-click="play_eszena ()" />');
+    var el = $compile (elem)($scope);
+    
+    angular.element ('#eszenatokia').append (elem);
+    $scope.insertHere = el;
     
     // Recogemos los datos del erabiltzaile
     Database.getRows ('erabiltzaileak', {'id': $route.current.params.erabiltzailea_id}, '').then (function (emaitza){
@@ -789,6 +797,25 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
+  $scope.play_eszena = function (){
+    
+    audioa_kill (); // Paramos la posible reproducción/grabación del audio
+    
+    // Recogemos el indice de la eszena actual en la lista y la reproducimos
+    angular.forEach ($scope.eszenak, function (eszena, ind){
+      
+      if (eszena.id === $scope.uneko_eszena_id){
+        
+        $scope.bideo_modua.uneko_eszena = ind;
+        
+        play_ipuina (false);
+        
+      }
+      
+    });
+    
+  };
+  
   $scope.bideo_modua_stop = function (){
     
     if ($scope.bideo_modua.playing){
@@ -808,7 +835,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     
   };
   
-  function play_ipuina (){
+  function play_ipuina (osorik){
+    osorik = typeof osorik !== 'undefined' ? osorik : true;
     
     var lapso = 5; // Numero de segundos minimo entre una eszena y la siguiente
     
@@ -829,8 +857,12 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         
         $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
           
-          $scope.bideo_modua.uneko_eszena++;
-          play_ipuina ();
+          if (osorik){
+            $scope.bideo_modua.uneko_eszena++;
+            play_ipuina ();
+          }
+          else
+            $scope.bideo_modua_stop ();
           
         }, lapso * 1000);
         
@@ -840,8 +872,12 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
         
         $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
           
-          $scope.bideo_modua.uneko_eszena++;
-          play_ipuina ();
+          if (osorik){
+            $scope.bideo_modua.uneko_eszena++;
+            play_ipuina ();
+          }
+          else
+            $scope.bideo_modua_stop ();
           
         }, lapso * 1000);
         

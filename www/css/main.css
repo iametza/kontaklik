@@ -416,3 +416,11 @@ body {
 .laukitxo.aukeratuta {
   border-color: yellow;
 }
+
+#play_eszena {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  height: 70px;
+  width: auto;
+}
