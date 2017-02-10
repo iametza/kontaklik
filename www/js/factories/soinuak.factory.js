@@ -2,6 +2,7 @@ app.factory ('Soinuak', ['$window', '$cordovaNativeAudio', function ($window, $c
   
   var Soinuak = {};
   var audioak = [];
+  var audio_path = 'assets/audio/'; // relativo a 'www/'
   var audio_mutu = false;
   var audio_fondo = {'izena': '', 'playing': false};
   var audio_fondo_before_load = ''; // La primera vez que se pide el audio de fondo no está cargado....
@@ -11,41 +12,41 @@ app.factory ('Soinuak', ['$window', '$cordovaNativeAudio', function ($window, $c
     if ('audio_mutu' in $window.localStorage)
       audio_mutu = JSON.parse ($window.localStorage.audio_mutu);
       
-    preloadComplex ('sarrera', 'assets/audio/sarrera.mp3');
+    preloadComplex ('sarrera', 'sarrera.mp3');
     
-    preloadSimple ('click', 'assets/audio/click.mp3');
-    preloadSimple ('popup', 'assets/audio/popup.mp3');
+    preloadSimple ('click', 'click.mp3');
+    preloadSimple ('popup', 'popup.mp3');
     
   });
   
-  function preloadComplex (etiketa, audioa){
+  function preloadComplex (id, audioa){
     
-    $cordovaNativeAudio.preloadComplex (etiketa, audioa, 1, 1).then (function (msg){
+    $cordovaNativeAudio.preloadComplex (id, audio_path + audioa, 1, 1).then (function (msg){
       
       if (msg == 'OK'){
         
-        audioak.push (etiketa);
+        audioak.push (id);
         
-        if (audio_fondo_before_load == etiketa)
-          fondo_play_now (etiketa);
+        if (audio_fondo_before_load == id)
+          fondo_play_now (id);
           
       }
         
     }, function (error){
-      console.log ("Soinuak factory, preloadComplex '" + etiketa + "'", error);
+      console.log ("Soinuak factory, preloadComplex '" + id + "'", error);
     });
     
   }
   
-  function preloadSimple (etiketa, audioa){
+  function preloadSimple (id, audioa){
     
-    $cordovaNativeAudio.preloadSimple (etiketa, audioa).then (function (msg){
+    $cordovaNativeAudio.preloadSimple (id, audio_path + audioa).then (function (msg){
       
       if (msg == 'OK')
-        audioak.push (etiketa);
+        audioak.push (id);
       
     }, function (error){
-      console.log ("Soinuak factory, preloadSimple '" + etiketa + "'", error);
+      console.log ("Soinuak factory, preloadSimple '" + id + "'", error);
     });
     
   }
@@ -69,7 +70,7 @@ app.factory ('Soinuak', ['$window', '$cordovaNativeAudio', function ($window, $c
     if (!audio_mutu){
       
       if (audioak.indexOf (audio) >= 0){
-      
+        
         if (!audio_fondo.playing){
           
           fondo_play_now (audio);
@@ -84,7 +85,7 @@ app.factory ('Soinuak', ['$window', '$cordovaNativeAudio', function ($window, $c
         }
         
       }
-      else
+      else // El audio no está cargado. Lo guardamos para reproducirlo cuando se cargue....
         audio_fondo_before_load = audio;
       
     }
