@@ -434,31 +434,3 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   height: 70px;
   width: auto;
 }
-
-/*@keyframes mugi {
-  
-  0%,100% {
-    -ms-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-    top: 90%;
-    left: 0px;
-  }
-  50% {
-    -ms-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-    top: 0px;
-    left: 90%;
-  }
-  
-}
-
-.pilota { /* objektuari aplikatzeko klasea 
-  position: absolute;
-  display: inline-block;
-  top: 90%;
-  left: 0px;
-  z-index: 1;
-  animation: mugi 10s 2s infinite; /* sólo importa el orden del tiempo: duration delay
-}*/
