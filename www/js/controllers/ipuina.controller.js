@@ -14,6 +14,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
   var kontador;
   var img_play_eszena;
   var inBackground = false;
+  var destroyed = false;
   
   $scope.init = function (){
     
@@ -325,11 +326,18 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
           $q.all (promiseak).then (function (){
             
-            angular.element ('.objektua, .testua').fadeIn (500, function (){
+            if (!destroyed){
               
-              d.resolve ();
+              angular.element ('.objektua, .testua').fadeIn (500, function (){
+                
+                d.resolve ();
+                
+                if (destroyed)
+                  clearEszena ();
+                
+              });
               
-            });
+            }
             
           }, function (error){
             d.reject (error);
@@ -1044,6 +1052,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
     // Quitamos el "botón" de reproducción de la eszena
     img_play_eszena.remove ();
+    
+    destroyed = true;
     
   });
   
