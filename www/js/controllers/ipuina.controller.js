@@ -115,11 +115,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
   }
   
-  function clearEszena (){
+  function clearEszena (background){
+    background = typeof background !== 'undefined' ? background : true;
     
-    // Quitamos el fondo
-    angular.element ('#eszenatokia').css ('background-color', 'transparent');
-    angular.element ('#eszenatokia').css ('background', 'none');
+    if (background){
+      // Quitamos el fondo
+      angular.element ('#eszenatokia').css ('background-color', 'transparent');
+      angular.element ('#eszenatokia').css ('background', 'none');
+    }
     
     // Quitamos los objetos
     angular.element ('.objektua').remove ();
@@ -308,51 +311,61 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       // Empezamos con el fondo
       Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
         
-        // Limpiamos la eszena anterior
-        clearEszena ();
-        
-        if (emaitza.length === 1){
-          changeFondoa (emaitza[0]);
-        }
-        else{
-          angular.element ('#eszenatokia').css ('background-color', '#fff');
-        }
-        
-        // Cargamos sus objetos
-        Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
+        // Comprobamos que no se haya salido de la pantalla antes de hacer ná (bien pudiera suceder, la vida es muy perra)
+        if (!destroyed){
           
-          angular.forEach (objektuak, function (objektua){
-            promiseak.push (objektuaEszenara (objektua.id, false, lock));
-          });
+          // Limpiamos la eszena anterior
+          clearEszena ();
           
-          // Cargamos sus textos
-          Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
+          if (emaitza.length === 1){
+            changeFondoa (emaitza[0]);
+          }
+          else{
+            angular.element ('#eszenatokia').css ('background-color', '#fff');
+          }
+          
+          // Cargamos sus objetos
+          Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
             
-            angular.forEach (testuak, function (testua){
-              promiseak.push (testuaEszenara (testua.id, false, lock));
+            angular.forEach (objektuak, function (objektua){
+              promiseak.push (objektuaEszenara (objektua.id, false, lock));
             });
             
-            // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
-            $q.all (promiseak).then (function (){
+            // Cargamos sus textos
+            Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
               
-              // Comprobamos que no se haya salido de la pantalla antes de cargar los objetos (bien pudiera suceder, la vida es muy perra)
-              if (!destroyed){
+              angular.forEach (testuak, function (testua){
+                promiseak.push (testuaEszenara (testua.id, false, lock));
+              });
+              
+              // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
+              $q.all (promiseak).then (function (){
                 
-                angular.element ('.objektua, .testua').fadeIn (500, function (){
+                // Comprobamos que no se haya salido de la pantalla antes de cargar los objetos (bien pudiera suceder, la vida es muy perra)
+                if (!destroyed){
                   
+                  angular.element ('.objektua, .testua').fadeIn (500, function (){
+                    
+                    eszena_aldatzen = false;
+                    
+                    d.resolve ();
+                    
+                    // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
+                    if (destroyed)
+                      clearEszena (false);
+                    
+                  });
+                  
+                }
+                else{
                   eszena_aldatzen = false;
-                  
-                  d.resolve ();
-                  
-                  // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
-                  if (destroyed)
-                    clearEszena ();
-                  
-                });
+                  clearEszena (false);
+                }
                 
-              }
-              else
+              }, function (error){
                 eszena_aldatzen = false;
+                d.reject (error);
+              });
               
             }, function (error){
               eszena_aldatzen = false;
@@ -364,10 +377,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
             d.reject (error);
           });
           
-        }, function (error){
-          eszena_aldatzen = false;
-          d.reject (error);
-        });
+        }
         
       }, function (error){
         eszena_aldatzen = false;
