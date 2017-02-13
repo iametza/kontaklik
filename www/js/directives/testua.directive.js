@@ -6,7 +6,8 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
     template : '<div hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" ng-dblclick="onDblClick()"></div>',
     link: function (scope, element, attrs){
       
-      var initScale = attrs.scale !== undefined ? attrs.scale : 1,
+      var testua_id = attrs.testuaId !== undefined ? attrs.testuaId : 0,
+          initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           posizioa = {'x': attrs.x !== undefined ? attrs.x : -1, 'y': attrs.y !== undefined ? attrs.y : -1},
@@ -21,7 +22,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
       limits.right = eszenatokia[0].offsetWidth - 15;
       limits.bottom = eszenatokia[0].offsetHeight - 15;
           
-      testua_eguneratu (element.attr ('data-testua-id')).then (function (){
+      testua_eguneratu (testua_id).then (function (){
         
         // Si el objeto no tiene posición (recien creado) tratamos de ponerlo en el centro de la pantalla
         if (posizioa.x < 0)
@@ -87,7 +88,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
           
           // Pase lo que pase, vayas donde vayas, hagas lo que hagas, ponte bragas
           // Comprobamos que tras aplicar los cambios el objeto no trasvase los limites
-          var bounds = document.getElementById ("testua_" + element.attr ('data-testua-id')).getBoundingClientRect ();
+          var bounds = document.getElementById ("testua_" + testua_id).getBoundingClientRect ();
           if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.left < limits.left || bounds.right > limits.right){
             // Trasvasa los limites -> no aceptamos pulpo como animal de compañia
             // Mejora: permitimos el movimiento en un eje que no sea trasvasado
@@ -109,7 +110,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
             transform = transform_new;
             
             if (dbGorde){
-              var id = parseInt (element.attr ('data-testua-id'));
+              var id = parseInt (testua_id);
               var style = JSON.stringify (element[0].children[0].style);
           
               Database.query ('UPDATE eszena_testuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
@@ -145,12 +146,12 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
       
       scope.onPress = function (){
         
-        if (!loki && element.attr ('data-testua-id') !== undefined){
+        if (!loki && testua_id > 0){
           
-          Database.query ('SELECT fk_eszena FROM eszena_testuak WHERE id=?', [parseInt (element.attr ('data-testua-id'))]).then (function (testua){
+          Database.query ('SELECT fk_eszena FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
             
             if (testua.length === 1){
-        
+              
               var modala = $uibModal.open ({
                 animation: true,
                 templateUrl: 'views/modals/eszena_testua.html',
@@ -160,7 +161,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
                     return testua[0].fk_eszena;
                   },
                   testua_id: function (){
-                    return element.attr ('data-testua-id');
+                    return testua_id;
                   }
                 }
               });
@@ -179,7 +180,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
                   testua_eguneratu (emaitza).then (function (){
                     
                     // Ojete! Al modificar el texto puede que se salga del marco....
-                    var bounds = document.getElementById ("testua_" + element.attr ('data-testua-id')).getBoundingClientRect ();
+                    var bounds = document.getElementById ("testua_" + testua_id).getBoundingClientRect ();
                     if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.left < limits.left || bounds.right > limits.right){
                       // Es un salido -> Lo centramos
                       var t = { translate: erdian_kokatu (), scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
