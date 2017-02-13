@@ -20,7 +20,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     $scope.soinuak.audio_fondo_stop ();
     
     // Txapuzilla para meter en play de la eszena
-    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing" ng-click="play_eszena ()" />');
+    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing || menuaCollapsed" ng-click="play_eszena ()" />');
     var el = $compile (img_play_eszena)($scope);
     
     angular.element ('#eszenatokia').append (img_play_eszena);

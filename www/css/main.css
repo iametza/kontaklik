@@ -433,4 +433,5 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   left: 15px;
   height: 70px;
   width: auto;
+  z-index: 1001;
 }
