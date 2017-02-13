@@ -15,6 +15,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
   var img_play_eszena;
   var inBackground = false;
   var destroyed = false;
+  var eszena_aldatzen = false;
   
   $scope.init = function (){
     
@@ -256,30 +257,34 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
   
   $scope.pressEszena = function (eszena_id){
     
-    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+    if (!eszena_aldatzen){
       
-      if (buttonIndex == 1){
+      $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
         
-        Ipuinak.ezabatu_eszena (eszena_id).then (function (){
+        if (buttonIndex == 1){
           
-          Ipuinak.eszenak_ordenatu ($route.current.params.ipuina_id).then (function (){
+          Ipuinak.ezabatu_eszena (eszena_id).then (function (){
             
-            // Recogemos las eszenak que queden del ipuina
-            getEszenak ();
+            Ipuinak.eszenak_ordenatu ($route.current.params.ipuina_id).then (function (){
+              
+              // Recogemos las eszenak que queden del ipuina
+              getEszenak ();
+              
+            }, function (error){
+              console.log ("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
+            });
             
           }, function (error){
-            console.log ("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
+            console.log ("IpuinaCtrl, pressEszena ezabatu_eszena", error);
           });
           
-        }, function (error){
-          console.log ("IpuinaCtrl, pressEszena ezabatu_eszena", error);
-        });
+        }
         
-      }
+      }, function (error){
+        console.log ("IpuinaCtrl, pressEszena confirm", error);
+      });
       
-    }, function (error){
-      console.log ("IpuinaCtrl, pressEszena confirm", error);
-    });
+    }
     
   };
   
@@ -296,90 +301,106 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     var d = $q.defer ();
     var promiseak = [];
     
-    // Empezamos con el fondo
-    Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
+    if (!eszena_aldatzen){
       
-      // Limpiamos la eszena anterior
-      clearEszena ();
+      eszena_aldatzen = true;
       
-      if (emaitza.length === 1){
-        changeFondoa (emaitza[0]);
-      }
-      else{
-        angular.element ('#eszenatokia').css ('background-color', '#fff');
-      }
-      
-      // Cargamos sus objetos
-      Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
+      // Empezamos con el fondo
+      Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
         
-        angular.forEach (objektuak, function (objektua){
-          promiseak.push (objektuaEszenara (objektua.id, false, lock));
-        });
+        // Limpiamos la eszena anterior
+        clearEszena ();
         
-        // Cargamos sus textos
-        Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
+        if (emaitza.length === 1){
+          changeFondoa (emaitza[0]);
+        }
+        else{
+          angular.element ('#eszenatokia').css ('background-color', '#fff');
+        }
+        
+        // Cargamos sus objetos
+        Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
           
-          angular.forEach (testuak, function (testua){
-            promiseak.push (testuaEszenara (testua.id, false, lock));
+          angular.forEach (objektuak, function (objektua){
+            promiseak.push (objektuaEszenara (objektua.id, false, lock));
           });
           
-          // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
-          $q.all (promiseak).then (function (){
+          // Cargamos sus textos
+          Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
             
-            // Comprobamos que no se haya salido de la pantalla antes de cargar los objetos (bien pudiera suceder, la vida es muy perra)
-            if (!destroyed){
+            angular.forEach (testuak, function (testua){
+              promiseak.push (testuaEszenara (testua.id, false, lock));
+            });
+            
+            // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
+            $q.all (promiseak).then (function (){
               
-              angular.element ('.objektua, .testua').fadeIn (500, function (){
+              // Comprobamos que no se haya salido de la pantalla antes de cargar los objetos (bien pudiera suceder, la vida es muy perra)
+              if (!destroyed){
                 
-                d.resolve ();
+                angular.element ('.objektua, .testua').fadeIn (500, function (){
+                  
+                  eszena_aldatzen = false;
+                  
+                  d.resolve ();
+                  
+                  // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
+                  if (destroyed)
+                    clearEszena ();
+                  
+                });
                 
-                // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
-                if (destroyed)
-                  clearEszena ();
-                
-              });
+              }
+              else
+                eszena_aldatzen = false;
               
-            }
+            }, function (error){
+              eszena_aldatzen = false;
+              d.reject (error);
+            });
             
           }, function (error){
+            eszena_aldatzen = false;
             d.reject (error);
           });
           
         }, function (error){
+          eszena_aldatzen = false;
           d.reject (error);
         });
         
       }, function (error){
+        eszena_aldatzen = false;
         d.reject (error);
       });
       
-    }, function (error){
-      d.reject (error);
-    });
-    
-    // Las siguientes acciones estaban justo antes del 'resolve'. Creo que no está mal ponerlas aqui, puede que el tiempo me contradiga.
-    // Básicamente las cambio para que la eszena quede seleccionada en el menú nada más pinchar en ella, que no haya que esperar a que se cargue todo....
-    $scope.uneko_eszena_id = eszena.id;
-    
-    // Eszenen nabigazioa eguneratu (aurrera eta atzera botoiak aktibo bai/ez)
-    for (var ind = 0; ind < $scope.eszenak.length; ind++){
+      // Las siguientes acciones estaban justo antes del 'resolve'. Creo que no está mal ponerlas aqui, puede que el tiempo me contradiga.
+      // Básicamente las cambio para que la eszena quede seleccionada en el menú nada más pinchar en ella, que no haya que esperar a que se cargue todo....
+      $scope.uneko_eszena_id = eszena.id;
       
-      if ($scope.eszenak[ind].id == eszena.id)
-        break;
+      // Eszenen nabigazioa eguneratu (aurrera eta atzera botoiak aktibo bai/ez)
+      for (var ind = 0; ind < $scope.eszenak.length; ind++){
+        
+        if ($scope.eszenak[ind].id == eszena.id)
+          break;
+        
+      }
+      
+      $scope.eszenak_nabigazioa.aurrera = (ind > 0);
+      $scope.eszenak_nabigazioa.atzera = (ind < $scope.eszenak.length-1);
+      
+      $scope.uneko_audioa.izena = eszena.audioa;
+      Audio.getDuration (eszena.audioa).then (function (iraupena){
+        $scope.uneko_audioa.iraupena = iraupena;
+      }, function (){
+        $scope.uneko_audioa.iraupena = 0;
+      });
+      $scope.uneko_audioa.counter = 0;
+      $scope.uneko_audioa.egoera = 'stop';
       
     }
-    
-    $scope.eszenak_nabigazioa.aurrera = (ind > 0);
-    $scope.eszenak_nabigazioa.atzera = (ind < $scope.eszenak.length-1);
-    
-    $scope.uneko_audioa.izena = eszena.audioa;
-    Audio.getDuration (eszena.audioa).then (function (iraupena){
-      $scope.uneko_audioa.iraupena = iraupena;
-    }, function (){
-      $scope.uneko_audioa.iraupena = 0;
-    });
-    $scope.uneko_audioa.counter = 0;
-    $scope.uneko_audioa.egoera = 'stop';
+    else
+      d.reject ('beste eszena aldatzen ari da oraindik');
     
     return d.promise;
     
