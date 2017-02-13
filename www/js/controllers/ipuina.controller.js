@@ -145,7 +145,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', 'Kamera', 'Audio', 
     Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
       
       if (objektua.length === 1){
-        var elem = angular.element ('<div objektua="objektua" class="objektua" data-eo-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '"></div>');
+        var elem = angular.element ('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '"></div>');
         
         if (objektua[0].style !== null){
           

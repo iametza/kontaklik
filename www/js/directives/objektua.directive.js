@@ -6,7 +6,8 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
     template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()">',
     link: function (scope, element, attrs){
       
-      var initScale = attrs.scale !== undefined ? attrs.scale : 1,
+      var objektua_id = attrs.objektuaId !== undefined ? attrs.objektuaId : 0,
+          initScale = attrs.scale !== undefined ? attrs.scale : 1,
           initAngle = attrs.rotate !== undefined ? attrs.rotate : 0,
           rotationInit = 0,
           posizioa = {'x': attrs.x !== undefined ? attrs.x : -1, 'y': attrs.y !== undefined ? attrs.y : -1},
@@ -19,7 +20,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       element.children ().attr ('src', attrs.src);
       
       // Le damos "id" al elemento para poder hacer una txapuzilla luego
-      element.children ().attr ('id', 'objektua_' + element.attr ('data-eo-id'));
+      element.children ().attr ('id', 'objektua_' + objektua_id);
       
       limits.left = eszenatokia[0].offsetLeft + 15;
       limits.top = eszenatokia[0].offsetTop + 15;
@@ -48,7 +49,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
           
           // Pase lo que pase, vayas donde vayas, hagas lo que hagas, ponte bragas
           // Comprobamos que tras aplicar los cambios el objeto no trasvase los limites
-          var bounds = document.getElementById ("objektua_" + element.attr ('data-eo-id')).getBoundingClientRect ();
+          var bounds = document.getElementById ("objektua_" + objektua_id).getBoundingClientRect ();
           if (bounds.top < limits.top || bounds.bottom > limits.bottom || bounds.left < limits.left || bounds.right > limits.right){
             // Trasvasa los limites -> no aceptamos pulpo como animal de compañia
             // Mejora: permitimos el movimiento en un eje que no sea trasvasado
@@ -70,7 +71,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
             transform = transform_new;
           
             if (dbGorde){
-              var id = parseInt (element.attr ('data-eo-id'));
+              var id = parseInt (objektua_id);
               var style = JSON.stringify (element[0].children[0].style);
           
               Database.query ('UPDATE eszena_objektuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
@@ -112,9 +113,9 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
           
             if (buttonIndex == 1){
               
-              if (element.attr ('data-eo-id') !== undefined){
+              if (objektua_id > 0){
                 
-                Database.query ('DELETE FROM eszena_objektuak WHERE id=?', [parseInt (element.attr ('data-eo-id'))]).then (function (){
+                Database.query ('DELETE FROM eszena_objektuak WHERE id=?', [parseInt (objektua_id)]).then (function (){
                   
                   element.remove();
                   
