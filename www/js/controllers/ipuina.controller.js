@@ -22,7 +22,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     // Paramos la musikilla de fondo
     $scope.soinuak.audio_fondo_stop ();
     
-    // Txapuzilla para meter en play de la eszena
+    // Txapuzilla para meter el play de la eszena
     img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing || menuaCollapsed" ng-click="play_eszena ()" />');
     var el = $compile (img_play_eszena)($scope);
     
@@ -344,22 +344,31 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                 // Comprobamos que no se haya salido de la pantalla antes de cargar los objetos (bien pudiera suceder, la vida es muy perra)
                 if (!destroyed){
                   
-                  angular.element ('.objektua, .testua').fadeIn (500, function (){
+                  if (objektuak.length > 0 || testuak.length > 0){
                     
+                    angular.element ('.objektua, .testua').fadeIn (500, function (){
+                      
+                      eszena_aldatzen = false;
+                      
+                      d.resolve ();
+                      
+                      // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
+                      if (destroyed)
+                        clearEszena (false);
+                      
+                    });
+                    
+                  }
+                  else{
                     eszena_aldatzen = false;
-                    
                     d.resolve ();
-                    
-                    // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
-                    if (destroyed)
-                      clearEszena (false);
-                    
-                  });
+                  }
                   
                 }
                 else{
                   eszena_aldatzen = false;
                   clearEszena (false);
+                  d.reject ('destroyed');
                 }
                 
               }, function (error){
@@ -377,6 +386,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
             d.reject (error);
           });
           
+        }
+        else{
+          eszena_aldatzen = false;
+          d.reject ('destroyed');
         }
         
       }, function (error){
