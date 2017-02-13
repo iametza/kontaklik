@@ -173,7 +173,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
               modala.result.then (function (emaitza){
                 
                 if (emaitza === 'ezabatu'){
-                  element.remove();
+                  element.fadeOut (1000, function (){ element.remove (); });
                 }
                 else if (emaitza !== 'undefined'){
                   
