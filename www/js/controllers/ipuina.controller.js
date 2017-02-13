@@ -324,7 +324,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
           $q.all (promiseak).then (function (){
             
-            angular.element ('.objektua, .testua').fadeIn (1000, function (){
+            angular.element ('.objektua, .testua').fadeIn (500, function (){
               
               $scope.uneko_eszena_id = eszena.id;
               
@@ -903,19 +903,24 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         
         $scope.changeEszena ($scope.eszenak[$scope.bideo_modua.uneko_eszena], true).then (function (){
           
-          if (iraupena > 0)
-            Audio.play ($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa);
-          
-          $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
+          // Ojete: puede que en lo que se tarda en cargar la eszena se haya parado la reproducción....
+          if ($scope.bideo_modua.playing){
             
-            if (osorik){
-              $scope.bideo_modua.uneko_eszena++;
-              play_ipuina ();
-            }
-            else
-              $scope.bideo_modua_stop ();
+            if (iraupena > 0)
+              Audio.play ($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa);
             
-          }, lapso * 1000);
+            $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
+              
+              if (osorik){
+                $scope.bideo_modua.uneko_eszena++;
+                play_ipuina ();
+              }
+              else
+                $scope.bideo_modua_stop ();
+              
+            }, lapso * 1000);
+            
+          }
           
         }, function (error){
           console.log ("IpuinaCtrl, play_ipuina changeEszena audiokin", error);
@@ -926,16 +931,21 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         
         $scope.changeEszena ($scope.eszenak[$scope.bideo_modua.uneko_eszena], true).then (function (){
           
-          $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
+          // Ojete: puede que en lo que se tarda en cargar la eszena se haya parado la reproducción....
+          if ($scope.bideo_modua.playing){
             
-            if (osorik){
-              $scope.bideo_modua.uneko_eszena++;
-              play_ipuina ();
-            }
-            else
-              $scope.bideo_modua_stop ();
+            $scope.bideo_modua.timer = new Funtzioak.Timer (function (){
+              
+              if (osorik){
+                $scope.bideo_modua.uneko_eszena++;
+                play_ipuina ();
+              }
+              else
+                $scope.bideo_modua_stop ();
+              
+            }, lapso * 1000);
             
-          }, lapso * 1000);
+          }
           
         }, function (error){
           console.log ("IpuinaCtrl, play_ipuina changeEszena audio gabe", error);
