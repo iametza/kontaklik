@@ -326,12 +326,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
           $q.all (promiseak).then (function (){
             
+            // Comprobamos que no se haya salido de la pantalla antes de cargar los objetos (bien pudiera suceder, la vida es muy perra)
             if (!destroyed){
               
               angular.element ('.objektua, .testua').fadeIn (500, function (){
                 
                 d.resolve ();
                 
+                // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
                 if (destroyed)
                   clearEszena ();
                 
