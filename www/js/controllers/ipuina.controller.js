@@ -139,14 +139,17 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
   };
   
-  function objektuaEszenara (eszena_objektua_id, lock){
+  function objektuaEszenara (eszena_objektua_id, show, lock){
+    show = typeof show !== 'undefined' ? show : true;
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer ();
     
     Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
       
       if (objektua.length === 1){
-        var elem = angular.element ('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '"></div>');
+        var elem = angular.element ('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '" ></div>');
+        
+        elem.hide ();
         
         if (objektua[0].style !== null){
           
@@ -182,7 +185,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         angular.element ('#eszenatokia').append (elem);
         $scope.insertHere = el;
         
-        d.resolve ();
+        if (show)
+          elem.fadeIn (1000, function (){ d.resolve (); });
+        else
+          d.resolve ();
       }
       else
         d.reject ('IpuinaCtrl objektuaEszenara, objektua.length != 1');
@@ -305,41 +311,46 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       Database.getRows ('eszena_objektuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (objektuak){
         
         angular.forEach (objektuak, function (objektua){
-          promiseak.push (objektuaEszenara (objektua.id, lock));
+          promiseak.push (objektuaEszenara (objektua.id, false, lock));
         });
         
         // Cargamos sus textos
         Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
           
           angular.forEach (testuak, function (testua){
-            promiseak.push (testuaEszenara (testua.id, lock));
+            promiseak.push (testuaEszenara (testua.id, false, lock));
           });
           
+          // Se espera a que se cumplan todas las promesas de los objetos y textos (prometer hasta...)
           $q.all (promiseak).then (function (){
-        
-            $scope.uneko_eszena_id = eszena.id;
             
-            // Eszenen nabigazioa eguneratu (aurrera eta atzera botoiak aktibo bai/ez)
-            for (var ind = 0; ind < $scope.eszenak.length; ind++){
+            angular.element ('.objektua, .testua').fadeIn (1000, function (){
               
-              if ($scope.eszenak[ind].id == eszena.id)
-                break;
+              $scope.uneko_eszena_id = eszena.id;
               
-            }
-            
-            $scope.eszenak_nabigazioa.aurrera = (ind > 0);
-            $scope.eszenak_nabigazioa.atzera = (ind < $scope.eszenak.length-1);
-            
-            $scope.uneko_audioa.izena = eszena.audioa;
-            Audio.getDuration (eszena.audioa).then (function (iraupena){
-              $scope.uneko_audioa.iraupena = iraupena;
-            }, function (){
-              $scope.uneko_audioa.iraupena = 0;
+              // Eszenen nabigazioa eguneratu (aurrera eta atzera botoiak aktibo bai/ez)
+              for (var ind = 0; ind < $scope.eszenak.length; ind++){
+                
+                if ($scope.eszenak[ind].id == eszena.id)
+                  break;
+                
+              }
+              
+              $scope.eszenak_nabigazioa.aurrera = (ind > 0);
+              $scope.eszenak_nabigazioa.atzera = (ind < $scope.eszenak.length-1);
+              
+              $scope.uneko_audioa.izena = eszena.audioa;
+              Audio.getDuration (eszena.audioa).then (function (iraupena){
+                $scope.uneko_audioa.iraupena = iraupena;
+              }, function (){
+                $scope.uneko_audioa.iraupena = 0;
+              });
+              $scope.uneko_audioa.counter = 0;
+              $scope.uneko_audioa.egoera = 'stop';
+              
+              d.resolve ();
+              
             });
-            $scope.uneko_audioa.counter = 0;
-            $scope.uneko_audioa.egoera = 'stop';
-            
-            d.resolve ();
             
           }, function (error){
             d.reject (error);
@@ -387,7 +398,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                  
   };
   
-  function testuaEszenara (testua_id, lock){
+  function testuaEszenara (testua_id, show, lock){
+    show = typeof show !== 'undefined' ? show : true;
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer ();
     
@@ -395,6 +407,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       
       if (testua.length === 1){
         var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" data-lock="' + lock + '"></div>');
+        
+        elem.hide ();
         
         if (testua[0].style !== null){
           
@@ -430,7 +444,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         angular.element ('#eszenatokia').append (elem);
         $scope.insertHere = el;
         
-        d.resolve ();
+        if (show)
+          elem.fadeIn (1000, function (){ d.resolve (); });
+        else
+          d.resolve ();
       }
       else
         d.reject ('ezin jaso testua');
