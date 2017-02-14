@@ -124,11 +124,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       angular.element ('#eszenatokia').css ('background', 'none');
     }
     
-    // Quitamos los objetos
-    angular.element ('.objektua').remove ();
-    
-    // Quitamos los textos
-    angular.element ('.testua').remove ();
+    // Quitamos los objetos/textos
+    angular.element ('.objektua, .testua').remove ();
     
   }
   
