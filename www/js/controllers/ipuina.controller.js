@@ -23,7 +23,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     $scope.soinuak.audio_fondo_stop ();
     
     // Txapuzilla para meter el play de la eszena
-    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing || menuaCollapsed" ng-click="play_eszena ()" />');
+    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing" ng-click="play_eszena ()" />');
     var el = $compile (img_play_eszena)($scope);
     
     angular.element ('#eszenatokia').append (img_play_eszena);
@@ -695,6 +695,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
   $scope.menuaCollapse = function (){
     
     $scope.menuaCollapsed = !$scope.menuaCollapsed;
+    
+    angular.element ('.goiko-menua').toggle (1000);
+    angular.element ('#play_eszena').fadeToggle (1000);
     
   };
   
