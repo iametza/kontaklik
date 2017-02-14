@@ -46,12 +46,12 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
             getEszenak ();
             
             // Recogemos los objektuak
-            Database.getRows ('irudiak', {'atala': 'objektua'}, ' ORDER BY timestamp DESC').then (function (irudiak){
+            Database.getRows ('irudiak', {'atala': 'objektua', 'ikusgai': 1}, ' ORDER BY timestamp DESC').then (function (irudiak){
               $scope.objektuak = irudiak;
             }, onError);
             
             // Recogemos los fondoak
-            Database.getRows ('irudiak', {'atala': 'fondoa'}, ' ORDER BY timestamp DESC').then (function (irudiak){
+            Database.getRows ('irudiak', {'atala': 'fondoa', 'ikusgai': 1}, ' ORDER BY timestamp DESC').then (function (irudiak){
               $scope.fondoak = irudiak;
             }, onError);
           }
@@ -150,51 +150,57 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer ();
     
-    Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo INNER JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
+    Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
       
       if (objektua.length === 1){
-        var elem = angular.element ('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '" ></div>');
         
-        elem.hide ();
-        
-        if (objektua[0].style !== null){
+        if (objektua[0].path !== null){
+          var elem = angular.element ('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '" ></div>');
           
-          var style_object = JSON.parse (objektua[0].style);
+          elem.hide ();
           
-          // Sacamos la scale y el rotate del objeto para pasársela a la directiva
-          //console.log (style_object.transform);
-          //translate3d(683px, 356px, 0px) scale(3.10071, 3.10071) rotate(-17.6443deg)
-          var patroia_xy = /^translate3d\((.*?)px, (.*?)px,.*$/g;
-          var patroia_scale = /^.* scale\((.*?),.*$/g;
-          var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
-          
-          if (style_object.transform.match (patroia_xy)){
-            elem.attr ('data-x', style_object.transform.replace (patroia_xy, "$1"));
-            elem.attr ('data-y', style_object.transform.replace (patroia_xy, "$2"));
+          if (objektua[0].style !== null){
+            
+            var style_object = JSON.parse (objektua[0].style);
+            
+            // Sacamos la scale y el rotate del objeto para pasársela a la directiva
+            //console.log (style_object.transform);
+            //translate3d(683px, 356px, 0px) scale(3.10071, 3.10071) rotate(-17.6443deg)
+            var patroia_xy = /^translate3d\((.*?)px, (.*?)px,.*$/g;
+            var patroia_scale = /^.* scale\((.*?),.*$/g;
+            var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
+            
+            if (style_object.transform.match (patroia_xy)){
+              elem.attr ('data-x', style_object.transform.replace (patroia_xy, "$1"));
+              elem.attr ('data-y', style_object.transform.replace (patroia_xy, "$2"));
+            }
+            
+            if (style_object.transform.match (patroia_scale))
+              elem.attr ('data-scale', style_object.transform.replace (patroia_scale, "$1"));
+              
+            if (style_object.transform.match (patroia_rotate))
+              elem.attr ('data-rotate', style_object.transform.replace (patroia_rotate, "$1"));
+              
+            // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
+            el = $compile(elem)($scope);
+            
+            elem.children ().css (style_object);
+            
           }
+          else
+            el = $compile(elem)($scope);
           
-          if (style_object.transform.match (patroia_scale))
-            elem.attr ('data-scale', style_object.transform.replace (patroia_scale, "$1"));
-            
-          if (style_object.transform.match (patroia_rotate))
-            elem.attr ('data-rotate', style_object.transform.replace (patroia_rotate, "$1"));
-            
-          // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
-          el = $compile(elem)($scope);
+          angular.element ('#eszenatokia').append (elem);
+          $scope.insertHere = el;
           
-          elem.children ().css (style_object);
-          
+          if (show)
+            elem.fadeIn (500, function (){ d.resolve (); });
+          else
+            d.resolve ();
         }
         else
-          el = $compile(elem)($scope);
-        
-        angular.element ('#eszenatokia').append (elem);
-        $scope.insertHere = el;
-        
-        if (show)
-          elem.fadeIn (500, function (){ d.resolve (); });
-        else
           d.resolve ();
+        
       }
       else
         d.reject ('IpuinaCtrl objektuaEszenara, objektua.length != 1');
@@ -285,6 +291,80 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         
       }, function (error){
         console.log ("IpuinaCtrl, pressEszena confirm", error);
+      });
+      
+    }
+    
+  };
+  
+  $scope.pressObjektua = function (objektua){
+    
+    if (objektua.fk_ipuina !== 0){
+      
+      $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+        
+        if (buttonIndex == 1){
+          
+          Database.query ('UPDATE irudiak SET ikusgai=0 WHERE id=?', [objektua.id]).then (function (){
+            
+            // Borramos el objeto de la lista
+            var ind = -1;
+            angular.forEach ($scope.objektuak, function (o, i){
+              
+              if (o.id == objektua.id)
+                ind = i;
+                
+            });
+            
+            if (ind > -1)
+              $scope.objektuak.splice (ind, 1);
+            
+          }, function (error){
+            console.log ("IpuinaCtrl, objektua 'ezabatzerakoan'", error);
+            d.reject (error);
+          });
+          
+        }
+        
+      }, function (error){
+        console.log ("IpuinaCtrl, pressObjektua confirm", error);
+      });
+      
+    }
+    
+  };
+  
+  $scope.pressFondoa = function (fondoa){
+    
+    if (fondoa.fk_ipuina !== 0){
+      
+      $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+        
+        if (buttonIndex == 1){
+          
+          Database.query ('UPDATE irudiak SET ikusgai=0 WHERE id=?', [fondoa.id]).then (function (){
+            
+            // Borramos el fondo de la lista
+            var ind = -1;
+            angular.forEach ($scope.fondoak, function (f, i){
+              
+              if (f.id == fondoa.id)
+                ind = i;
+                
+            });
+            
+            if (ind > -1)
+              $scope.fondoak.splice (ind, 1);
+            
+          }, function (error){
+            console.log ("IpuinaCtrl, fondoa 'ezabatzerakoan'", error);
+            d.reject (error);
+          });
+          
+        }
+        
+      }, function (error){
+        console.log ("IpuinaCtrl, pressFondoa confirm", error);
       });
       
     }
@@ -631,11 +711,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
     Kamera.getPicture (options).then (function (irudia){
       
-      Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id}).then (function (emaitza){
+      Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
         
         switch (atala){
-          case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia}); break;
-          case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia}); break;
+          case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+          case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
         }
         
       }, onError);
@@ -658,11 +738,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       
       Files.saveFile (irudia).then (function (irudia){
         
-        Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id}).then (function (emaitza){
+        Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
           
           switch (atala){
-            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia}); break;
-            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia}); break;
+            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
           }
           
         }, onError);

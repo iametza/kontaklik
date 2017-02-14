@@ -73,6 +73,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`path` TEXT NOT NULL," +
       "`atala` TEXT NOT NULL," + // objektua edo fondoa
       "`fk_ipuina` INTEGER NOT NULL," +
+      "`ikusgai` TINYINT(1) DEFAULT 1," + // menu nagusian jarri bai/ez
       "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
       "CREATE INDEX fk_ipuina ON irudiak (fk_ipuina);";
                 
