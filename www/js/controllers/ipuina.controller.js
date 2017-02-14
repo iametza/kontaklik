@@ -384,6 +384,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     if (!eszena_aldatzen){
       
       eszena_aldatzen = true;
+      Funtzioak.show_loading ($scope);
       
       // Empezamos con el fondo
       Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
@@ -430,6 +431,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                       
                       eszena_aldatzen = false;
                       
+                      Funtzioak.hide_loading ();
+                      
                       d.resolve ();
                       
                       // Comprobamos que no se haya salido de la pantalla en este medio segundo de fado portugués
@@ -441,39 +444,46 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                   }
                   else{
                     eszena_aldatzen = false;
+                    Funtzioak.hide_loading ();
                     d.resolve ();
                   }
                   
                 }
                 else{
                   eszena_aldatzen = false;
+                  Funtzioak.hide_loading ();
                   clearEszena (false);
                   d.reject ('destroyed');
                 }
                 
               }, function (error){
                 eszena_aldatzen = false;
+                Funtzioak.hide_loading ();
                 d.reject (error);
               });
               
             }, function (error){
               eszena_aldatzen = false;
+              Funtzioak.hide_loading ();
               d.reject (error);
             });
             
           }, function (error){
             eszena_aldatzen = false;
+            Funtzioak.hide_loading ();
             d.reject (error);
           });
           
         }
         else{
           eszena_aldatzen = false;
+          Funtzioak.hide_loading ();
           d.reject ('destroyed');
         }
         
       }, function (error){
         eszena_aldatzen = false;
+        Funtzioak.hide_loading ();
         d.reject (error);
       });
       

@@ -1,4 +1,4 @@
-app.factory('Funtzioak', ['$q', '$timeout', function($q, $timeout){
+app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $compile){
   
   var Funtzioak = {};
   
@@ -105,6 +105,22 @@ app.factory('Funtzioak', ['$q', '$timeout', function($q, $timeout){
     };
     
     this.resume ();
+  };
+  
+  Funtzioak.show_loading = function (scope){
+    
+    var elem = angular.element ('<div id="lanean"><img src="images/lanean.gif" /></div>');
+    var el = $compile (elem)(scope);
+    
+    angular.element ('body').append (elem);
+    scope.insertHere = el;
+    
+  };
+  
+  Funtzioak.hide_loading = function (){
+    
+    angular.element ('#lanean').remove ();
+    
   };
   
   return Funtzioak;
