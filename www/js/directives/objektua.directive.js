@@ -117,7 +117,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
                 
                 Database.query ('DELETE FROM eszena_objektuak WHERE id=?', [parseInt (objektua_id)]).then (function (){
                   
-                  element.fadeOut (1000, function (){ element.remove (); });
+                  element.fadeOut (500, function (){ element.remove (); });
                   
                 }, function (error){
                   console.log ("Objektua directive DELETE", error);

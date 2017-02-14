@@ -192,7 +192,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         $scope.insertHere = el;
         
         if (show)
-          elem.fadeIn (1000, function (){ d.resolve (); });
+          elem.fadeIn (500, function (){ d.resolve (); });
         else
           d.resolve ();
       }
@@ -502,7 +502,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         $scope.insertHere = el;
         
         if (show)
-          elem.fadeIn (1000, function (){ d.resolve (); });
+          elem.fadeIn (500, function (){ d.resolve (); });
         else
           d.resolve ();
       }
