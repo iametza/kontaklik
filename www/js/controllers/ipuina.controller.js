@@ -425,7 +425,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                   if (objektuak.length > 0 || testuak.length > 0){
                     
                     var zenbat = angular.element ('.objektua, .testua').length; // x elementos -> x callback
-                    angular.element ('.objektua, .testua').fadeIn (500, function (){
+                    //angular.element ('.objektua, .testua').fadeIn (500, function (){
+                    angular.element ('.objektua, .testua').show (0, function (){
                       
                       if( --zenbat > 0 ) return; // si no es el último callback nos piramos
                       
