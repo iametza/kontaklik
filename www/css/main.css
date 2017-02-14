@@ -434,4 +434,7 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   height: 70px;
   width: auto;
   z-index: 1001;
+  
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
 }

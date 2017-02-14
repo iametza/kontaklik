@@ -696,8 +696,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
     $scope.menuaCollapsed = !$scope.menuaCollapsed;
     
-    angular.element ('.goiko-menua').toggle (1000);
-    angular.element ('#play_eszena').fadeToggle (1000);
+    angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000);
     
   };
   
