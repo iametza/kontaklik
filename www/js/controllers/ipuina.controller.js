@@ -23,7 +23,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     $scope.soinuak.audio_fondo_stop ();
     
     // Txapuzilla para meter el play de la eszena
-    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-hide="bideo_modua.playing" ng-click="play_eszena ()" />');
+    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" ng-click="play_eszena ()" />');
     var el = $compile (img_play_eszena)($scope);
     
     angular.element ('#eszenatokia').append (img_play_eszena);
@@ -426,7 +426,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                   
                   if (objektuak.length > 0 || testuak.length > 0){
                     
+                    var zenbat = angular.element ('.objektua, .testua').length; // x elementos -> x callback
                     angular.element ('.objektua, .testua').fadeIn (500, function (){
+                      
+                      if( --zenbat > 0 ) return; // si no es el último callback nos piramos
                       
                       eszena_aldatzen = false;
                       
@@ -983,7 +986,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
     $scope.bideo_modua.uneko_eszena = 0;
     
-    play_ipuina ();
+    var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
+    angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
+      
+      if( --zenbat > 0 ) return; // si no es el último callback nos piramos
+      
+      play_ipuina ();
+      
+    });
     
   };
   
@@ -998,7 +1008,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
         
         $scope.bideo_modua.uneko_eszena = ind;
         
-        play_ipuina (false);
+        var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
+        angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
+          
+          if( --zenbat > 0 ) return; // si no es el último callback nos piramos
+          
+          play_ipuina (false);
+          
+        });
         
       }
       
@@ -1020,6 +1037,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       $scope.$broadcast ("bideo_modua_off");
       
       $scope.bideo_modua.playing = false;
+      
+      angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){});
       
     }
     
