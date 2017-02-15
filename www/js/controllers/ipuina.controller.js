@@ -97,6 +97,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           $scope.uneko_audioa.izena = '';
           $scope.uneko_audioa.iraupena = $scope.uneko_audioa.counter = 0;
           $scope.uneko_audioa.egoera = 'stop';
+          
+          angular.element ('#play_eszena').show ();
         }, function (error){
           console.log ("IpuinaCtrl, getEszenak defektuzko eszena sortzerakoan", error);
         });
