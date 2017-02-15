@@ -386,7 +386,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       
       eszena_aldatzen = true;
       Funtzioak.show_loading ($scope);
-      angular.element ('#play_eszena, #play_ipuina').hide ();
+      angular.element ('#play_eszena, #play_ipuina, #bideo_modua_stop').hide ();
       
       // Empezamos con el fondo
       Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
@@ -521,6 +521,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
     if (!$scope.bideo_modua.playing)
       angular.element ('#play_eszena, #play_ipuina').show ();
+    else
+      angular.element ('#bideo_modua_stop').show ();
     
   }
   
