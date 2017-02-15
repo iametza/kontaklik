@@ -1009,7 +1009,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       $scope.bideo_modua.uneko_eszena = 0;
       
       var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
-      angular.element ('.goiko-menua, #play_eszena').fadeOut (1000, function (){
+      angular.element ('.goiko-menua, #play_eszena').fadeOut (0, function (){
         
         if( --zenbat > 0 ) return; // si no es el último callback nos piramos
         
@@ -1037,7 +1037,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           $scope.bideo_modua.uneko_eszena = ind;
           
           var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
-          angular.element ('.goiko-menua, #play_eszena').fadeOut (1000, function (){
+          angular.element ('.goiko-menua, #play_eszena').fadeOut (0, function (){
             
             if( --zenbat > 0 ) return; // si no es el último callback nos piramos
             
