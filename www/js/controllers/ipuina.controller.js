@@ -386,6 +386,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       
       eszena_aldatzen = true;
       Funtzioak.show_loading ($scope);
+      angular.element ('#play_eszena, #play_ipuina').hide ();
       
       // Empezamos con el fondo
       Database.getRows ('irudiak', {'atala': 'fondoa', 'id': eszena.fk_fondoa}, '').then (function (emaitza){
@@ -517,6 +518,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     eszena_aldatzen = false;
     
     Funtzioak.hide_loading ();
+    
+    if (!$scope.bideo_modua.playing)
+      angular.element ('#play_eszena, #play_ipuina').show ();
     
   }
   
@@ -999,7 +1003,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       $scope.bideo_modua.uneko_eszena = 0;
       
       var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
-      angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
+      angular.element ('.goiko-menua, #play_eszena').fadeOut (1000, function (){
         
         if( --zenbat > 0 ) return; // si no es el último callback nos piramos
         
@@ -1027,7 +1031,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           $scope.bideo_modua.uneko_eszena = ind;
           
           var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
-          angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
+          angular.element ('.goiko-menua, #play_eszena').fadeOut (1000, function (){
             
             if( --zenbat > 0 ) return; // si no es el último callback nos piramos
             
@@ -1059,7 +1063,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       $scope.bideo_modua.playing = false;
       lock_play = false;
       
-      angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){});
+      angular.element ('.goiko-menua, #play_eszena').fadeIn (1000, function (){});
       
     }
     
