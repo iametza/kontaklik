@@ -107,7 +107,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
     this.resume ();
   };
   
-  Funtzioak.show_loading = function (scope){
+  Funtzioak.show_lanean = function (scope){
     
     var elem = angular.element ('<div id="lanean"><img src="images/lanean.gif" /></div>');
     var el = $compile (elem)(scope);
@@ -117,7 +117,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
     
   };
   
-  Funtzioak.hide_loading = function (){
+  Funtzioak.hide_lanean = function (){
     
     angular.element ('#lanean').remove ();
     

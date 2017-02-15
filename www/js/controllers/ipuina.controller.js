@@ -385,7 +385,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     if (!eszena_aldatzen){
       
       eszena_aldatzen = true;
-      Funtzioak.show_loading ($scope);
+      Funtzioak.show_lanean ($scope);
       angular.element ('#play_eszena, #play_ipuina, #bideo_modua_stop').hide ();
       
       // Empezamos con el fondo
@@ -517,7 +517,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
     eszena_aldatzen = false;
     
-    Funtzioak.hide_loading ();
+    Funtzioak.hide_lanean ();
     
     angular.element ('#play_ipuina').show ();
     
