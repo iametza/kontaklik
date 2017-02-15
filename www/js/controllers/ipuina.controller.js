@@ -519,8 +519,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     
     Funtzioak.hide_loading ();
     
+    angular.element ('#play_ipuina').show ();
+    
     if (!$scope.bideo_modua.playing)
-      angular.element ('#play_eszena, #play_ipuina').show ();
+      angular.element ('#play_eszena').show ();
     else
       angular.element ('#bideo_modua_stop').show ();
     
