@@ -431,9 +431,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                       
                       if( --zenbat > 0 ) return; // si no es el último callback nos piramos
                       
-                      eszena_aldatzen = false;
-                      
-                      Funtzioak.hide_loading ();
+                      changeEszena_onError (); // Ya, no es un error. Pero tenemos que hacerlo igual ;)
                       
                       d.resolve ();
                       
@@ -445,47 +443,40 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
                     
                   }
                   else{
-                    eszena_aldatzen = false;
-                    Funtzioak.hide_loading ();
+                    changeEszena_onError ();
                     d.resolve ();
                   }
                   
                 }
                 else{
-                  eszena_aldatzen = false;
-                  Funtzioak.hide_loading ();
+                  changeEszena_onError ();
                   clearEszena (false);
                   d.reject ('destroyed');
                 }
                 
               }, function (error){
-                eszena_aldatzen = false;
-                Funtzioak.hide_loading ();
+                changeEszena_onError ();
                 d.reject (error);
               });
               
             }, function (error){
-              eszena_aldatzen = false;
-              Funtzioak.hide_loading ();
+              changeEszena_onError ();
               d.reject (error);
             });
             
           }, function (error){
-            eszena_aldatzen = false;
-            Funtzioak.hide_loading ();
+            changeEszena_onError ();
             d.reject (error);
           });
           
         }
         else{
-          eszena_aldatzen = false;
-          Funtzioak.hide_loading ();
+          changeEszena_onError ();
           d.reject ('destroyed');
         }
         
       }, function (error){
-        eszena_aldatzen = false;
-        Funtzioak.hide_loading ();
+        changeEszena_onError ();
         d.reject (error);
       });
       
@@ -520,6 +511,14 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     return d.promise;
     
   };
+  
+  function changeEszena_onError (){
+    
+    eszena_aldatzen = false;
+    
+    Funtzioak.hide_loading ();
+    
+  }
   
   $scope.addTestua = function (){
     
