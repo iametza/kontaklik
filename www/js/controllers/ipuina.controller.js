@@ -16,6 +16,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
   var inBackground = false;
   var destroyed = false;
   var eszena_aldatzen = false;
+  var lock_play = false;
   
   $scope.init = function (){
     
@@ -992,42 +993,54 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
   
   $scope.bideo_modua_play = function (){
     
-    $scope.bideo_modua.uneko_eszena = 0;
-    
-    var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
-    angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
+    if (!lock_play){
       
-      if( --zenbat > 0 ) return; // si no es el último callback nos piramos
+      lock_play = true;
       
-      play_ipuina ();
+      $scope.bideo_modua.uneko_eszena = 0;
       
-    });
+      var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
+      angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
+        
+        if( --zenbat > 0 ) return; // si no es el último callback nos piramos
+        
+        play_ipuina ();
+        
+      });
+      
+    }
     
   };
   
   $scope.play_eszena = function (){
     
-    audioa_kill (); // Paramos la posible reproducción/grabación del audio
+    if (!lock_play){
+      
+      lock_play = true;
+      
+      audioa_kill (); // Paramos la posible reproducción/grabación del audio
+      
+      // Recogemos el indice de la eszena actual en la lista y la reproducimos
+      angular.forEach ($scope.eszenak, function (eszena, ind){
+        
+        if (eszena.id === $scope.uneko_eszena_id){
+          
+          $scope.bideo_modua.uneko_eszena = ind;
+          
+          var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
+          angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
+            
+            if( --zenbat > 0 ) return; // si no es el último callback nos piramos
+            
+            play_ipuina (false);
+            
+          });
+          
+        }
+        
+      });
     
-    // Recogemos el indice de la eszena actual en la lista y la reproducimos
-    angular.forEach ($scope.eszenak, function (eszena, ind){
-      
-      if (eszena.id === $scope.uneko_eszena_id){
-        
-        $scope.bideo_modua.uneko_eszena = ind;
-        
-        var zenbat = angular.element ('.goiko-menua, #play_eszena').length; // x elementos -> x callback
-        angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){
-          
-          if( --zenbat > 0 ) return; // si no es el último callback nos piramos
-          
-          play_ipuina (false);
-          
-        });
-        
-      }
-      
-    });
+    }
     
   };
   
@@ -1045,6 +1058,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       $scope.$broadcast ("bideo_modua_off");
       
       $scope.bideo_modua.playing = false;
+      lock_play = false;
       
       angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000, function (){});
       
