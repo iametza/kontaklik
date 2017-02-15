@@ -449,5 +449,18 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   background-color: #ededec;
   z-index: 2001;
   text-align: center;
-  padding-top: 250px;
+  /*padding-top: 250px;*/
+  font: 0/0 a;
+}
+
+#lanean:before {
+  content: ' ';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+
+#lanean img {
+  vertical-align: middle;
+  display: inline-block;
 }
