@@ -15,7 +15,8 @@ var app = angular.module ('haziakApp', [
     'ngTouch',   
     'ui.bootstrap',
     'hmTouchEvents',
-    'ngCordova'
+    'ngCordova',
+    'mgo-angular-wizard'
   ])
   .config (function ($routeProvider){
     $routeProvider

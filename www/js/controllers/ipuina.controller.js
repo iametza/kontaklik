@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', function($scope, $compile, $route, $q, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, $cordovaDialogs, $uibModal, $cordovaFile, $timeout){
+app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'WizardHandler', function($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, WizardHandler){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -17,6 +17,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
   var destroyed = false;
   var eszena_aldatzen = false;
   var lock_play = false;
+  var tutoriala_ikusita = []; // IDs de usuarios que han visto el tutorial
   
   $scope.init = function (){
     
@@ -30,6 +31,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     angular.element ('#eszenatokia').append (img_play_eszena);
     $scope.insertHere = el;
     // Txapuzilla ends
+    
+    // Recogemos los usuarios que han visto el tutorial
+    if ('tutoriala_ikusita' in $window.localStorage)
+      tutoriala_ikusita = JSON.parse ($window.localStorage.tutoriala_ikusita);
     
     // Recogemos los datos del erabiltzaile
     Database.getRows ('erabiltzaileak', {'id': $route.current.params.erabiltzailea_id}, '').then (function (emaitza){
@@ -79,6 +84,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
       $scope.eszenak = emaitza;
       
       if ($scope.eszenak.length === 0){
+        
         // Creamos una eszena por defecto
         Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'audioa': '', 'orden': 1}).then (function (emaitza){
           // Limpiamos la eszena por si acaso (si se viene de borrar una eszena, por ejemplo, puede que haga falta)
@@ -99,6 +105,12 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           $scope.uneko_audioa.egoera = 'stop';
           
           angular.element ('#play_eszena').show ();
+          
+          if (tutoriala_ikusita.indexOf ($scope.erabiltzailea.id) < 0){
+            WizardHandler.wizard ().reset (); // porsiaka
+            angular.element ('#tutoriala').fadeIn (500);
+          }
+          
         }, function (error){
           console.log ("IpuinaCtrl, getEszenak defektuzko eszena sortzerakoan", error);
         });
@@ -117,6 +129,30 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
     });
     
   }
+  
+  $scope.wizard_end = function (){
+    
+    if (tutoriala_ikusita.indexOf ($scope.erabiltzailea.id) < 0){
+      tutoriala_ikusita.push ($scope.erabiltzailea.id);
+      $window.localStorage.tutoriala_ikusita = JSON.stringify (tutoriala_ikusita);
+    }
+    
+    angular.element ('#tutoriala').fadeOut (500);
+    
+  };
+  
+  $scope.wizard_next = function (){
+    
+    WizardHandler.wizard ().next ();
+    
+  };
+  
+  $scope.wizard_prev = function (){
+    
+    if (WizardHandler.wizard ().currentStepNumber () > 1)
+      WizardHandler.wizard ().previous ();
+    
+  };
   
   function clearEszena (background){
     background = typeof background !== 'undefined' ? background : true;
@@ -274,7 +310,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', 'Kamera', 'Au
           
           Ipuinak.ezabatu_eszena (eszena_id).then (function (){
             
-            Ipuinak.eszenak_ordenatu ($route.current.params.ipuina_id).then (function (){
+            Ipuinak.eszenak_ordenatu ($scope.ipuina.id).then (function (){
               
               // Recogemos las eszenak que queden del ipuina
               getEszenak ();
