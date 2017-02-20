@@ -442,6 +442,7 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
 
 #lanean {
   position: fixed;
+  display: none;
   top: 0;
   right: 0;
   bottom: 0;

@@ -423,7 +423,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
     if (!eszena_aldatzen){
       
       eszena_aldatzen = true;
-      Funtzioak.show_lanean ($scope);
+      angular.element ('#lanean').show ();
       angular.element ('#play_eszena, #play_ipuina, #bideo_modua_stop').hide ();
       
       // Empezamos con el fondo
@@ -555,7 +555,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
     
     eszena_aldatzen = false;
     
-    Funtzioak.hide_lanean ();
+    angular.element ('#lanean').hide ();
     
     angular.element ('#play_ipuina').show ();
     

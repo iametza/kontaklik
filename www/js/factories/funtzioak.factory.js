@@ -107,22 +107,6 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
     this.resume ();
   };
   
-  Funtzioak.show_lanean = function (scope){
-    
-    var elem = angular.element ('<div id="lanean"><img src="images/lanean.gif" /></div>');
-    var el = $compile (elem)(scope);
-    
-    angular.element ('body').append (elem);
-    scope.insertHere = el;
-    
-  };
-  
-  Funtzioak.hide_lanean = function (){
-    
-    angular.element ('#lanean').remove ();
-    
-  };
-  
   return Funtzioak;
 
 }]);
