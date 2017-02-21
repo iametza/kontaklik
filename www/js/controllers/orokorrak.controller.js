@@ -34,4 +34,7 @@ app.controller ('OrokorraCtrl', ['$scope', '$window', 'Soinuak', function ($scop
     
   });
   
+  // TIP: CSS ':active' pseudo-class beti funtzionatzeko. Y sigue sin funcionar siempre....
+  document.addEventListener ("touchstart", function () {}, false);
+  
 }]);
