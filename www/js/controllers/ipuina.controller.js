@@ -109,10 +109,10 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
           
           angular.element ('#play_eszena').show ();
           
-          if (tutoriala_ikusita.indexOf ($scope.erabiltzailea.id) < 0){
+          /*if (tutoriala_ikusita.indexOf ($scope.erabiltzailea.id) < 0){
             WizardHandler.wizard ().reset (); // porsiaka
             angular.element ('#tutoriala').fadeIn (500);
-          }
+          }*/
           
           angular.element ('#lanean').hide ();
           
@@ -775,12 +775,16 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
     
     Kamera.getPicture (options).then (function (irudia){
       
-      Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
-        
-        switch (atala){
-          case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
-          case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
-        }
+      Files.saveFile (irudia).then (function (irudia){
+      
+        Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
+          
+          switch (atala){
+            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+          }
+          
+        }, onError);
         
       }, onError);
       
