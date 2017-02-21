@@ -48,6 +48,16 @@ body {
   height: auto;
 }
 
+#menua-burua #erabiltzailea {
+  float: left;
+  margin-left: 30px;
+  padding: 10px 20px;
+  background-color: #f2da70;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
 #menua-kutxa {
   width: 100%;
   border: 1px solid #92a7ac;
@@ -85,7 +95,7 @@ body {
 
 #menua-kutxa #elementuak .elementua a:active img {
   border: 4px solid #e73d64 !important;
-  transform: translateZ(4px);
+  /*transform: translateY(4px);*/
 }
 
 #menua-kutxa #elementuak .elementua img {
@@ -140,7 +150,7 @@ body {
 
 .goiko-menua .kontaklik {
   float: left;
-  margin: 10px;
+  margin: 6px auto auto 6px;
 }
 
 .goiko-menua .kontaklik img {
@@ -223,7 +233,16 @@ body {
 .goiko-menua .tab-edukia #play_ipuina {
   height: 70px;
   width: auto;
-  padding-top: 20px;
+  margin-top: 20px;
+  padding: 0;
+}
+
+.goiko-menua .tab-edukia #eszena_berria,
+.goiko-menua .tab-edukia #testu_berria{
+  height: 70px;
+  width: auto;
+  margin-top: 20px;
+  padding: 0;
 }
 
 .goiko-menua .tab-edukia .elementuak {
@@ -269,7 +288,7 @@ body {
   margin-left: 10px;
   margin-right: 40px;
   text-align: center;
-  padding-top: 0px;
+  padding-top: 10px;
 }
 
 .goiko-menua .tab-edukia .mikro img {
@@ -302,11 +321,21 @@ body {
   z-index: 1001;
 }
 
+#bideo_modua_stop img {
+  height: 70px;
+  width: auto;
+}
+
 #audio_on_off {
   position: absolute;
   top: 20px;
   right: 20px;
   z-index: 1001;
+}
+
+#audio_on_off img {
+  height: 70px;
+  width: auto;
 }
 
 /** Leiho modala **/
@@ -435,9 +464,6 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   width: auto;
   z-index: 1001;
   display: none;
-  
-  -webkit-filter: drop-shadow(5px 5px 5px #222);
-  filter: drop-shadow(5px 5px 5px #222);
 }
 
 #lanean {
@@ -487,4 +513,15 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
 #tutoriala .steps-indicator {
   position: fixed;
   bottom: 30px;
+}
+
+.itzal {
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+.itzal:active {
+  -webkit-filter: none;
+  filter: none;
+  transform: translateY(5px);
 }

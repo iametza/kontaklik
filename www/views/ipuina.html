@@ -1,11 +1,13 @@
 <button type="button" class="btn btn-default" ng-click="menuaCollapse()" ng-hide="!menuaCollapsed" id="goiko-menua-collapsed"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
 
-<button type="button" class="btn btn-default" ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+<a ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop" class="itzal"><img src="images/ikonoak/atzera.png" id="eszena_berria" /></a>
+
+<!--<button type="button" class="btn btn-default" ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>-->
 
 <uib-tabset active="active" class="goiko-menua">
   
   <div class="kontaklik">
-    <a href="#/"><img src="images/kontaklik.png" /></a>
+    <a href="#/"><img src="images/kontaklik-home.png" /></a>
   </div>
   
   <uib-tab index="0">
@@ -15,7 +17,7 @@
       <div class="row">
         <div class="col-xs-9">
           <div id="eszenak">
-            <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext" /></a>
+            <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" /></a>
           
             <div class="fondoak">
               
@@ -23,16 +25,16 @@
               
             </div>
             
-            <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext" /></a>
+            <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext itzal" /></a>
           </div>
         </div>
         
         <div class="col-xs-1">
-          <a ng-click="bideo_modua_play ()"><img src="images/ikonoak/play.png" id="play_ipuina" /></a>
+          <a ng-click="bideo_modua_play ()"><img src="images/ikonoak/play.png" id="play_ipuina" class="itzal" /></a>
         </div>
         
         <div class="col-xs-2">
-          <button ng-click="addEszena ()" class="btn btn-default pull-right btn-lg"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+          <a ng-click="addEszena ()"><img src="images/ikonoak/gehitu.png" id="eszena_berria" class="itzal" /></a>
         </div>
       </div>
     </div>
@@ -86,7 +88,7 @@
     <uib-tab-heading>Testuak</uib-tab-heading>
     
     <div class="tab-edukia">
-      <button class="btn btn-default btn-lg" ng-click="addTestua ()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+      <a ng-click="addTestua ()"><img src="images/ikonoak/gehitu.png" id="testu_berria" class="itzal" /></a>
     </div>
   </uib-tab>
   
@@ -102,8 +104,8 @@
         </div>
         
         <div class="kontrols">
-          <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/audio_rec.png" /></a>
-          <a ng-click="audioa_stopRecord ()" ng-hide="uneko_audioa.egoera == 'stop'"><img src="images/ikonoak/audio_stop.png" /></a>
+          <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/audio_rec.png" class="itzal" /></a>
+          <a ng-click="audioa_stopRecord ()" ng-hide="uneko_audioa.egoera == 'stop'"><img src="images/ikonoak/audio_stop.png" class="itzal" /></a>
         </div>
       </div>
       
@@ -115,9 +117,9 @@
         </div>
         
         <div class="kontrols">
-          <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/audio_play.png" /></a>
-          <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/audio_pause.png" /></a>
-          <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/audio_stop.png" /></a>
+          <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/audio_play.png" class="itzal" /></a>
+          <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/audio_pause.png" class="itzal" /></a>
+          <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/audio_stop.png" class="itzal" /></a>
           
           <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
         </div>

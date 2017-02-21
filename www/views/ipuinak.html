@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-default" ng-click="audio_on_off ('sarrera')" id="audio_on_off"><span class="glyphicon" ng-class="{'glyphicon-volume-up': !audio_mutu, 'glyphicon-volume-off': audio_mutu}" aria-hidden="true"></span></button>
+<a ng-click="audio_on_off ('sarrera')" id="audio_on_off"><img ng-src="{{audio_mutu && 'images/ikonoak/audio-off.png' || 'images/ikonoak/audio-on.png'}}" class="itzal" /></a>
 
 <div class="container">
   
@@ -12,7 +12,7 @@
           <a href="#/"><img src="images/kontaklik.png" /></a>
         </div>
         
-        <div class="pull-left">
+        <div id="erabiltzailea">
           {{erabiltzailea.izena}}
         </div>
         
