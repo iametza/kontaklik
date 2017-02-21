@@ -21,6 +21,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
   
   $scope.init = function (){
     
+    // Cargando....
+    angular.element ('#lanean').show ();
+    
     // Paramos la musikilla de fondo
     $scope.soinuak.audio_fondo_stop ();
     
@@ -110,6 +113,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
             WizardHandler.wizard ().reset (); // porsiaka
             angular.element ('#tutoriala').fadeIn (500);
           }
+          
+          angular.element ('#lanean').hide ();
           
         }, function (error){
           console.log ("IpuinaCtrl, getEszenak defektuzko eszena sortzerakoan", error);
