@@ -1,4 +1,4 @@
-app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', function($scope, $route, Database, $uibModal){
+app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Funtzioak', '$uibModal', function($scope, $route, Database, Funtzioak, $uibModal){
   
   $scope.erabiltzailea = {};
   $scope.ipuinak = [];
@@ -31,14 +31,14 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', '$uibModal', funct
   $scope.getIpuinak = function (){
     var ipuinak = [];
     
-    Database.query ("SELECT ipuinak.*, ifnull(irudiak.path, '') path FROM ipuinak LEFT JOIN eszenak ON eszenak.fk_ipuina=ipuinak.id LEFT JOIN irudiak ON irudiak.id=eszenak.fk_fondoa AND irudiak.atala='fondoa' WHERE ipuinak.fk_erabiltzailea=? ORDER BY ipuinak.izenburua ASC, eszenak.orden ASC", [$scope.erabiltzailea.id]).then (function (emaitza){
+    Database.query ("SELECT ipuinak.*, ifnull(irudiak.cordova_file, '') cordova_file, ifnull(irudiak.path, '') path, ifnull(irudiak.izena, '') izena FROM ipuinak LEFT JOIN eszenak ON eszenak.fk_ipuina=ipuinak.id LEFT JOIN irudiak ON irudiak.id=eszenak.fk_fondoa AND irudiak.atala='fondoa' WHERE ipuinak.fk_erabiltzailea=? ORDER BY ipuinak.izenburua ASC, eszenak.orden ASC", [$scope.erabiltzailea.id]).then (function (emaitza){
       
       angular.forEach (emaitza, function (ipuina){
         
         if ((pos = $scope.ipuina_pos (ipuinak, ipuina.id)) < 0)
-          ipuinak.push ({'id': ipuina.id, 'izenburua': ipuina.izenburua, 'path': ipuina.path});
-        else if (ipuinak[pos].path.trim () === '')
-          ipuinak[pos].path = ipuina.path;
+          ipuinak.push ({'id': ipuina.id, 'izenburua': ipuina.izenburua, 'fullPath': Funtzioak.get_fullPath (ipuina)});
+        else if (ipuinak[pos].fullPath.trim () === '')
+          ipuinak[pos].fullPath = Funtzioak.get_fullPath (ipuina);
           
       });
       

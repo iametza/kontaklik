@@ -107,6 +107,31 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
     this.resume ();
   };
   
+  Funtzioak.get_fullPath = function (irudia){
+    var fullPath = '';
+    
+    if (irudia.hasOwnProperty ('cordova_file') && irudia.hasOwnProperty ('path') && irudia.hasOwnProperty ('izena')){
+      
+      switch (irudia.cordova_file){
+        case 'applicationDirectory':
+          fullPath = cordova.file.applicationDirectory;
+          break;
+        case 'dataDirectory':
+        default:
+          fullPath = cordova.file.dataDirectory;
+          break;
+      }
+      
+      if (irudia.path.trim () != '')
+        fullPath += irudia.path;
+        
+      fullPath += irudia.izena;
+      
+    }
+    
+    return (fullPath);
+  };
+  
   return Funtzioak;
 
 }]);

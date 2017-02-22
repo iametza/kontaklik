@@ -50,7 +50,12 @@ var app = angular.module ('haziakApp', [
       
           angular.forEach (fitxategiak, function (fitxategia){
             
-            Database.insertRow ('irudiak', {'path': fitxategia.nativeURL, 'atala': 'fondoa', 'fk_ipuina': 0, 'ikusgai': 1}).then (function (){}, function (error){
+            Database.insertRow ('irudiak', {'cordova_file': 'applicationDirectory',
+                                'path': 'www/assets/fondoak/',
+                                'izena': fitxategia.name,
+                                'atala': 'fondoa',
+                                'fk_ipuina': 0,
+                                'ikusgai': 1}).then (function (){}, function (error){
               console.log ("app.js fondoa gordetzen", error);
             });
             
@@ -65,7 +70,12 @@ var app = angular.module ('haziakApp', [
       
           angular.forEach (fitxategiak, function (fitxategia){
             
-            Database.insertRow ('irudiak', {'path': fitxategia.nativeURL, 'atala': 'objektua', 'fk_ipuina': 0, 'ikusgai': 1}).then (function (){}, function (error){
+            Database.insertRow ('irudiak', {'cordova_file': 'applicationDirectory',
+                                'path': 'www/assets/objektuak/',
+                                'izena': fitxategia.name,
+                                'atala': 'objektua',
+                                'fk_ipuina': 0,
+                                'ikusgai': 1}).then (function (){}, function (error){
               console.log ("app.js objektua gordetzen", error);
             });
             

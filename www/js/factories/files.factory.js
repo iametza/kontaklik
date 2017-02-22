@@ -30,7 +30,7 @@ app.factory ('Files', ['$cordovaFile', '$cordovaDevice', '$q', function ($cordov
       
       $cordovaFile.copyFile (fitx_path, fitx_name, cordova.file.dataDirectory, fitx_name).then (function (){
         
-        d.resolve (cordova.file.dataDirectory + fitx_name);
+        d.resolve (fitx_name);
         
       }, function (error){
         d.reject (error);

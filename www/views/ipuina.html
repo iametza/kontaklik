@@ -21,7 +21,7 @@
           
             <div class="fondoak">
               
-              <img ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)" ng-repeat="eszena in eszenak" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.path}}" src="images/eszena_fondo_gabe.jpg" />
+              <img ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)" ng-repeat="eszena in eszenak" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.fondoa_fullPath}}" src="images/eszena_fondo_gabe.jpg" />
               
             </div>
             
@@ -47,7 +47,7 @@
       <div class="row">
         <div class="col-xs-8">
           <div class="elementuak">
-            <a ng-click="addFondoa (fondoa)" hm-press="pressFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.path}}" class="irudia" /></a>
+            <a ng-click="addFondoa (fondoa)" hm-press="pressFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.fullPath}}" class="irudia" /></a>
           </div>
         </div>
         
@@ -69,7 +69,7 @@
       <div class="row">
         <div class="col-xs-8">
           <div class="elementuak">
-            <a ng-click="addObjektua (objektua)" hm-press="pressObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.path}}" class="irudia" /></a>
+            <a ng-click="addObjektua (objektua)" hm-press="pressObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.fullPath}}" class="irudia" /></a>
           </div>
         </div>
         

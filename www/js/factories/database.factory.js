@@ -70,7 +70,9 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       
     var query_irudiak = "CREATE TABLE IF NOT EXISTS `irudiak` (" +
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
-      "`path` TEXT NOT NULL," +
+      "`cordova_file` TEXT NOT NULL," + // applicationDirectory edo dataDirectory
+      "`path` TEXT NOT NULL," + // cordova.file horren barrenean path gehiago badago
+      "`izena` TEXT NOT NULL," +
       "`atala` TEXT NOT NULL," + // objektua edo fondoa
       "`fk_ipuina` INTEGER NOT NULL," +
       "`ikusgai` TINYINT(1) DEFAULT 1," + // menu nagusian jarri bai/ez

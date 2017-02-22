@@ -55,13 +55,27 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
             getEszenak ();
             
             // Recogemos los objektuak
-            Database.getRows ('irudiak', {'atala': 'objektua', 'ikusgai': 1}, ' ORDER BY timestamp DESC').then (function (irudiak){
-              $scope.objektuak = irudiak;
+            Database.getRows ('irudiak', {'atala': 'objektua', 'ikusgai': 1}, ' ORDER BY timestamp DESC').then (function (objektuak){
+              
+              // Establecemos el path completo y 'real'
+              angular.forEach (objektuak, function (objektua, ind){
+                objektuak[ind].fullPath = Funtzioak.get_fullPath (objektua);
+              });
+              
+              $scope.objektuak = objektuak;
+              
             }, onError);
             
             // Recogemos los fondoak
-            Database.getRows ('irudiak', {'atala': 'fondoa', 'ikusgai': 1}, ' ORDER BY timestamp DESC').then (function (irudiak){
-              $scope.fondoak = irudiak;
+            Database.getRows ('irudiak', {'atala': 'fondoa', 'ikusgai': 1}, ' ORDER BY timestamp DESC').then (function (fondoak){
+              
+              // Establecemos el path completo y 'real'
+              angular.forEach (fondoak, function (fondoa, ind){
+                fondoak[ind].fullPath = Funtzioak.get_fullPath (fondoa);
+              });
+              
+              $scope.fondoak = fondoak;
+              
             }, onError);
           }
           else
@@ -82,7 +96,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
   
   function getEszenak (){
     
-    Database.query ("SELECT e.*, ifnull(i.path, '') path FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then (function (emaitza){
+    Database.query ("SELECT e.*, ifnull(i.cordova_file, '') cordova_file, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then (function (emaitza){
               
       $scope.eszenak = emaitza;
       
@@ -97,7 +111,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
           angular.element ('#eszenatokia').css ('background-color', '#fff');
           
           // Guardamos la eszena en el array
-          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'path': '', 'audioa': '', 'orden': 1});
+          $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'fondoa_fullPath': '', 'audioa': '', 'orden': 1});
           
           $scope.uneko_eszena_id = emaitza.insertId;
           
@@ -121,12 +135,19 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
         });
       }
       else{
+        
+        // Establecemos el path completo y 'real'
+        angular.forEach ($scope.eszenak, function (eszena, ind){
+          $scope.eszenak[ind].fondoa_fullPath = Funtzioak.get_fullPath (eszena);
+        });
+        
         // Cargamos la primera eszena
         $scope.changeEszena ($scope.eszenak[0]);
         
         $scope.uneko_eszena_id = $scope.eszenak[0].id;
         $scope.eszenak_nabigazioa.aurrera = false;
         $scope.eszenak_nabigazioa.atzera = ($scope.eszenak.length > 1);
+        
       }
       
     }, function (error){
@@ -191,12 +212,12 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer ();
     
-    Database.query ('SELECT i.path, eo.style FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
+    Database.query ('SELECT i.cordova_file, i.path, i.izena, eo.style FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then (function (objektua){
       
       if (objektua.length === 1){
         
-        if (objektua[0].path !== null){
-          var elem = angular.element ('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + objektua[0].path + '" data-lock="' + lock + '" ></div>');
+        if (objektua[0].izena !== null){
+          var elem = angular.element ('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + Funtzioak.get_fullPath (objektua[0]) + '" data-lock="' + lock + '" ></div>');
           
           elem.hide ();
           
@@ -270,7 +291,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
         
         if (eszena.id === $scope.uneko_eszena_id){
           eszena.fk_fondoa = fondoa.id;
-          eszena.path = fondoa.path;
+          eszena.fondoa_fullPath = fondoa.fullPath;
         }
           
       });
@@ -285,7 +306,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
     
     Database.insertRow ('eszenak', {'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'audioa': '', 'orden': $scope.eszenak.length+1}).then (function (emaitza){
       // Guardamos la eszena en el array
-      $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'path': '', 'audioa': '', 'orden': $scope.eszenak.length+1});
+      $scope.eszenak.push ({'id': emaitza.insertId, 'fk_ipuina': $scope.ipuina.id, 'fk_fondoa': 0, 'fondoa_fullPath': '', 'audioa': '', 'orden': $scope.eszenak.length+1});
       
       // Limpiamos la eszena anterior
       clearEszena ();
@@ -416,7 +437,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
   
   function changeFondoa (fondoa){
     
-    angular.element ('#eszenatokia').css ('background', 'url(' + fondoa.path + ')');
+    angular.element ('#eszenatokia').css ('background', 'url(' + fondoa.fullPath + ')');
     //angular.element ('#eszenatokia').css ('background-size', 'cover');
     angular.element ('#eszenatokia').css ('background-size', '100% 100%');
     
@@ -443,6 +464,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
           clearEszena ();
           
           if (emaitza.length === 1){
+            emaitza[0].fullPath = Funtzioak.get_fullPath (emaitza[0]);
             changeFondoa (emaitza[0]);
           }
           else{
@@ -781,11 +803,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
       
       Files.saveFile (irudia).then (function (irudia){
       
-        Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
+        Database.insertRow ('irudiak', {'cordova_file': 'dataDirectory', 'path': '', 'izena': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
           
           switch (atala){
-            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
-            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
           }
           
         }, onError);
@@ -810,11 +832,11 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
       
       Files.saveFile (irudia).then (function (irudia){
         
-        Database.insertRow ('irudiak', {'path': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
+        Database.insertRow ('irudiak', {'cordova_file': 'dataDirectory', 'path': '', 'izena': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
           
           switch (atala){
-            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
-            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'path': irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
           }
           
         }, onError);
