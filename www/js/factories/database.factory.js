@@ -100,7 +100,8 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
     return d.promise;
   };
   
-  Database.query = function (query, params=[]){
+  Database.query = function (query, params){
+    params = typeof params !== 'undefined' ? params : [];
     var d = $q.defer ();
     var emaitza = [];
     
