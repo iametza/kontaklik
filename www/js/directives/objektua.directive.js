@@ -72,7 +72,9 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
           
             if (dbGorde){
               var id = parseInt (objektua_id);
-              var style = JSON.stringify (element[0].children[0].style);
+              //var style = JSON.stringify (element[0].children[0].style);
+              // Optimización (thaks to iOS): Sólo guardamos lo que nos haga falta
+              var style = JSON.stringify ({'transform': element[0].children[0].style.transform});
           
               Database.query ('UPDATE eszena_objektuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
                 console.log ("Objektua directive UPDATE eszena_objektuak", error);

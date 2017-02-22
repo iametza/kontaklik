@@ -225,7 +225,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
             // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
             el = $compile(elem)($scope);
             
-            elem.children ().css (style_object);
+            //elem.children ().css (style_object);
+            // Optimización (thaks to iOS): Sólo cargamos lo que nos haga falta
+            elem.children ().css ('transform', style_object.transform);
             
           }
           else
@@ -634,7 +636,9 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
           // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
           el = $compile(elem)($scope);
           
-          elem.children ().css (style_object);
+          //elem.children ().css (style_object);
+          // Optimización (thaks to iOS): Sólo cargamos lo que nos haga falta
+          elem.children ().css ('transform', style_object.transform);
           
         }
         else

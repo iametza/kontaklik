@@ -111,7 +111,9 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
             
             if (dbGorde){
               var id = parseInt (testua_id);
-              var style = JSON.stringify (element[0].children[0].style);
+              //var style = JSON.stringify (element[0].children[0].style);
+              // Optimización (thaks to iOS): Sólo guardamos lo que nos haga falta
+              var style = JSON.stringify ({'transform': element[0].children[0].style.transform});
           
               Database.query ('UPDATE eszena_testuak SET style=? WHERE id=?', [style, id]).then (function (){}, function (error){
                 console.log ("Testua directive UPDATE eszena_testuak", error);
