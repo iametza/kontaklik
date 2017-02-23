@@ -599,6 +599,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
     
     var modala = $uibModal.open ({
       animation: true,
+      backdrop: 'static',
       templateUrl: 'views/modals/eszena_testua.html',
       controller: 'ModalEszenaTestuaCtrl',
       resolve: {

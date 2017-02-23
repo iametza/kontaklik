@@ -30,6 +30,7 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function
     
     var modala = $uibModal.open ({
       animation: true,
+      backdrop: 'static',
       templateUrl: 'views/modals/erabiltzailea_datuak.html',
       controller: 'ModalErabiltzaileaDatuakCtrl',
       resolve: {

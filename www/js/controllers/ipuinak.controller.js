@@ -66,6 +66,7 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Funtzioak', '$uib
     
     var modala = $uibModal.open ({
       animation: true,
+      backdrop: 'static',
       templateUrl: 'views/modals/ipuina_datuak.html',
       controller: 'ModalIpuinaDatuakCtrl',
       resolve: {
