@@ -5,11 +5,6 @@ app.factory ('Audio', ['$q', function ($q){
       egoera = 'stop',
       extension = '',
       tmp_path = '';
-      /*,
-      iOSPlayOptions = {
-        numberOfLoops: 2,
-        playAudioWhenScreenIsLocked : false
-      }*/
       
   document.addEventListener ("deviceready",function (){
     
