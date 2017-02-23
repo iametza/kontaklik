@@ -223,7 +223,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
           
           var new_angle = parseFloat (initAngle) + parseFloat (event.rotation - rotationInit);
           
-          // en iOS se le iba la pinza si soltabas un dedo antes... De ahi las condiciones del ángulo
+          // en iOS se va la pinza si sueltas un dedo antes... De ahi las condiciones del ángulo
           var diff_angle = new_angle - transform.angle;
           if (diff_angle < 120 && diff_angle > -120){
             
