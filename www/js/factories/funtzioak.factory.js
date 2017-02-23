@@ -111,7 +111,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
   Funtzioak.get_fullPath = function (irudia){
     var fullPath = '';
     
-    if (irudia.hasOwnProperty ('cordova_file') && irudia.hasOwnProperty ('path') && irudia.hasOwnProperty ('izena')){
+    if (irudia.hasOwnProperty ('cordova_file') && irudia.hasOwnProperty ('path') && irudia.hasOwnProperty ('izena') && irudia.izena.trim () != ''){
       
       switch (irudia.cordova_file){
         case 'applicationDirectory':
