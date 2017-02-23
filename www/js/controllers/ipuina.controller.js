@@ -806,9 +806,18 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
       
         Database.insertRow ('irudiak', {'cordova_file': 'dataDirectory', 'path': '', 'izena': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
           
+          var elem = {'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id};
+          
           switch (atala){
-            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
-            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'objektua':
+              $scope.objektuak.unshift (elem);
+              $scope.addObjektua (elem);
+              break;
+            
+            case 'fondoa':
+              $scope.fondoak.unshift (elem);
+              $scope.addFondoa (elem);
+              break;
           }
           
         }, onError);
@@ -835,9 +844,18 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
         
         Database.insertRow ('irudiak', {'cordova_file': 'dataDirectory', 'path': '', 'izena': irudia, 'atala': atala, 'fk_ipuina': $scope.ipuina.id, 'ikusgai': 1}).then (function (emaitza){
           
+          var elem = {'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id};
+          
           switch (atala){
-            case 'objektua': $scope.objektuak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
-            case 'fondoa': $scope.fondoak.unshift ({'id': emaitza.insertId, 'fullPath': cordova.file.dataDirectory + irudia, 'fk_ipuina': $scope.ipuina.id}); break;
+            case 'objektua':
+              $scope.objektuak.unshift (elem);
+              $scope.addObjektua (elem);
+              break;
+            
+            case 'fondoa':
+              $scope.fondoak.unshift (elem);
+              $scope.addFondoa (elem);
+              break;
           }
           
         }, onError);
