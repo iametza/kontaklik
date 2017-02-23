@@ -2,7 +2,7 @@ app.factory ('Soinuak', ['$window', '$cordovaNativeAudio', function ($window, $c
   
   var Soinuak = {};
   var audioak = [];
-  var audio_path = 'assets/audio/'; // relativo a 'www/'
+  var audio_path = 'assets/audioak/'; // relativo a 'www/'
   var audio_mutu = false;
   var audio_fondo = {'izena': '', 'playing': false};
   var audio_fondo_before_load = ''; // La primera vez que se pide el audio de fondo no está cargado....
