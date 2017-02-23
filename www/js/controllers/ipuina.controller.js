@@ -876,6 +876,8 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
               // Guardamos el audio en la base de datos
               Database.query ('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then (function (){
                 
+                console.log ("audioa grabata", audioa.path + audioa.izena, cordova.file.dataDirectory + audioa.izena);
+                
                 // Cambiamos el audio en la lista
                 angular.forEach ($scope.eszenak, function (eszena){
                   

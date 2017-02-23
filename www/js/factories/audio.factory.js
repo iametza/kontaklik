@@ -30,29 +30,38 @@ app.factory ('Audio', ['$q', function ($q){
     var d = $q.defer ();
     
     if (audioa.trim () !== ''){
-
+      
       if (media !== undefined)
         media.release ();
         
-      media = new Media (audioa + extension, function (){
+      window.resolveLocalFileSystemURL (tmp_path, function (dirEntry){
         
-        if (media !== undefined)
-          media.release ();
+        media = new Media (dirEntry.toInternalURL () + audioa + extension, function (){
           
-        media = undefined;
-        egoera = 'stop';
-      
-        d.resolve ({'path': tmp_path, 'izena': audioa + extension});
+          if (media !== undefined)
+            media.release ();
+            
+          media = undefined;
+          egoera = 'stop';
+        
+          d.resolve ({'path': tmp_path, 'izena': audioa + extension});
+          
+        }, function (error){
+          egoera = 'stop';
+          media = undefined;
+          d.reject (error);
+          console.log ("Audio factory, recordAudio", error);
+        });
+        
+        media.startRecord ();
+        egoera = 'record';
+        
         
       }, function (error){
-        egoera = 'stop';
-        media = undefined;
         d.reject (error);
-        console.log ("Audio factory, recordAudio", error);
+        console.log ("Audio factory, resolveLocalFileSystemURL", error);
       });
       
-      media.startRecord ();
-      egoera = 'record';
     }
     else
       d.reject ('izen hutsa');
@@ -77,40 +86,49 @@ app.factory ('Audio', ['$q', function ($q){
     
     if (audioa.trim () !== ''){
       
-      if (media === undefined || media.src != cordova.file.dataDirectory + audioa){
+      window.resolveLocalFileSystemURL (cordova.file.dataDirectory, function (dirEntry){
         
-        if (media !== undefined)
-          media.release ();
-          
-        media = new Media (cordova.file.dataDirectory + audioa, function (){
+        if (media === undefined || media.src != dirEntry.toInternalURL () + audioa){
           
           if (media !== undefined)
             media.release ();
             
-          media = undefined;
-          egoera = 'stop';
+          media = new Media (dirEntry.toInternalURL () + audioa, function (){
+            
+            if (media !== undefined)
+              media.release ();
+              
+            media = undefined;
+            egoera = 'stop';
+            
+            d.resolve ();
+            
+          }, function (error){
+            egoera = 'stop';
+            media = undefined;
+            d.reject (error);
+            console.log ("Audio factory, play", error);
+          });
           
-          d.resolve ();
+        }
+        else
+          d.reject ('resume');
           
-        }, function (error){
-          egoera = 'stop';
-          media = undefined;
-          d.reject (error);
-          console.log ("Audio factory, play", error);
-        });
-        
-      }
-      else
-        d.reject ('resume');
+        if (media !== undefined){
+          
+          media.play ();
+          egoera = 'play';
+          
+        }
+          
+      }, function (error){
+        d.reject (error);
+        console.log ("Audio factory, resolveLocalFileSystemURL", error);
+      });
       
     }
     else
       d.reject ('izen hutsa');
-    
-    if (media !== undefined){
-      media.play ();
-      egoera = 'play';
-    }
     
     return d.promise;
       
@@ -161,29 +179,37 @@ app.factory ('Audio', ['$q', function ($q){
     var d = $q.defer ();
     
     if (audioa.trim () !== ''){
-      var m = new Media (cordova.file.dataDirectory + audioa, function (){}, function (error){
+      
+      window.resolveLocalFileSystemURL (cordova.file.dataDirectory + audioa, function (fileEntry){
+        
+        var m = new Media (fileEntry.toInternalURL (), function (){}, function (error){
+          d.reject (error);
+          console.log ("Audio factory, getDuration", error);
+        });
+        
+        // ojo que sin hacer play/stop no funtziona....
+        m.play ();
+        m.stop ();
+        
+        var counter = 0;
+        var timerDur = setInterval (function (){
+          
+          counter = counter + 100;
+          
+          var duration = m.getDuration ();
+          
+          if (duration > 0 || counter > 2000){
+            clearInterval (timerDur);
+            m.release ();
+            d.resolve (Math.ceil (duration));
+          }
+          
+        }, 100);
+      
+      }, function (error){
         d.reject (error);
-        console.log ("Audio factory, getDuration", error);
+        console.log ("Audio factory, resolveLocalFileSystemURL", error);
       });
-      
-      // ojo que sin hacer play/stop no funtziona....
-      m.play ();
-      m.stop ();
-      
-      var counter = 0;
-      var timerDur = setInterval (function (){
-        
-        counter = counter + 100;
-        
-        var duration = m.getDuration ();
-        
-        if (duration > 0 || counter > 2000){
-          clearInterval (timerDur);
-          m.release ();
-          d.resolve (Math.ceil (duration));
-        }
-        
-      }, 100);
       
     }
     else

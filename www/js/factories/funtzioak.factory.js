@@ -39,7 +39,8 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
     
     document.addEventListener ('deviceready', function (){
       
-      txek (permissions, 'ok');
+      //txek (permissions, 'ok');
+      d.resolve ('ok');
         
     });
     
