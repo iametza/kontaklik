@@ -108,12 +108,15 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
     this.resume ();
   };
   
-  Funtzioak.get_fullPath = function (irudia){
+  Funtzioak.get_fullPath = function (fitxategia){
     var fullPath = '';
     
-    if (irudia.hasOwnProperty ('cordova_file') && irudia.hasOwnProperty ('path') && irudia.hasOwnProperty ('izena') && irudia.izena.trim () != ''){
+    if (fitxategia.hasOwnProperty ('cordova_file') &&
+        fitxategia.hasOwnProperty ('path') &&
+        fitxategia.hasOwnProperty ('izena') &&
+        fitxategia.izena.trim () != ''){
       
-      switch (irudia.cordova_file){
+      switch (fitxategia.cordova_file){
         case 'applicationDirectory':
           fullPath = cordova.file.applicationDirectory;
           break;
@@ -123,10 +126,10 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
           break;
       }
       
-      if (irudia.path.trim () != '')
-        fullPath += irudia.path;
+      if (fitxategia.path.trim () != '')
+        fullPath += fitxategia.path;
         
-      fullPath += irudia.izena;
+      fullPath += fitxategia.izena;
       
     }
     
