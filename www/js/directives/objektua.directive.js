@@ -147,11 +147,17 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
         
         if (event.target === element[0].children[0]){
           
-          var t = { translate: {'x': transform.translate.x, 'y': transform.translate.y}, scale: transform.scale, angle: transform.angle, rx: 0, ry: 0, rz: 0 };
+          var new_angle = parseFloat (initAngle) + parseFloat (event.rotation - rotationInit);
           
-          t.angle = parseFloat (initAngle) + parseFloat (event.rotation - rotationInit);
-          
-          updateElementTransform (t);
+          // en iOS se le iba la pinza si soltabas un dedo antes... De ahi las condiciones del ángulo
+          var diff_angle = new_angle - transform.angle;
+          if (diff_angle < 120 && diff_angle > -120){
+            
+            var t = { translate: {'x': transform.translate.x, 'y': transform.translate.y}, scale: transform.scale, angle: new_angle, rx: 0, ry: 0, rz: 0 };
+            
+            updateElementTransform (t);
+            
+          }
           
         }
         
