@@ -414,6 +414,17 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   border-color: #e73d64;
 }
 
+.modal-body #argazkia {
+    text-align: center;
+}
+
+.modal-body #argazkia img {
+    width: 200px;
+    height: auto;
+}
+
+/** Cojón, digo cajón desastre **/
+
 .laukia {
   position: absolute;
   /*background: silver;*/

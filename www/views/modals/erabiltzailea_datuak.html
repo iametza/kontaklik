@@ -1,7 +1,7 @@
 <div class="modal-header">
   <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
   <h4 class="modal-title" id="myModalLabel">Erabiltzailea</h4>
-  <img class="itxi" src="images/ikonoak/itxi.png" ng-click="itxi ()" />
+  <img class="itxi" src="images/ikonoak/itxi.png" ng-click="itxi ()" alt="itxi" />
 </div>
 <div class="modal-body">
   <div ng-if="errore_mezua !== ''" class="alert alert-warning" role="alert">
@@ -20,6 +20,17 @@
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
       <span class="sr-only">Oharra:</span>
       Izena eremua bete mesedez
+    </div>
+    
+    <div class="form-group">
+      <label for="argazkia">Argazkia</label>
+      
+      <div id="argazkia">
+        <img ng-src="{{argazkia_fullPath == '' && 'images/erabiltzailea.png' || argazkia_fullPath}}" alt="argazkia" />
+      </div>
+      
+      <a ng-click="takePicture ()"><img src="images/ikonoak/kamara.jpg" class="ikon" alt="kamara" /></a>
+      <button type="button" class="btn btn-primary" ng-if="eremuak.argazkia != ''" ng-click="argazkia_ezabatu ()">Argazkia ezabatu</button>
     </div>
     
     <div class="botoiak">

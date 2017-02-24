@@ -31,6 +31,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
     var query_erabiltzaileak = "CREATE TABLE IF NOT EXISTS `erabiltzaileak` (" +
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`izena` TEXT NOT NULL," +
+      "`argazkia` TEXT NOT NULL," +
       "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
       
     var query_ipuinak = "CREATE TABLE IF NOT EXISTS `ipuinak` (" +

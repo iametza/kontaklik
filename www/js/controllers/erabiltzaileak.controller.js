@@ -20,6 +20,11 @@ app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function
       
       $scope.erabiltzaileak = emaitza;
       
+      angular.forEach (emaitza, function (erab, ind){
+        if (erab.argazkia.trim () != '')
+          $scope.erabiltzaileak[ind].argazkia = cordova.file.dataDirectory + erab.argazkia;
+      });
+      
     }, function (error){
       console.log ("ErabiltzaileakCtrl, getErabiltzaileak", error);
     });

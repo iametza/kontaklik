@@ -1,4 +1,4 @@
-<a ng-click="audio_on_off ('sarrera')" id="audio_on_off"><img ng-src="{{audio_mutu && 'images/ikonoak/audio-off.png' || 'images/ikonoak/audio-on.png'}}" class="itzal" /></a>
+<a ng-click="audio_on_off ('sarrera')" id="audio_on_off"><img ng-src="{{audio_mutu && 'images/ikonoak/audio-off.png' || 'images/ikonoak/audio-on.png'}}" class="itzal" alt="audio" /></a>
 
 <div class="container">
   
@@ -9,7 +9,7 @@
       <div id="menua-burua">
       
         <div id="kontaklik">
-          <a href="#/"><img src="images/kontaklik.png" /></a>
+          <a href="#/"><img src="images/kontaklik.png" alt="Kontaklik" /></a>
         </div>
         
         <div id="erabiltzailea">
@@ -34,7 +34,7 @@
             
             <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}" ng-click="soinuak.audio_play ('click')" hm-press="ipuina_datuak (ipuina.id)">
               
-              <img ng-src="{{ipuina.fullPath}}" src="images/eszena_fondo_gabe.jpg" />
+              <img ng-src="{{ipuina.fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="ipuina" />
               
               <p>{{ipuina.izenburua}}</p>
               
@@ -52,7 +52,7 @@
           
           <a ng-click="ipuina_datuak (0)">
             
-            <img src="images/ikonoak/plus.png" />
+            <img src="images/ikonoak/plus.png" alt="ipuin berria" />
             
             <p>Ipuin berria sortu!</p>
             

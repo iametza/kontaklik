@@ -28,7 +28,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     $scope.soinuak.audio_fondo_stop ();
     
     // Txapuzilla para meter el play de la eszena
-    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" class="itzal" ng-click="play_eszena ()" />');
+    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" class="itzal" ng-click="play_eszena ()" alt="play" />');
     var el = $compile (img_play_eszena)($scope);
     
     angular.element ('#eszenatokia').append (img_play_eszena);

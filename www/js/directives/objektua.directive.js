@@ -3,7 +3,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
   return {
     restrict: 'AE',
     scope: {},
-    template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()">',
+    template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()" alt="objektua" />',
     link: function (scope, element, attrs){
       
       var objektua_id = attrs.objektuaId !== undefined ? attrs.objektuaId : 0,
