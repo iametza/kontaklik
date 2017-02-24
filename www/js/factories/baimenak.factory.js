@@ -15,6 +15,9 @@ app.factory ('Baimenak', ['$q', '$cordovaDialogs', function ($q, $cordovaDialogs
         case 'Android':
           android_txek (permissions, 'ok');
           break;
+        default:
+          d.reject ('nok');
+          break;
       }
       
     });
