@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'WizardHandler', function($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, WizardHandler){
+app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function ($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler){
   
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -879,7 +879,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
       // se pedia este permiso, lo que volvia a crea el objeto "media" corrupto... Solución, una función que comprueba que se tienen todos los permisos
       // necesarios. Es lo que hay.
       
-      Funtzioak.baimenak_txek ().then (function (baimenak){
+      Baimenak.konprobatu ().then (function (baimenak){
         
         if (baimenak == 'ok'){
           
@@ -894,8 +894,6 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
               
               // Guardamos el audio en la base de datos
               Database.query ('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then (function (){
-                
-                console.log ("audioa grabata", audioa.path + audioa.izena, cordova.file.dataDirectory + audioa.izena);
                 
                 // Cambiamos el audio en la lista
                 angular.forEach ($scope.eszenak, function (eszena){
@@ -929,8 +927,7 @@ app.controller('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDial
         }
         
       }, function (error){
-        d.reject (error);
-        console.log ("IpuinaCtrl, startRecord baimenak_txek", error);
+        console.log ("IpuinaCtrl, startRecord Baimenak.konprobatu", error);
       });
       
     }

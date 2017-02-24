@@ -1,4 +1,4 @@
-app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $compile){
+app.factory ('Funtzioak', ['$q', '$timeout', function ($q, $timeout){
   
   var Funtzioak = {};
   
@@ -28,60 +28,6 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', function($q, $timeout, $
     }, function (error){
       d.reject (error);
     });
-    
-    return d.promise;
-    
-  };
-  
-  Funtzioak.baimenak_txek = function (){
-    var d = $q.defer ();
-    var permissions = ["WRITE_EXTERNAL_STORAGE", "RECORD_AUDIO"];
-    
-    document.addEventListener ('deviceready', function (){
-      
-      //txek (permissions, 'ok');
-      d.resolve ('ok');
-        
-    });
-    
-    function txek (baimenak, egoera){
-    
-      if (baimenak.length === 0)
-        d.resolve (egoera);
-      else{
-        
-        var baimena = baimenak[0];
-        
-        baimenak.shift ();
-        
-        cordova.plugins.diagnostic.getPermissionAuthorizationStatus (function (status){
-          
-          if (status != "GRANTED" && status != "DENIED_ALWAYS"){
-            
-            cordova.plugins.diagnostic.requestRuntimePermission (function (status){
-              
-              if (status == "GRANTED")
-                txek (baimenak, egoera);
-              else
-                txek (baimenak, 'nok');
-                
-            }, function (error){
-              d.reject (error);
-            }, baimena);
-            
-          }
-          else if (status == "GRANTED")
-            txek (baimenak, egoera);
-          else
-            txek (baimenak, 'nok');
-              
-        }, function (error){
-          d.reject (error);
-        }, baimena);
-        
-      }
-      
-    }
     
     return d.promise;
     
