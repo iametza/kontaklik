@@ -125,6 +125,7 @@ body {
   width: auto;
   height: 50px;
   margin: 60px auto 20px auto;
+  animation: torloju 4s linear 0s infinite;
 }
 
 #menua-kutxa #berria a,

@@ -21,7 +21,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$q', '$scope', '$uibModalInstanc
         $scope.eremuak.izena = erabiltzailea[0].izena;
         $scope.eremuak.argazkia = jatorrizko_argazkia = erabiltzailea[0].argazkia;
         
-        if (erabiltzailea[0].argazkia.trim () != '')
+        if (erabiltzailea[0].argazkia.trim () !== '')
           $scope.argazkia_fullPath = cordova.file.dataDirectory + erabiltzailea[0].argazkia;
           
         $scope.ezabatu_button = true;
@@ -47,7 +47,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$q', '$scope', '$uibModalInstanc
         if (emaitza.length === 0){
           
           // Comprobamos si ha cambiado la imagen para borrar la anterior
-          if ($scope.eremuak.argazkia.trim () != '' && jatorrizko_argazkia.trim () != '' && $scope.eremuak.argazkia != jatorrizko_argazkia)
+          if ($scope.eremuak.argazkia.trim () !== '' && jatorrizko_argazkia.trim () !== '' && $scope.eremuak.argazkia != jatorrizko_argazkia)
             remove_argazkia (jatorrizko_argazkia);
           
           // Guardamos los datos en la base de datos (insertar/modificar)
@@ -112,10 +112,10 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$q', '$scope', '$uibModalInstanc
           });
           
           // Borramos la imagen del erabiltzaile (puede que haya dos en este mismo momento)
-          if ($scope.eremuak.argazkia.trim () != '')
+          if ($scope.eremuak.argazkia.trim () !== '')
             remove_argazkia ($scope.eremuak.argazkia);
             
-          if ($scope.eremuak.argazkia != jatorrizko_argazkia && jatorrizko_argazkia.trim () != '')
+          if ($scope.eremuak.argazkia != jatorrizko_argazkia && jatorrizko_argazkia.trim () !== '')
             remove_argazkia (jatorrizko_argazkia);
           
           // Borramos los datos del erabiltzaile
@@ -141,7 +141,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$q', '$scope', '$uibModalInstanc
   
   $scope.itxi = function () {
     
-    if ($scope.eremuak.argazkia.trim () != '' && $scope.eremuak.argazkia != jatorrizko_argazkia)
+    if ($scope.eremuak.argazkia.trim () !== '' && $scope.eremuak.argazkia != jatorrizko_argazkia)
       remove_argazkia ($scope.eremuak.argazkia);
     
     //$uibModalInstance.dismiss ('itxi');
@@ -155,16 +155,16 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$q', '$scope', '$uibModalInstanc
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,     
-      saveToPhotoAlbum: false,
-      correctOrientation:true
+      encodingType: Camera.EncodingType.JPEG,
+      saveToPhotoAlbum: true,
+      correctOrientation: true
     };
     
     Kamera.getPicture (options).then (function (irudia){
       
       Files.saveFile (irudia).then (function (irudia){
         
-        if ($scope.eremuak.argazkia.trim () != '' && $scope.eremuak.argazkia != jatorrizko_argazkia)
+        if ($scope.eremuak.argazkia.trim () !== '' && $scope.eremuak.argazkia != jatorrizko_argazkia)
           remove_argazkia ($scope.eremuak.argazkia);
         
         $scope.eremuak.argazkia = irudia;
@@ -188,7 +188,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$q', '$scope', '$uibModalInstanc
         
         remove_argazkia ($scope.eremuak.argazkia).then (function (){
           
-          if ($scope.eremuak.argazkia != jatorrizko_argazkia && jatorrizko_argazkia.trim () != ''){
+          if ($scope.eremuak.argazkia != jatorrizko_argazkia && jatorrizko_argazkia.trim () !== ''){
             $scope.eremuak.argazkia = jatorrizko_argazkia;
             
             $scope.argazkia_fullPath = cordova.file.dataDirectory + jatorrizko_argazkia;

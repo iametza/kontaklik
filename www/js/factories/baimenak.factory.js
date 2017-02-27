@@ -61,7 +61,7 @@ app.factory ('Baimenak', ['$q', '$cordovaDialogs', function ($q, $cordovaDialogs
       
     } // android_txek
     
-    // Las funciones usadas en android_txek son 'Android only', iOS god bless you. Pero, al Diablo gracias, en iOS con checkear s—lo el micro
+    // Las funciones usadas en android_txek son 'Android only', iOS god bless you. Pero, al Diablo gracias, en iOS con checkear solo el micro
     // es suficiente para poder usarlo (luego no pide los permisos para acceder a la galeria como hace Android)
     function ios_txek (){
       
