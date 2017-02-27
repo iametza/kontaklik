@@ -156,6 +156,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl',['$q', '$scope', '$uibModalInstanc
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,
+      cameraDirection: 1,
       saveToPhotoAlbum: true,
       correctOrientation: true
     };
