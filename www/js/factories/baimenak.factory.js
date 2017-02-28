@@ -65,9 +65,9 @@ app.factory ('Baimenak', ['$q', '$cordovaDialogs', function ($q, $cordovaDialogs
     // es suficiente para poder usarlo (luego no pide los permisos para acceder a la galeria como hace Android)
     function ios_txek (){
       
-      cordova.plugins.diagnostic.isMicrophoneAuthorized (function (status){
+      cordova.plugins.diagnostic.isMicrophoneAuthorized (function (authorized){
         
-        if (status == 'authorized')
+        if (authorized)
           d.resolve ('ok');
         else{
           
