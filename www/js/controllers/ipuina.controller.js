@@ -832,8 +832,9 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
       quality: 50,
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA,
+      encodingType: Camera.EncodingType.JPEG,
       allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,     
+      cameraDirection: 0,
       saveToPhotoAlbum: true,
       correctOrientation:true
     };

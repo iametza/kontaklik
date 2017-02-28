@@ -29,8 +29,10 @@
         <img ng-src="{{argazkia_fullPath == '' && 'images/erabiltzailea.png' || argazkia_fullPath}}" alt="argazkia" />
       </div>
       
-      <a ng-click="takePicture ()"><img src="images/ikonoak/kamara.jpg" class="ikon" alt="kamara" /></a>
-      <button type="button" class="btn btn-primary" ng-if="eremuak.argazkia != ''" ng-click="argazkia_ezabatu ()">Argazkia ezabatu</button>
+      <div class="botoiak">
+        <button type="button" class="btn btn-primary" ng-click="takePicture ()">Argazkia atera</button>
+        <button type="button" class="btn btn-primary" ng-if="eremuak.argazkia != ''" ng-click="argazkia_ezabatu ()">Argazkia ezabatu</button>
+      </div>
     </div>
     
     <div class="botoiak">
