@@ -530,6 +530,10 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
 .itzal {
   -webkit-filter: drop-shadow(5px 5px 5px #222);
   filter: drop-shadow(5px 5px 5px #222);
+  
+  /* Lo siguiente evita que, en iOS, los iconos con sombra parpadeen o se corten en ocasiones */
+  /* Fuente: https://quickleft.com/blog/4-steps-to-minimizing-rendering-issues-in-cordova-applications/ */
+  -webkit-transform: translateZ(0);
 }
 
 .itzal:active {
