@@ -2,7 +2,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
   
   $scope.eremuak = {
     testua: '',
-    fontSize: 16,
+    fontSize: 24,
     color: '#000',
     borderColor: '#000',
     backgroundColor: '#fff',
@@ -44,6 +44,8 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
     
     if (form.$valid){
       
+      //angular.element ('#testua').blur ();
+      
       $scope.lerro_kopurua = $scope.eremuak.testua.split ("\n").length;
       if ($scope.lerro_kopurua <= 5){
         
@@ -61,10 +63,6 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
         else{
           Database.query ('UPDATE eszena_testuak SET testua=?, fontSize=?, color=?, borderColor=?, backgroundColor=?, class=? WHERE id=?', [$scope.eremuak.testua, $scope.eremuak.fontSize, $scope.eremuak.color, $scope.eremuak.borderColor, $scope.eremuak.backgroundColor, $scope.eremuak.class, testua_id]).then (function (){
             
-            // Cambiamos el texto en la escena AHORA SE HACE EN testua.directive.js
-            /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
-            angular.element (elementua).children ().html (Funtzioak.nl2br ($scope.eremuak.testua));*/
-        
             $uibModalInstance.close (testua_id);
             
           }, function (error){
