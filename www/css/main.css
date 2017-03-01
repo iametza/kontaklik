@@ -391,17 +391,19 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   padding-top: 20px;
 }
 
-.modal-body .botoiak button {
+.modal-body .botoiak button,
+.modal-body .botoiak button:hover,
+.modal-body .botoiak button:focus {
   background-color: #fff;
   color: #e73d64;
   border-color: #fff;
   text-transform: uppercase;
   font-weight: bold;
   padding: 6px 24px;
+  outline: none;
 }
 
-.modal-body .botoiak button:focus,
-.modal-body .botoiak button:hover {
+.modal-body .botoiak button:active {
   background-color: #e73d64;
   color: #fff;
   border-color: #e73d64;
