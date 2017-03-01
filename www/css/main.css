@@ -234,8 +234,10 @@ body {
 .goiko-menua .tab-edukia #play_ipuina {
   height: 70px;
   width: auto;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-right: 10px;
   padding: 0;
+  float: right;
 }
 
 .goiko-menua .tab-edukia #eszena_berria,
