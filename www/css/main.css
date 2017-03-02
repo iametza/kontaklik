@@ -56,6 +56,8 @@ body {
   color: #fff;
   text-transform: uppercase;
   font-weight: bold;
+  
+  animation: erabiltzailea_sartu 1s linear 0.5s backwards;
 }
 
 #menua-kutxa {

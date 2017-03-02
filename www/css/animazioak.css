@@ -12,3 +12,23 @@
   }
   
 }
+
+@keyframes erabiltzailea_sartu {
+  
+  0% {
+    margin-left: -200px;
+  }
+  75% {
+    margin-left: 50px;
+  }
+  85% {
+    margin-left: 20px;
+  }
+  95% {
+    margin-left: 35px;
+  }
+  100% {
+    margin-left: 30px;
+  }
+  
+}
