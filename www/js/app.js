@@ -1,12 +1,12 @@
 /**
  * @ngdoc overview
- * @name haziakApp
+ * @name Kontaklik
  * @description
- * # haziakApp
+ * # Kontaklik
  *
  * Main module of the application.
  */
-var app = angular.module ('haziakApp', [
+var app = angular.module ('Kontaklik', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
