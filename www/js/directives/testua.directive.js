@@ -156,7 +156,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funt
               
               var modala = $uibModal.open ({
                 animation: true,
-                backdrop: 'static',
+                //backdrop: 'static',
                 templateUrl: 'views/modals/eszena_testua.html',
                 controller: 'ModalEszenaTestuaCtrl',
                 resolve: {

@@ -73,8 +73,13 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
       
         
       }
-      else
+      else{
         $scope.errore_mezua = 'Gehienez ere bost lerro idatz ditzazkezu.';
+        
+        // TODO: cuando se muestra este error en iOS la ventana modal desaparece.....
+        
+        //angular.element ('#testua').focus ();
+      }
       
     }
     
