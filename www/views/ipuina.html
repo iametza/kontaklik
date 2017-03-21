@@ -1,11 +1,11 @@
 <button type="button" class="btn btn-default" ng-click="menuaCollapse()" ng-hide="!menuaCollapsed" id="goiko-menua-collapsed"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
- <!--
+<!--
 <a ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop" class="itzal"><img src="images/ikonoak/atzera.png" id="eszena_berria" alt="atzera" /></a>
-
+-->
  <div class="row goiko-menua">
-        <div class="col-xs-9">
+        <div class="col-xs-10">
           <div id="eszenak">
-            <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" alt="eszena aurreratu" /></a>
+            <!-- <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" alt="eszena aurreratu" /></a> -->
           
             <div class="fondoak">
               
@@ -13,7 +13,7 @@
               
             </div>
             
-            <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext itzal" alt="eszena atzeratu" /></a>
+            <!-- <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext itzal" alt="eszena atzeratu" /></a> -->
           </div>
         </div>
         
@@ -21,18 +21,15 @@
           <a ng-click="addEszena ()"><img src="images/ikonoak/gehitu.png" id="eszena_berria" class="itzal" alt="eszena berria" /></a>
         </div>
         
+         <!--
         <div class="col-xs-2">
           <a ng-click="bideo_modua_play ()"><img src="images/ikonoak/play.png" id="play_ipuina" class="itzal" alt="ipuina ikusi" /></a>
         </div>
+        -->
       </div>
     </div>
--->
-<uib-tabset active="active" class="beheko-menua">
-  <!--
-  <div class="kontaklik">
-    <a href="#/"><img src="images/kontaklik-home.png" alt="Kontaklik" /></a>
-  </div>
-  -->
+
+<uib-tabset active="active" class="beheko-menua"> 
   <uib-tab index="0">  
     <uib-tab-heading>Fondoak</uib-tab-heading>
     

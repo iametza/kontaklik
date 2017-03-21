@@ -141,7 +141,19 @@ body {
 }
 
 /** Ipuinak editatzeko menu nagusia **/
-
+.goiko-menua {
+  position: fixed;
+  top: 15px;
+  left: 125px;
+  right: 15px;
+  background-color: #fff;
+  z-index: 1001;
+  width: 75%;
+}
+.goiko-menua img {
+  height: 70px;
+  width: auto;
+}
 .beheko-menua {
   position: fixed;
   bottom: 15px;
