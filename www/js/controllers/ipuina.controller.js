@@ -12,7 +12,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};
   
   var kontador;
-  var img_play_eszena;
+  //var img_play_eszena;
   var inBackground = false;
   var destroyed = false;
   var eszena_aldatzen = false;
@@ -26,14 +26,6 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     
     // Paramos la musikilla de fondo
     $scope.soinuak.audio_fondo_stop ();
-    
-    // Txapuzilla para meter el play de la eszena
-    img_play_eszena = angular.element ('<img src="images/ikonoak/play.png" id="play_eszena" class="itzal" ng-click="play_eszena ()" alt="play" />');
-    var el = $compile (img_play_eszena)($scope);
-    
-    angular.element ('#eszenatokia').append (img_play_eszena);
-    $scope.insertHere = el;
-    // Txapuzilla ends
     
     // Recogemos los usuarios que han visto el tutorial
     if ('tutoriala_ikusita' in $window.localStorage)
@@ -1316,10 +1308,8 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     audioa_kill ();
     
     // Paramos la posible reproducción del cuento
-    $scope.bideo_modua_stop ();
+    $scope.bideo_modua_stop ();    
     
-    // Quitamos el "botón" de reproducción de la eszena
-    img_play_eszena.remove ();
     
     destroyed = true;
     

@@ -1,18 +1,8 @@
 <button type="button" class="btn btn-default" ng-click="menuaCollapse()" ng-hide="!menuaCollapsed" id="goiko-menua-collapsed"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
-
+ <!--
 <a ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop" class="itzal"><img src="images/ikonoak/atzera.png" id="eszena_berria" alt="atzera" /></a>
 
-<uib-tabset active="active" class="goiko-menua">
-  
-  <div class="kontaklik">
-    <a href="#/"><img src="images/kontaklik-home.png" alt="Kontaklik" /></a>
-  </div>
-  
-  <uib-tab index="0">
-    <uib-tab-heading>Eszenak</uib-tab-heading>
-    
-    <div class="tab-edukia">
-      <div class="row">
+ <div class="row goiko-menua">
         <div class="col-xs-9">
           <div id="eszenak">
             <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" alt="eszena aurreratu" /></a>
@@ -36,9 +26,14 @@
         </div>
       </div>
     </div>
-  </uib-tab>
-  
-  <uib-tab index="1">
+-->
+<uib-tabset active="active" class="beheko-menua">
+  <!--
+  <div class="kontaklik">
+    <a href="#/"><img src="images/kontaklik-home.png" alt="Kontaklik" /></a>
+  </div>
+  -->
+  <uib-tab index="0">  
     <uib-tab-heading>Fondoak</uib-tab-heading>
     
     <div class="tab-edukia">
@@ -60,7 +55,7 @@
     </div>
   </uib-tab>
   
-  <uib-tab index="2">
+  <uib-tab index="1">
     <uib-tab-heading>Objektuak</uib-tab-heading>
     
     <div class="tab-edukia">
@@ -82,7 +77,7 @@
     </div>
   </uib-tab>
   
-  <uib-tab index="3">
+  <uib-tab index="2">
     <uib-tab-heading>Testuak</uib-tab-heading>
     
     <div class="tab-edukia">
@@ -90,7 +85,7 @@
     </div>
   </uib-tab>
   
-  <uib-tab index="4" deselect="audioa_tab_desaukeratua()">
+  <uib-tab index="3" deselect="audioa_tab_desaukeratua()">
     <uib-tab-heading>Audioa</uib-tab-heading>
     
     <div class="tab-edukia">
@@ -133,9 +128,11 @@
   </div>
   
 </uib-tabset>
-
+<img src="images/ikonoak/play.png" id="play_eszena" class="itzal" ng-click="play_eszena()" alt="play" />
 <div id="lanean"><img src="images/lanean.gif" alt="lanean" /></div>
 
+<!--
 <div id="tutoriala" hm-swiperight="wizard_prev()" hm-swipeleft="wizard_next()">
   <div ng-include="'views/wizard.html'"></div>
 </div>
+-->

@@ -22,27 +22,26 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       // Le damos "id" al elemento para poder hacer una txapuzilla luego
       element.children ().attr ('id', 'objektua_' + objektua_id);
       
-      limits.left = eszenatokia[0].offsetLeft + 15;
-      limits.top = eszenatokia[0].offsetTop + 15;
-      limits.right = eszenatokia[0].offsetWidth - 15;
-      limits.bottom = eszenatokia[0].offsetHeight - 15;
+     
       
       // Parece ser que con hacer "$timeout a 0ms." se asegura que el elemento está cargado en el DOM.... (necesario para obtener el tamaño)
-      $timeout (function (){
+      $timeout (function (){       
         
         // Si el objeto no tiene posición (recien creado) tratamos de ponerlo en el centro de la pantalla
-        if (posizioa.x < 0)
+        if (posizioa.x < 0) {
           transform.translate = erdian_kokatu ();
+        }
         
-        if (attrs.scale === undefined)
+        if (attrs.scale === undefined) {
           element.children ().css ({ transform: 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0)'});
-        
+        }
+        calculateLimits();
       });
       
       var updateElementTransform = function (transform_new, dbGorde){
         dbGorde = typeof dbGorde !== 'undefined' ? dbGorde : false;
         
-        if (!loki){
+        if (!loki) {
           
           // Aplicamos los cambios en el CSS
           element.children ().css (transform2css (transform_new));
@@ -86,6 +85,14 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
           
         }
         
+      };
+      var calculateLimits = function() {
+        var outMargin = Math.min(element[0].children[0].clientWidth/2, element[0].children[0].clientHeight/2);
+        
+        limits.left = eszenatokia[0].offsetLeft - outMargin;
+        limits.top = eszenatokia[0].offsetTop - outMargin;
+        limits.right = eszenatokia[0].offsetWidth + outMargin;
+        limits.bottom = eszenatokia[0].offsetHeight + outMargin;
       };
       
       var transform2css = function (t){
@@ -185,9 +192,10 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       };
       
       scope.onPinchEnd = function (){
-        
-        if (updateElementTransform (transform, true))
+        calculateLimits();
+        if (updateElementTransform (transform, true)) {
           initScale = transform.scale;
+        }
         
       };
       

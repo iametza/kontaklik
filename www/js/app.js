@@ -43,7 +43,7 @@ var app = angular.module ('Kontaklik', [
     // Si no hay 'irudiak' cargamos los fondos y objetos por defecto
     Database.getRows ('irudiak', {}, '').then (function (irudiak){
       
-      /*if (irudiak.length === 0){
+      if (irudiak.length === 0){
         
         // Fondos
         Funtzioak.listDir (cordova.file.applicationDirectory + "www/assets/fondoak/").then (function (fitxategiak){
@@ -85,7 +85,7 @@ var app = angular.module ('Kontaklik', [
           console.log ("app.js objektuak jasotzen", error);
         });
         
-      }*/
+      }
       
     }, function (error){
       console.log ("app.js irudiak jasotzen", error);
