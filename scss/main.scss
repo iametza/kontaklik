@@ -10,6 +10,7 @@ body {
   height: 100%;
   overflow: hidden;
   /* Lo siguiente impide que se puedan seleccionar los textos */
+  
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -19,7 +20,7 @@ body {
 #eszenatokia {
   width: 100%;
   height: 100%;
-  background: url('../images/fondoa.jpg') no-repeat center center fixed;
+  background: url('../images/defektuzko-fondoa.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -141,15 +142,26 @@ body {
 }
 
 /** Ipuinak editatzeko menu nagusia **/
+.menu-fondoa {
+  border-radius: 12px 12px 12px 12px;
+  -moz-border-radius: 12px 12px 12px 12px;
+  -webkit-border-radius: 12px 12px 12px 12px;
+  border: 8px solid #fff;
+  -webkit-box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.6);
+  box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.6);
+}
 .goiko-menua {
   position: fixed;
   top: 15px;
   left: 125px;
-  right: 15px;
-  background-color: #fff;
+  right: 15px;  
+  background-color: rgba(255,255,255,0.8);
   z-index: 1001;
-  width: 75%;
-}
+  width: 85%;
+  padding: 10px;
+  }
+
 .goiko-menua img {
   height: 70px;
   width: auto;
@@ -176,39 +188,26 @@ body {
 
 .beheko-menua .nav-tabs {
   border: none;
+  background-color: rgba(255,255,255,0) !important;
+}
+.beheko-menua .nav-tabs > li:first-child  {
+  margin-left: 15px;
+}
+.beheko-menua .nav-tabs > li > a {
+  width: 100px;
+  padding: 0px;
+  margin: 0px 10px;
+  border: none;
+  background-color: rgba(255,255,255,0) !important;
+}
+.beheko-menua .nav-tabs > li > a img {
+  width: 100%;
 }
 
-.beheko-menua .nav-tabs > li > a,
-.beheko-menua .nav-tabs > li > a:hover,
-.beheko-menua .nav-tabs > li > a:focus {
-  min-width: 100px;
-  min-height: 50px;
-  border-color: transparent;
-  border-radius: 0px;
-  background-color: #ededec;
-  color: #92a7ac;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 18px;
-  padding-top: 18px;
-  margin-left: 10px;
-}
-
-.beheko-menua .nav-tabs > li.active > a,
-.beheko-menua .nav-tabs > li.active > a:hover,
-.beheko-menua .nav-tabs > li.active > a:focus {
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-bottom: 4px solid #e73d64;
-  background-color: #fff;
-  color: #e73d64;
-}
 
 .beheko-menua .tab-edukia {
-  height: 100px;
-  padding: 5px 10px 5px 10px;
+  height: 120px;
+  padding: 10px;
 }
 
 .beheko-menua .tab-edukia #eszenak .prevnext {
@@ -544,7 +543,24 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   position: fixed;
   bottom: 30px;
 }
-
+.goiko-collapse {
+  position: fixed;
+  top: 0px;
+  right: 100px;
+  z-index: 1002;
+}
+.goiko-collapse img {
+   width: 50%;
+}
+.beheko-collapse {
+  position: fixed;
+  bottom: 0px;
+  right: 100px; 
+  z-index: 1002;
+}
+.beheko-collapse img {
+   width: 50%;
+}
 .itzal {
   -webkit-filter: drop-shadow(5px 5px 5px #222);
   filter: drop-shadow(5px 5px 5px #222);

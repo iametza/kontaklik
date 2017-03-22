@@ -3,7 +3,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
   return {
     restrict: 'AE',
     scope: {},
-    template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()" alt="objektua" />',
+    template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()" alt="objektua" fallback-src="images/erabiltzailea.png" />',
     link: function (scope, element, attrs){
       
       var objektua_id = attrs.objektuaId !== undefined ? attrs.objektuaId : 0,
@@ -83,10 +83,9 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
             return (true);
           }
           
-        }
-        
-      };
-      var calculateLimits = function() {
+        }                                                                                                  
+      };                                                                      
+      var calculateLimits      = function() {
         var outMargin = Math.min(element[0].children[0].clientWidth/2, element[0].children[0].clientHeight/2);
         
         limits.left = eszenatokia[0].offsetLeft - outMargin;

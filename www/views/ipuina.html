@@ -2,7 +2,9 @@
 <!--
 <a ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop" class="itzal"><img src="images/ikonoak/atzera.png" id="eszena_berria" alt="atzera" /></a>
 -->
- <div class="row goiko-menua">
+ <a ng-click="" class="goiko-collapse"><img ng-src="images/izkutatu-eszenak.png"></a>
+ <a ng-click="" class="beheko-collapse"><img ng-src="images/izkutatu-menua.png"></a>
+ <div class="row goiko-menua menu-fondoa">
         <div class="col-xs-10">
           <div id="eszenak">
             <!-- <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" alt="eszena aurreratu" /></a> -->
@@ -31,19 +33,17 @@
 
 <uib-tabset active="active" class="beheko-menua"> 
   <uib-tab index="0">  
-    <uib-tab-heading>Fondoak</uib-tab-heading>
-    
-    <div class="tab-edukia">
+    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('fondoak')}}"/></uib-tab-heading>    
+    <div class="tab-edukia menu-fondoa">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-10">
           <div class="elementuak">
-            <a ng-click="addFondoa (fondoa)" hm-press="pressFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.fullPath}}" class="irudia" alt="fondoa" /></a>
+            <a ng-click="addFondoa (fondoa)" hm-press="pressFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.fullPath}}" class="irudia" alt="fondoa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
           </div>
         </div>
         
-        <div class="col-xs-4">
-          <div class="kargatu">
-            <img src="images/kargatu_zure_argazkiak.jpg" class="info" alt="kargatu" />
+        <div class="col-xs-2">
+          <div class="kargatu">            
             <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.jpg" class="ikon" alt="galeria" /></a>
             <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.jpg" class="ikon" alt="kamara" /></a>
           </div>
@@ -53,19 +53,18 @@
   </uib-tab>
   
   <uib-tab index="1">
-    <uib-tab-heading>Objektuak</uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('pertsonaiak')}}"/></uib-tab-heading>
     
-    <div class="tab-edukia">
+    <div class="tab-edukia menu-fondoa">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-10">
           <div class="elementuak">
-            <a ng-click="addObjektua (objektua)" hm-press="pressObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.fullPath}}" class="irudia" alt="objektua" /></a>
+            <a ng-click="addObjektua (objektua)" hm-press="pressObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.fullPath}}" class="irudia" alt="objektua" fallback-src="images/erabiltzailea.png"/></a>
           </div>
         </div>
         
-        <div class="col-xs-4">
-          <div class="kargatu">
-            <img src="images/kargatu_zure_argazkiak.jpg" class="info" alt="kargatu" />
+        <div class="col-xs-2">
+          <div class="kargatu">            
             <a ng-click="takeGallery ('objektua')"><img src="images/ikonoak/galeria.jpg" class="ikon" alt="galeria" /></a>
             <a ng-click="takePicture ('objektua')"><img src="images/ikonoak/kamara.jpg" class="ikon" alt="kamara" /></a>
           </div>
@@ -75,17 +74,17 @@
   </uib-tab>
   
   <uib-tab index="2">
-    <uib-tab-heading>Testuak</uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('testuak')}}"/></uib-tab-heading>
     
-    <div class="tab-edukia">
+    <div class="tab-edukia menu-fondoa">
       <a ng-click="addTestua ()"><img src="images/ikonoak/gehitu.png" id="testu_berria" class="itzal" alt="testua gehitu" /></a>
     </div>
   </uib-tab>
   
   <uib-tab index="3" deselect="audioa_tab_desaukeratua()">
-    <uib-tab-heading>Audioa</uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('audioak')}}"/></uib-tab-heading>
     
-    <div class="tab-edukia">
+    <div class="tab-edukia menu-fondoa">
       <div ng-hide="uneko_audioa.izena != ''">
         <div class="mikro">
           <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
@@ -120,8 +119,10 @@
   </uib-tab>
   
   <div class="pull-right">
-    <!--<a href="#/ipuinak/{{erabiltzailea.id}}">{{erabiltzailea.izena}}</a> &gt; {{ipuina.izenburua}}-->
+    <!--
+    <a href="#/ipuinak/{{erabiltzailea.id}}">{{erabiltzailea.izena}}</a> &gt; {{ipuina.izenburua}}
     <button type="button" class="btn btn-default" ng-click="menuaCollapse()"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
+  -->
   </div>
   
 </uib-tabset>

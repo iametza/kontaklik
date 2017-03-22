@@ -18,7 +18,25 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   var eszena_aldatzen = false;
   var lock_play = false;
   var tutoriala_ikusita = []; // IDs de usuarios que han visto el tutorial
-  
+  $scope.irudiaKargatu = function(mota) {
+    var irudia = '';
+    switch (mota) {
+      case 'fondoak':
+        irudia = 'images/pestaina-fondoak-aktibo.png';
+        break;
+      case 'pertsonaiak':
+        irudia = 'images/pestaina-pertsonaiak-aktibo.png';
+        break;
+      case 'testuak':
+        irudia = 'images/pestaina-testuak-aktibo.png';
+        break;
+      case 'audioak':
+        irudia = 'images/pestaina-audioak-aktibo.png';
+        break;
+    }
+    console.log('irudia', irudia);
+    return irudia;
+  }
   $scope.init = function (){
     
     // Cargando....
