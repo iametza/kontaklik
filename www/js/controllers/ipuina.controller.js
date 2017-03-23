@@ -11,6 +11,9 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.menuaCollapsed = false;
   $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};
   
+  $scope.behekoMenua = false;
+  $scope.goikoMenua = false;
+  
   var kontador;
   //var img_play_eszena;
   var inBackground = false;
@@ -18,25 +21,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   var eszena_aldatzen = false;
   var lock_play = false;
   var tutoriala_ikusita = []; // IDs de usuarios que han visto el tutorial
-  $scope.irudiaKargatu = function(mota) {
-    var irudia = '';
-    switch (mota) {
-      case 'fondoak':
-        irudia = 'images/pestaina-fondoak-aktibo.png';
-        break;
-      case 'pertsonaiak':
-        irudia = 'images/pestaina-pertsonaiak-aktibo.png';
-        break;
-      case 'testuak':
-        irudia = 'images/pestaina-testuak-aktibo.png';
-        break;
-      case 'audioak':
-        irudia = 'images/pestaina-audioak-aktibo.png';
-        break;
-    }
-    console.log('irudia', irudia);
-    return irudia;
-  }
+  
   $scope.init = function (){
     
     // Cargando....
@@ -790,15 +775,18 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     }
     
   };
-  
-  $scope.menuaCollapse = function (){
-    
-    $scope.menuaCollapsed = !$scope.menuaCollapsed;
-    
-    angular.element ('.goiko-menua, #play_eszena').fadeToggle (1000);
-    
+  /*
+   *
+   * Goiko eta beheko menuak gorde
+   *
+   */
+  $scope.goikoMenuaCollapse = function (){    
+   $scope.goikoMenua = !$scope.goikoMenua;    
   };
-  
+  $scope.behekoMenuaCollapse = function() {
+    console.log('$scope.behekoMenua', $scope.behekoMenua);
+    $scope.behekoMenua = !$scope.behekoMenua;
+  };
   $scope.takeGallery = function (atala){
     var options = {
       quality: 50,

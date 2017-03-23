@@ -19,3 +19,9 @@
     margin-left: 35px; }
   100% {
     margin-left: 30px; } }
+
+@keyframes behekoMenuaGorde {
+  from {
+    bottom: 15px; }
+  to {
+    bottom: 115px; } }

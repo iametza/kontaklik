@@ -1,9 +1,8 @@
-<button type="button" class="btn btn-default" ng-click="menuaCollapse()" ng-hide="!menuaCollapsed" id="goiko-menua-collapsed"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
 <!--
 <a ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop" class="itzal"><img src="images/ikonoak/atzera.png" id="eszena_berria" alt="atzera" /></a>
 -->
- <a ng-click="" class="goiko-collapse"><img ng-src="images/izkutatu-eszenak.png"></a>
- <a ng-click="" class="beheko-collapse"><img ng-src="images/izkutatu-menua.png"></a>
+ <a ng-click="goikoMenuaCollapse()" class="goiko-collapse"><img ng-src="images/izkutatu-eszenak.png"></a>
+ <a ng-click="behekoMenuaCollapse()" class="beheko-collapse"><img ng-src="images/izkutatu-menua.png"></a>
  <div class="row goiko-menua menu-fondoa">
         <div class="col-xs-10">
           <div id="eszenak">
@@ -31,9 +30,9 @@
       </div>
     </div>
 
-<uib-tabset active="active" class="beheko-menua"> 
+<uib-tabset active="0" class="beheko-menua" ng-hide="behekoMenua"> 
   <uib-tab index="0">  
-    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('fondoak')}}"/></uib-tab-heading>    
+    <uib-tab-heading><img class="pestaina-irudia"  src="images/pestaina-fondoak-aktibo.png"/></uib-tab-heading>    
     <div class="tab-edukia menu-fondoa">
       <div class="row">
         <div class="col-xs-10">
@@ -53,7 +52,7 @@
   </uib-tab>
   
   <uib-tab index="1">
-    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('pertsonaiak')}}"/></uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia"  src="images/pestaina-pertsonaiak-aktibo.png"/></uib-tab-heading>
     
     <div class="tab-edukia menu-fondoa">
       <div class="row">
@@ -74,7 +73,7 @@
   </uib-tab>
   
   <uib-tab index="2">
-    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('testuak')}}"/></uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-testuak-aktibo.png"/></uib-tab-heading>
     
     <div class="tab-edukia menu-fondoa">
       <a ng-click="addTestua ()"><img src="images/ikonoak/gehitu.png" id="testu_berria" class="itzal" alt="testua gehitu" /></a>
@@ -82,7 +81,7 @@
   </uib-tab>
   
   <uib-tab index="3" deselect="audioa_tab_desaukeratua()">
-    <uib-tab-heading><img class="pestaina-irudia" ng-src="{{irudiaKargatu('audioak')}}"/></uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-audioak-aktibo.png"/></uib-tab-heading>
     
     <div class="tab-edukia menu-fondoa">
       <div ng-hide="uneko_audioa.izena != ''">

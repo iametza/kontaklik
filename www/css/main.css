@@ -128,14 +128,14 @@ body {
   border: 8px solid #fff;
   -webkit-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
   -moz-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6); }
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.9); }
 
 .goiko-menua {
   position: fixed;
   top: 15px;
   left: 125px;
   right: 15px;
-  background-color: rgba(255, 255, 255, 0.8);
   z-index: 1001;
   width: 85%;
   padding: 10px; }
@@ -149,9 +149,11 @@ body {
   bottom: 15px;
   left: 125px;
   right: 15px;
-  background-color: #fff;
   z-index: 1001;
   width: 75%; }
+
+.beheko-menua .ng-hide {
+  animation: behekoMenuaGorde 2s ease-in; }
 
 .beheko-menua .kontaklik {
   float: left;
@@ -165,9 +167,6 @@ body {
   border: none;
   background-color: rgba(255, 255, 255, 0) !important; }
 
-.beheko-menua .nav-tabs > li:first-child {
-  margin-left: 15px; }
-
 .beheko-menua .nav-tabs > li > a {
   width: 100px;
   padding: 0px;
@@ -175,8 +174,15 @@ body {
   border: none;
   background-color: rgba(255, 255, 255, 0) !important; }
 
-.beheko-menua .nav-tabs > li > a img {
-  width: 100%; }
+.beheko-menua .nav-tabs > li.active > a {
+  border: none !important; }
+
+.beheko-menua .nav-tabs > li > a .pestaina-irudia {
+  width: 100%;
+  filter: grayscale(1); }
+
+.beheko-menua .nav-tabs > li.active > a .pestaina-irudia {
+  filter: grayscale(0); }
 
 .beheko-menua .tab-edukia {
   height: 120px;
@@ -203,7 +209,7 @@ body {
   display: inline-block;
   height: 90px;
   width: auto;
-  margin: 0px 5px 0px 0px; }
+  margin: 0px 5px 0px 5px; }
 
 .beheko-menua .tab-edukia #eszenak .fondoak .fondo.active,
 .beheko-menua .tab-edukia #eszenak .fondoak .fondo.active:focus {
@@ -467,7 +473,7 @@ body.modal-open {
 .goiko-collapse {
   position: fixed;
   top: 0px;
-  right: 100px;
+  right: 10px;
   z-index: 1002; }
 
 .goiko-collapse img {
