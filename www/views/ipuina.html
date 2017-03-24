@@ -1,8 +1,8 @@
 <!--
 <a ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop" class="itzal"><img src="images/ikonoak/atzera.png" id="eszena_berria" alt="atzera" /></a>
 -->
- <a ng-click="goikoMenuaCollapse()" class="goiko-collapse"><img ng-src="images/izkutatu-eszenak.png"></a>
- <a ng-click="behekoMenuaCollapse()" class="beheko-collapse"><img ng-src="images/izkutatu-menua.png"></a>
+ <a ng-click="goikoMenuaCollapse()" id="goiko-collapse"><img ng-src="images/izkutatu-eszenak.png"></a>
+ <a ng-click="behekoMenuaCollapse()" id="beheko-collapse"><img ng-src="images/izkutatu-menua.png"></a>
  <div class="row goiko-menua menu-fondoa">
         <div class="col-xs-10">
           <div id="eszenak">
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-<uib-tabset active="0" class="beheko-menua" ng-hide="behekoMenua"> 
+<uib-tabset active="0" id="beheko-menua"> 
   <uib-tab index="0">  
     <uib-tab-heading><img class="pestaina-irudia"  src="images/pestaina-fondoak-aktibo.png"/></uib-tab-heading>    
     <div class="tab-edukia menu-fondoa">

@@ -166,56 +166,54 @@ body {
   height: 70px;
   width: auto;
 }
-.beheko-menua {  
+#beheko-menua {  
   position: fixed;
   bottom: 15px;
   left: 125px;
   right: 15px;  
   z-index: 1001;
-  width: 75%;
+  width: 75%;  
 }
-.beheko-menua .ng-hide {
-  animation: behekoMenuaGorde 2s ease-in;
-}
-.beheko-menua .kontaklik {
+
+#beheko-menua .kontaklik {
   float: left;
   margin: 6px auto auto 6px;
 }
 
-.beheko-menua .kontaklik img {
+#beheko-menua .kontaklik img {
   height: 50px;
   width: auto;
 }
 
-.beheko-menua .nav-tabs {
+#beheko-menua .nav-tabs {
   border: none;
   background-color: rgba(255,255,255,0) !important;
 }
-.beheko-menua .nav-tabs > li > a {
+#beheko-menua .nav-tabs > li > a {
   width: 100px;
   padding: 0px;
   margin: 0px 10px;
   border: none;
   background-color: rgba(255,255,255,0) !important;
 }
-.beheko-menua .nav-tabs > li.active > a {
+#beheko-menua .nav-tabs > li.active > a {
   border: none !important;
 }
 
-.beheko-menua .nav-tabs > li > a .pestaina-irudia {
+#beheko-menua .nav-tabs > li > a .pestaina-irudia {
   width: 100%;
   filter: grayscale(1);
 }
-.beheko-menua .nav-tabs > li.active > a .pestaina-irudia{
+#beheko-menua .nav-tabs > li.active > a .pestaina-irudia{
   filter: grayscale(0);
 }
 
-.beheko-menua .tab-edukia {
+#beheko-menua .tab-edukia {
   height: 120px;
   padding: 10px;
 }
 
-.beheko-menua .tab-edukia #eszenak .prevnext {
+#beheko-menua .tab-edukia #eszenak .prevnext {
   float: left;
   height: 60px;
   width: auto;
@@ -223,7 +221,7 @@ body {
   margin-right: 10px;
 }
 
-.beheko-menua .tab-edukia #eszenak .fondoak {
+#beheko-menua .tab-edukia #eszenak .fondoak {
   float: left;
   width: auto;
   max-width: 80%;
@@ -233,24 +231,24 @@ body {
   margin-right: 10px;
 }
 
-.beheko-menua .tab-edukia #eszenak .fondoak .fondo,
-.beheko-menua .tab-edukia #eszenak .fondoak .fondo:focus {
+#beheko-menua .tab-edukia #eszenak .fondoak .fondo,
+#beheko-menua .tab-edukia #eszenak .fondoak .fondo:focus {
   display: inline-block;
   height: 90px;
   width: auto;
   margin: 0px 5px 0px 5px;
 }
 
-.beheko-menua .tab-edukia #eszenak .fondoak .fondo.active,
-.beheko-menua .tab-edukia #eszenak .fondoak .fondo.active:focus {
+#beheko-menua .tab-edukia #eszenak .fondoak .fondo.active,
+#beheko-menua .tab-edukia #eszenak .fondoak .fondo.active:focus {
   border: 4px solid #e73d64;
 }
 
-.beheko-menua .tab-edukia #eszenak .fondoak .fondo:last-child {
+#beheko-menua .tab-edukia #eszenak .fondoak .fondo:last-child {
   margin-right: 0;
 }
 
-.beheko-menua .tab-edukia #play_ipuina {
+#beheko-menua .tab-edukia #play_ipuina {
   height: 70px;
   width: auto;
   margin-top: 10px;
@@ -259,53 +257,53 @@ body {
   float: right;
 }
 
-.beheko-menua .tab-edukia #eszena_berria,
-.beheko-menua .tab-edukia #testu_berria{
+#beheko-menua .tab-edukia #eszena_berria,
+#beheko-menua .tab-edukia #testu_berria{
   height: 70px;
   width: auto;
   margin-top: 10px;
   padding: 0;
 }
 
-.beheko-menua .tab-edukia .elementuak {
+#beheko-menua .tab-edukia .elementuak {
   width: 100%;
   height: 100%;
   white-space: nowrap;
   overflow-x: scroll;
 }
 
-.beheko-menua .tab-edukia .elementuak .irudia {
+#beheko-menua .tab-edukia .elementuak .irudia {
   display: inline-block;
   height: 90px;
   width: auto;
   margin: 0px 5px 0px 0px;
 }
 
-.beheko-menua .tab-edukia .elementuak a:last-child .irudia {
+#beheko-menua .tab-edukia .elementuak a:last-child .irudia {
   margin-right: 0;
 }
 
-.beheko-menua .tab-edukia .kargatu {
+#beheko-menua .tab-edukia .kargatu {
   width: 100%;
   height: 100%;
   text-align: right;
 }
 
-.beheko-menua .tab-edukia .kargatu .info {
+#beheko-menua .tab-edukia .kargatu .info {
   max-height: 90px;
   max-width: 50%;
   height: auto;
   width: auto;
 }
 
-.beheko-menua .tab-edukia .kargatu .ikon {
+#beheko-menua .tab-edukia .kargatu .ikon {
   max-height: 90px;
   max-width: 23%;
   height: auto;
   width: auto;
 }
 
-.beheko-menua .tab-edukia .mikro {
+#beheko-menua .tab-edukia .mikro {
   float: left;
   margin-left: 10px;
   margin-right: 40px;
@@ -313,23 +311,23 @@ body {
   padding-top: 10px;
 }
 
-.beheko-menua .tab-edukia .mikro img {
+#beheko-menua .tab-edukia .mikro img {
   height: 60px;
   width: auto;
 }
 
-.beheko-menua .tab-edukia .mikro p  {
+#beheko-menua .tab-edukia .mikro p  {
   color: #e73d64;
   font-weight: bold;
   font-size: 12px;
 }
 
-.beheko-menua .tab-edukia .kontrols {
+#beheko-menua .tab-edukia .kontrols {
   float: left;
   padding-top: 10px;
 }
 
-.beheko-menua .tab-edukia .kontrols img {
+#beheko-menua .tab-edukia .kontrols img {
   height: 60px;
   width: auto;
   margin-right: 10px;
@@ -548,25 +546,32 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   position: fixed;
   bottom: 30px;
 }
-.goiko-collapse {
+#goiko-collapse {
   position: fixed;
   top: 0px;
   right: 10px;
   z-index: 1002;
 }
-.goiko-collapse img {
+#goiko-collapse img {
    width: 50%;
 }
-.beheko-collapse {
+#beheko-collapse {
+  margin: 0;
   position: fixed;
   bottom: 0px;
   right: 100px; 
   z-index: 1002;
 }
-
-.beheko-collapse img {
+#beheko-collapse img {
    width: 50%;
 }
+.botoia-haunditu {  
+  animation: botoia-haunditu 1s ease-in; 
+}
+.beheko-menua-gorde {  
+  animation: beheko-menua-gorde 1s ease-in; 
+}
+
 
 .itzal {
   -webkit-filter: drop-shadow(5px 5px 5px #222);

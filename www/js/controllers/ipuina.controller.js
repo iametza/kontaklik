@@ -9,10 +9,8 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.uneko_eszena_id = 0;
   $scope.uneko_audioa = {'izena': '', 'iraupena': 0, 'counter': 0, 'egoera': 'stop'};
   $scope.menuaCollapsed = false;
-  $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};
-  
-  $scope.behekoMenua = false;
-  $scope.goikoMenua = false;
+  $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};  
+ 
   
   var kontador;
   //var img_play_eszena;
@@ -21,6 +19,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   var eszena_aldatzen = false;
   var lock_play = false;
   var tutoriala_ikusita = []; // IDs de usuarios que han visto el tutorial
+  var collapse = {'goikoa': false, 'behekoa': false};
   
   $scope.init = function (){
     
@@ -777,16 +776,29 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
   /*
    *
-   * Goiko eta beheko menuak gorde
+   * Goiko eta beheko menuak gorde eta erakutsi
    *
    */
-  $scope.goikoMenuaCollapse = function (){    
-   $scope.goikoMenua = !$scope.goikoMenua;    
+  $scope.goikoMenuaCollapse = function (){
+    addAnimationClass(angular.element('#goiko-collapse'), 'botoia-haunditu').then(function(element, className) {
+      element.removeClass(className);
+    }, function(err) { console.log(err); });    
   };
-  $scope.behekoMenuaCollapse = function() {
-    console.log('$scope.behekoMenua', $scope.behekoMenua);
-    $scope.behekoMenua = !$scope.behekoMenua;
+  
+  $scope.behekoMenuaCollapse = function() {   
+    addAnimationClass(angular.element('#beheko-collapse'), 'botoia-haunditu').then(function(element, className) {
+      element.removeClass(className);
+    }, function(err) { console.log(err); });  
+    addAnimationClass(angular.element('#beheko-menua'), 'beheko-menua-gorde');
   };
+  var addAnimationClass = function(element, className) {
+    var d = $q.defer();
+    element.addClass(className);
+    element.one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+        d.resolve(element, className);
+    }, function(err) { d.reject(err); });
+    return d.promise;
+  }
   $scope.takeGallery = function (atala){
     var options = {
       quality: 50,
