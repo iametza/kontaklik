@@ -1,5 +1,5 @@
 @keyframes torloju {
-  
+
   25%,100% {
     -ms-transform: scale(1, 1) rotate(0deg);
     -webkit-transform: scale(1, 1) rotate(0deg);
@@ -10,11 +10,11 @@
     -webkit-transform: scale(0.5, 0.5) rotate(360deg);
     transform: scale(0.5, 0.5) rotate(360deg);
   }
-  
+
 }
 
 @keyframes erabiltzailea_sartu {
-  
+
   0% {
     margin-left: -200px;
   }
@@ -23,7 +23,7 @@
   }
   85% {
     margin-left: 20px;
-  } 
+  }
   95% {
     margin-left: 35px;
   }
@@ -62,5 +62,51 @@
   }
   100%{
     bottom: -200px;
+  }
+}
+
+@keyframes beheko-menua-erakutsi {
+  0%{
+    bottom: -200px;
+  }
+  25%{
+    bottom: 0px;
+  }
+  50% {
+    bottom: 25px;
+  }
+  100% {
+    bottom: 15px;
+  }
+}
+
+
+@keyframes goiko-menua-gorde {
+  0% {
+    top: 15px;
+  }
+  25% {
+    top: 25px;
+  }
+  50%{
+    top: 0px;
+  }
+  100%{
+    top: -200px;
+  }
+}
+
+@keyframes goiko-menua-erakutsi {
+  0%{
+    top: -200px;
+  }
+  25%{
+    top: 0px;
+  }
+  50% {
+    top: 25px;
+  }
+  100% {
+    top: 15px;
   }
 }

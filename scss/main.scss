@@ -5,12 +5,12 @@ html {
     padding: 0;
 }
 
-body { 
+body {
   width: 100%;
   height: 100%;
   overflow: hidden;
   /* Lo siguiente impide que se puedan seleccionar los textos */
-  
+
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -27,7 +27,7 @@ body {
   background-size: cover;
   padding: 10px;
   margin: 0;
-  
+
   /* lo siguiente está añadido para probar las animaciones en la primera pantalla, afectará luego? */
   overflow: hidden;
   position: relative;
@@ -57,7 +57,7 @@ body {
   color: #fff;
   text-transform: uppercase;
   font-weight: bold;
-  
+
   animation: erabiltzailea_sartu 1s linear 0.5s backwards;
 }
 
@@ -152,27 +152,27 @@ body {
   box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.6);
   background-color: rgba(255,255,255,0.9);
 }
-.goiko-menua {
+#goiko-menua {
   position: fixed;
   top: 15px;
   left: 125px;
-  right: 15px; 
+  right: 15px;
   z-index: 1001;
   width: 85%;
   padding: 10px;
   }
 
-.goiko-menua img {
+#goiko-menua img {
   height: 70px;
   width: auto;
 }
-#beheko-menua {  
+#beheko-menua {
   position: fixed;
   bottom: 15px;
   left: 125px;
-  right: 15px;  
+  right: 15px;
   z-index: 1001;
-  width: 75%;  
+  width: 85%;
 }
 
 #beheko-menua .kontaklik {
@@ -221,33 +221,32 @@ body {
   margin-right: 10px;
 }
 
-#beheko-menua .tab-edukia #eszenak .fondoak {
+#goiko-menua #eszenak .fondoak {
   float: left;
-  width: auto;
-  max-width: 80%;
+  width: 100%;
   height: 100%;
   white-space: nowrap;
   overflow-x: scroll;
   margin-right: 10px;
 }
 
-#beheko-menua .tab-edukia #eszenak .fondoak .fondo,
-#beheko-menua .tab-edukia #eszenak .fondoak .fondo:focus {
+#goiko-menua #eszenak .fondoak .fondo,
+#goiko-menua #eszenak .fondoak .fondo:focus {
   display: inline-block;
   height: 90px;
   width: auto;
   margin: 0px 5px 0px 5px;
 }
 
-#beheko-menua .tab-edukia #eszenak .fondoak .fondo.active,
-#beheko-menua .tab-edukia #eszenak .fondoak .fondo.active:focus {
+#goiko-menua #eszenak .fondoak .fondo.active,
+#goiko-menua #eszenak .fondoak .fondo.active:focus {
   border: 4px solid #e73d64;
 }
 
-#beheko-menua .tab-edukia #eszenak .fondoak .fondo:last-child {
+#goiko-menua #eszenak .fondoak .fondo:last-child {
   margin-right: 0;
 }
-
+/*
 #beheko-menua .tab-edukia #play_ipuina {
   height: 70px;
   width: auto;
@@ -255,8 +254,23 @@ body {
   margin-right: 10px;
   padding: 0;
   float: right;
+} */
+#play_ipuina, #stop_ipuina {
+  position: fixed;
+  bottom: 25px;
+  left: 15px;
+  height: 70px;
+  width: auto;
+  z-index: 1001;
 }
-
+#atzera_joan {
+  position: fixed;
+  top: 25px;
+  left: 15px;
+  height: 70px;
+  width: auto;
+  z-index: 1001;
+}
 #beheko-menua .tab-edukia #eszena_berria,
 #beheko-menua .tab-edukia #testu_berria{
   height: 70px;
@@ -297,10 +311,7 @@ body {
 }
 
 #beheko-menua .tab-edukia .kargatu .ikon {
-  max-height: 90px;
-  max-width: 23%;
-  height: auto;
-  width: auto;
+  width: 45%;
 }
 
 #beheko-menua .tab-edukia .mikro {
@@ -473,7 +484,7 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   padding: 10px;
   max-width: 90%;
   max-height: 50%;
-  
+
   /* El resto de propiedades están en la clase .bubble definida en el archivo css/speech_bubbles.css*/
 }
 
@@ -495,7 +506,7 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   right: 15px;
   height: 70px;
   width: auto;
-  z-index: 1001;  
+  z-index: 1001;
 }
 
 #lanean {
@@ -559,24 +570,38 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   margin: 0;
   position: fixed;
   bottom: 0px;
-  right: 100px; 
+  right: 10px;
   z-index: 1002;
 }
 #beheko-collapse img {
    width: 50%;
 }
-.botoia-haunditu {  
-  animation: botoia-haunditu 1s ease-in; 
+/* ANIMAZIOAK */
+
+
+.botoia-haunditu {
+  animation: botoia-haunditu 0.5s ease-in;
 }
-.beheko-menua-gorde {  
-  animation: beheko-menua-gorde 1s ease-in; 
+
+.goiko-menua-gorde {
+  animation: goiko-menua-gorde 1s ease-in forwards;
+}
+.goiko-menua-erakutsi {
+  animation: goiko-menua-erakutsi 1s ease-out forwards;
+}
+
+.beheko-menua-gorde {
+  animation: beheko-menua-gorde 1s ease-in forwards;
+}
+.beheko-menua-erakutsi {
+  animation: beheko-menua-erakutsi 1s ease-out forwards;
 }
 
 
 .itzal {
   -webkit-filter: drop-shadow(5px 5px 5px #222);
   filter: drop-shadow(5px 5px 5px #222);
-  
+
   /* Lo siguiente evita que, en iOS, los iconos con sombra parpadeen o se corten en ocasiones */
   /* Fuente: https://quickleft.com/blog/4-steps-to-minimizing-rendering-issues-in-cordova-applications/ */
   -webkit-transform: translateZ(0);
