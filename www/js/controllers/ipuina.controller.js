@@ -802,6 +802,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.behekoMenuaCollapse = function() {
+    $scope.soinuak.audio_play ('click');
     addAnimationClass(angular.element('#beheko-collapse'), 'botoia-haunditu').then(function(result) {
       result.element.removeClass(result.className);
       // Irudia aldatu
