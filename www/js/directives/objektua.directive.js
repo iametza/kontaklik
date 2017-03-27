@@ -22,10 +22,9 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       // Le damos "id" al elemento para poder hacer una txapuzilla luego
       element.children ().attr ('id', 'objektua_' + objektua_id);
       
-     
-      
       // Parece ser que con hacer "$timeout a 0ms." se asegura que el elemento está cargado en el DOM.... (necesario para obtener el tamaño)
-      $timeout (function (){       
+      // Not true. Con 0ms. no estan cargadas las propiedades del elemento. Con 100ms. si, en las pruebas que he hecho al menos, enough?
+      $timeout (function (){
         
         // Si el objeto no tiene posición (recien creado) tratamos de ponerlo en el centro de la pantalla
         if (posizioa.x < 0) {
@@ -35,8 +34,10 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
         if (attrs.scale === undefined) {
           element.children ().css ({ transform: 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0)'});
         }
+        
         calculateLimits();
-      });
+        
+      }, 100);
       
       var updateElementTransform = function (transform_new, dbGorde){
         dbGorde = typeof dbGorde !== 'undefined' ? dbGorde : false;
@@ -80,13 +81,19 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
               });
             }
             
+            calculateLimits ();
+            
             return (true);
           }
           
         }                                                                                                  
-      };                                                                      
-      var calculateLimits      = function() {
-        var outMargin = Math.min(element[0].children[0].clientWidth/2, element[0].children[0].clientHeight/2);
+      };
+      
+      var calculateLimits = function (){
+        //var outMargin = Math.min(element[0].children[0].clientWidth/2, element[0].children[0].clientHeight/2);
+        //var outMargin = Math.min(element[0].children[0].naturalWidth/2, element[0].children[0].naturalHeight/2);
+        var bounds = document.getElementById ("objektua_" + objektua_id).getBoundingClientRect ();
+        var outMargin = Math.min (Math.floor (bounds.width/2), Math.floor (bounds.height/2));
         
         limits.left = eszenatokia[0].offsetLeft - outMargin;
         limits.top = eszenatokia[0].offsetTop - outMargin;
@@ -103,7 +110,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       };
       
       var erdian_kokatu = function (){
-        var p = {'x': 200, 'y': 200}; // random position chosen by Mr. Julem
+        var p = {'x': 200, 'y': 200}; // random position chosen by Mr. Julen
         
         if (element[0].children[0].clientWidth > 0 && element[0].children[0].clientHeight > 0){
           p.x = Math.round (eszenatokia[0].offsetWidth / 2) - Math.round (element[0].children[0].clientWidth / 2);
@@ -191,7 +198,7 @@ app.directive ('objektua', ['$cordovaDialogs', '$timeout', 'Database', function 
       };
       
       scope.onPinchEnd = function (){
-        calculateLimits();
+        
         if (updateElementTransform (transform, true)) {
           initScale = transform.scale;
         }

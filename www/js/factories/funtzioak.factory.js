@@ -19,16 +19,12 @@ app.factory ('Funtzioak', ['$q', '$timeout', function ($q, $timeout){
       
       reader.readEntries (function (entries){
         
-        console.log (entries);
-        
-        // fitxategiak hartu bakarrik
+        // Direktorioaren fitxategiak hartu bakarrik
         var fitxategiak = [];
         angular.forEach (entries, function (entry){
           if (entry.isFile)
             fitxategiak.push (entry);
         });
-        
-        console.log (fitxategiak);
         
         d.resolve (fitxategiak);
         
