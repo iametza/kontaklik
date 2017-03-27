@@ -19,7 +19,18 @@ app.factory ('Funtzioak', ['$q', '$timeout', function ($q, $timeout){
       
       reader.readEntries (function (entries){
         
-        d.resolve (entries);
+        console.log (entries);
+        
+        // fitxategiak hartu bakarrik
+        var fitxategiak = [];
+        angular.forEach (entries, function (entry){
+          if (entry.isFile)
+            fitxategiak.push (entry);
+        });
+        
+        console.log (fitxategiak);
+        
+        d.resolve (fitxategiak);
         
       }, function (error){
         d.reject (error);
