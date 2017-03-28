@@ -1,8 +1,14 @@
+@font-face {
+    font-family: ARCHRISTY;
+    src: url(../fonts/ARCHRISTY.ttf);
+}
+
 html {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
+    
 }
 
 body {
@@ -10,7 +16,6 @@ body {
   height: 100%;
   overflow: hidden;
   /* Lo siguiente impide que se puedan seleccionar los textos */
-
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
