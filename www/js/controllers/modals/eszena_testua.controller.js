@@ -14,8 +14,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
   $scope.lerro_kopurua = 0;
   $scope.koloreak = ['#000', '#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#fff'];
   
-  $scope.init = function () {
-    
+  $scope.init = function () {    
     // Recogemos los datos del texto
     Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class, style FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
       
@@ -131,8 +130,8 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
     
     $uibModalInstance.dismiss ('itxi');
     
-  };
-  
+  };    
+ 
   $scope.$on ('$locationChangeStart', function (event){
     
     event.preventDefault();

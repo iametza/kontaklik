@@ -1,4 +1,4 @@
-app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function ($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler){
+app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', '$http', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function ($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, $http, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler){
 
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -10,7 +10,6 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.uneko_audioa = {'izena': '', 'iraupena': 0, 'counter': 0, 'egoera': 'stop'};
   $scope.menuaCollapsed = false;
   $scope.bideo_modua = {'playing': false, 'uneko_eszena': 0, 'timer': undefined};
-
 
   var kontador;
   //var img_play_eszena;
@@ -1205,7 +1204,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     }
 
   };
-
+ 
   function play_ipuina (osorik){
     osorik = typeof osorik !== 'undefined' ? osorik : true;
 
@@ -1317,9 +1316,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   document.addEventListener ('deviceready', function (){
-
     $scope.init ();
-
   });
 
   document.addEventListener ('pause',  function (){

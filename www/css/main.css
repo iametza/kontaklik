@@ -503,6 +503,19 @@ body.modal-open {
 #beheko-collapse img {
   width: 50%; }
 
+.testua-div {
+  font-family: ARCHRISTY;
+  padding: 1em;
+  border-radius: 3px;
+  outline: none;
+  border: 2px solid transparent;
+  background: #FFF; }
+
+.testua-div:focus, section > .testua-div:focus:hover {
+  background: #FFF;
+  border-color: #69c773;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset; }
+
 /* ANIMAZIOAK */
 .botoia-haunditu {
   animation: botoia-haunditu 0.5s ease-in; }

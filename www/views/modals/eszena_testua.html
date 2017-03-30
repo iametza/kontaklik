@@ -15,8 +15,9 @@
   <form name="formularioa" novalidate="" ng-submit="testua_gorde (formularioa)">
     
     <div class="form-group" ng-class="{'has-error' : submit && formularioa.testua.$invalid, 'has-success' : submit && formularioa.testua.$valid}">
-      <label for="testua">Testua</label>
-      <textarea class="form-control" rows="3" id="testua" name="testua" ng-model="eremuak.testua" placeholder="Testua" required autofocus></textarea>
+      <label for="testua">Testua</label>      
+      <div contenteditable="true" class="testua-div" ng-model="testua"></div>
+      
     </div>
     
     <div ng-if="submit && formularioa.testua.$invalid" class="alert alert-warning" role="alert">
