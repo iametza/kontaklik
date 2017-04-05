@@ -9,9 +9,7 @@
             <!-- <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" alt="eszena aurreratu" /></a> -->
 
             <div class="fondoak">
-
               <img ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)" ng-repeat="eszena in eszenak" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.fondoa_fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="eszena" />
-
             </div>
 
             <!-- <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext itzal" alt="eszena atzeratu" /></a> -->
@@ -37,7 +35,7 @@
       <div class="row">
         <div class="col-xs-10">
           <div class="elementuak">
-            <a ng-click="addFondoa (fondoa)" hm-press="pressFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.fullPath}}" class="irudia" alt="fondoa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
+            <a ng-click="addFondoa (fondoa)" hm-press="pressFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.miniPath}}" class="irudia" alt="fondoa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
           </div>
         </div>
 
@@ -58,7 +56,7 @@
       <div class="row">
         <div class="col-xs-10">
           <div class="elementuak">
-            <a ng-click="addObjektua (objektua)" hm-press="pressObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.fullPath}}" class="irudia" alt="objektua" fallback-src="images/erabiltzailea.png"/></a>
+            <a ng-click="addObjektua (objektua)" hm-press="pressObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.miniPath}}" class="irudia" alt="objektua" fallback-src="images/erabiltzailea.png"/></a>
           </div>
         </div>
 
@@ -74,9 +72,17 @@
 
   <uib-tab index="2">
     <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-testuak-aktibo.png"/></uib-tab-heading>
-
     <div class="tab-edukia menu-fondoa">
-      <a ng-click="addTestua ()"><img src="images/ikonoak/gehitu.png" id="testu_berria" class="itzal" alt="testua gehitu" /></a>
+      <div class="row">
+        <div class="col-xs-10">
+          <div class="elementuak">
+             <a ng-click="addBokadiloa (bokadiloa)" hm-press="pressBokadiloa (bokadiloa)" ng-repeat="bokadiloa in bokadiloak"><img ng-src="{{bokadiloa.fullPath}}" class="irudia" alt="bokadiloa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
+          </div>
+        </div>
+        <!--<div class="col-xs-2">
+          <a ng-click="addTestua ()"><img src="images/ikonoak/gehitu.png" id="testu_berria" class="itzal" alt="testua gehitu" /></a>
+        </div> -->
+      </div>
     </div>
   </uib-tab>
 
@@ -92,7 +98,7 @@
         </div>
 
         <div class="kontrols">
-          <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/audio_rec.png" class="itzal" alt="grabatzen hasi" /></a>
+          <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/grabatu.png" class="itzal" alt="grabatzen hasi" /></a>
           <a ng-click="audioa_stopRecord ()" ng-hide="uneko_audioa.egoera == 'stop'"><img src="images/ikonoak/audio_stop.png" class="itzal" alt="grabazioa gelditu" /></a>
         </div>
       </div>
@@ -126,9 +132,9 @@
 
 </uib-tabset>
 <!-- <img src="images/ikonoak/play.png" id="play_eszena" class="itzal" ng-click="play_eszena()" alt="play" /> -->
-<a href="#/ipuinak/{{erabiltzailea.id}}" class="play_gorde"><img src="images/ikonoak/atzera.png" id="atzera_joan" class="itzal" alt="Atzera joan" /></a>
-<a ng-click="bideo_modua_play ()" class="play_gorde"><img src="images/ikonoak/play.png" id="play_ipuina" class="itzal" alt="ipuina ikusi" /></a>
-<a ng-click="bideo_modua_stop ()" class="stop_erakutsi"><img src="images/ikonoak/audio_stop.png" id="stop_ipuina" class="itzal" alt="ipuina ikusi" /></a>
+<a ng-click="atzera(erabiltzailea.id)" class="play_gorde"><img src="images/ikonoak/atzera.png" id="atzera_joan" class="" alt="Atzera joan" /></a>
+<a ng-click="bideo_modua_play ()" class="play_gorde"><img src="images/ikonoak/play.png" id="play_ipuina" class="" alt="ipuina ikusi" /></a>
+<a ng-click="bideo_modua_stop ()" class="stop_erakutsi"><img src="images/ikonoak/audio_stop.png" id="stop_ipuina" class="" alt="ipuina ikusi" /></a>
 <div id="lanean"><img src="images/lanean.gif" alt="lanean" /></div>
 
 <!--

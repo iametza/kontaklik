@@ -1,4 +1,4 @@
-app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', '$http', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function ($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, $http, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler){
+app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', '$http', '$location', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function ($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, $http, $location, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler){
 
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -53,6 +53,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
               // Establecemos el path completo y 'real'
               angular.forEach (objektuak, function (objektua, ind){
                 objektuak[ind].fullPath = Funtzioak.get_fullPath (objektua);
+                objektuak[ind].miniPath = objektuak[ind].fullPath.replace(objektua.izena, 'miniaturak/' + objektua.izena);
               });
 
               $scope.objektuak = objektuak;
@@ -65,9 +66,21 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
               // Establecemos el path completo y 'real'
               angular.forEach (fondoak, function (fondoa, ind){
                 fondoak[ind].fullPath = Funtzioak.get_fullPath (fondoa);
+                fondoak[ind].miniPath = fondoak[ind].fullPath.replace(fondoa.izena, 'miniaturak/' + fondoa.izena);
               });
 
               $scope.fondoak = fondoak;
+
+            }, onError);
+
+            // Recogemos los bokadiloak
+            Database.getRows ('irudiak', {'atala': 'bokadiloa', 'ikusgai': 1}, ' ORDER BY timestamp DESC').then (function (bokadiloak){
+              // Establecemos el path completo y 'real'
+              angular.forEach (bokadiloak, function (bokadiloa, ind){
+                bokadiloak[ind].fullPath = Funtzioak.get_fullPath (bokadiloa);
+              });
+
+              $scope.bokadiloak = bokadiloak;
 
             }, onError);
           }
@@ -587,7 +600,36 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
       angular.element ('#bideo_modua_stop').show ();
 
   }
+  $scope.addBokadiloa = function(bokadiloa){
+    // Guardamos la relación en la base de datos y creamos el objeto
+    //Database.insertRow ('eszena_testuak', {'fk_eszena': $scope.uneko_eszena_id, 'fk_objektua': bokadiloa.id}).then (function (emaitza){
+      var modala = $uibModal.open ({
+        animation: true,
+        //backdrop: 'static',
+        templateUrl: 'views/modals/eszena_testua.html',
+        controller: 'ModalEszenaTestuaCtrl',
+        resolve: {
+          eszena_id: $scope.uneko_eszena_id,
+          testua_id: 0
+        }
+      });
 
+      modala.rendered.then (function (){
+        $scope.soinuak.audio_play ('popup');
+      });
+
+      modala.result.then (function (testua_id){
+
+        //testuaEszenara (testua_id);
+
+      }, function (error){
+        console.log ("IpuinaCtrl, addBokadiloa", error);
+      });
+
+    //}, function (error){
+      //console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+    //});
+  };
   $scope.addTestua = function (){
 
     var modala = $uibModal.open ({
@@ -1131,7 +1173,8 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
 
   $scope.bideo_modua_play = function (){
-
+    // Ikonoa aldatu
+    Funtzioak.botoia_animatu(angular.element('#play_ipuina'), 'images/ikonoak/play.png', 'images/ikonoak/play-press.png');
     if (!lock_play){
 
       lock_play = true;
@@ -1142,7 +1185,8 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
       angular.element ('.play_gorde').fadeOut (500, function (){
 
         if( --zenbat > 0 ) return; // si no es el último callback nos piramos
-        angular.element ('.stop_erakutsi').fadeIn (1000, function (){});
+        angular.element ('.stop_erakutsi').fadeIn (1000, function (){
+        });
         play_ipuina ();
 
       });
@@ -1184,7 +1228,8 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.bideo_modua_stop = function (){
-
+    // Ikonoa aldatu
+    angular.element('#stop_ipuina').attr('src', 'images/ikonoak/stop-press.png');
     if ($scope.bideo_modua.playing){
 
       if ($scope.bideo_modua.timer !== undefined)
@@ -1204,7 +1249,13 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     }
 
   };
- 
+  $scope.atzera = function(id) {
+    Funtzioak.botoia_animatu(angular.element('#atzera_joan'), 'images/ikonoak/atzera.png', 'images/ikonoak/atzera-press.png');
+    $scope.soinuak.audio_play ('click');
+    $timeout(function() {
+      $location.url('/ipuinak/' + id);
+    }, 500);
+  };
   function play_ipuina (osorik){
     osorik = typeof osorik !== 'undefined' ? osorik : true;
 

@@ -85,6 +85,25 @@ var app = angular.module ('Kontaklik', [
           console.log ("app.js objektuak jasotzen", error);
         });
         
+        // bokadiloak        
+        Funtzioak.listDir (cordova.file.applicationDirectory + "www/assets/bokadiloak/").then (function (fitxategiak){          
+          angular.forEach (fitxategiak, function (fitxategia){
+            
+            Database.insertRow ('irudiak', {'cordova_file': 'applicationDirectory',
+                                'path': 'www/assets/bokadiloak/',
+                                'izena': fitxategia.name,
+                                'atala': 'bokadiloa',
+                                'fk_ipuina': 0,
+                                'ikusgai': 1}).then (function (){}, function (error){
+              console.log ("app.js bokadiloak gordetzen", error);
+            });
+            
+          });
+          
+        }, function (error){
+          console.log ("app.js bokadiloak jasotzen", error);
+        });
+        
       }
       
     }, function (error){

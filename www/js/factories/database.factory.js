@@ -66,6 +66,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`borderColor` TEXT," +
       "`backgroundColor` TEXT," +
       "`class` TEXT," +
+      "`fk_objektua` INTEGER NOT NULL," +
       "`style` TEXT);" +
       "CREATE INDEX fk_eszena ON eszena_testuak (fk_eszena);";
       
@@ -74,7 +75,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q){
       "`cordova_file` TEXT NOT NULL," + // applicationDirectory edo dataDirectory
       "`path` TEXT NOT NULL," + // cordova.file horren barrenean path gehiago badago
       "`izena` TEXT NOT NULL," +
-      "`atala` TEXT NOT NULL," + // objektua edo fondoa
+      "`atala` TEXT NOT NULL," + // objektua edo fondoa edo bokadiloa
       "`fk_ipuina` INTEGER NOT NULL," +
       "`ikusgai` TINYINT(1) DEFAULT 1," + // menu nagusian jarri bai/ez
       "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
