@@ -12,15 +12,14 @@
     {{errore_mezua}}
   </div>
 
-  <form class="text-inline" name="formularioa" novalidate="" ng-submit="testua_gorde (formularioa)">
+  <form name="formularioa" novalidate="" ng-submit="testua_gorde (formularioa)">
 
     <div class="form-group" ng-class="{'has-error' : submit && formularioa.testua.$invalid, 'has-success' : submit && formularioa.testua.$valid}">
       <label for="testua">Testua</label>
-      <div contenteditable="true" class="testua-div" ng-model="formularioa.testua"></div>
-
+      <div contenteditable="true" id="testua-div" spellcheck="false" ng-model="formularioa.testua"></div>
     </div>
     <div class="botoiak">
-      <button type="submit" class="btn btn-primary">Gorde</button>
+      <button type="submit" class="btn button-icon icon ion-checkmark btn-balanced">Gorde</button>
       <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="testua_ezabatu ()">Ezabatu</button>
     </div>
     <div ng-if="submit && formularioa.testua.$invalid" class="alert alert-warning" role="alert">

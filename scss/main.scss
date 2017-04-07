@@ -593,17 +593,22 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
 #beheko-collapse img {
    width: 50%;
 }
-.testua-div {
+#testua-div {
+  width: 80%;
   padding: 1em;
   border-radius: 3px;
   outline: none;
   border: 2px solid transparent;
   background: #FFF;
+  text-decoration: none;
 }
-.testua-div:focus, section > .testua-div:focus:hover  {
+#testua-div:focus, section > #testua-div:focus:hover  {
   background: #FFF;
   border-color: #69c773;
   box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
+}
+.gorringo {
+  color: #F00;  
 }
 /* ANIMAZIOAK */
 .botoia-haunditu {

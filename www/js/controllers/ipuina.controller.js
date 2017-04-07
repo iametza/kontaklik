@@ -602,7 +602,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
   $scope.addBokadiloa = function(bokadiloa){
     // Guardamos la relación en la base de datos y creamos el objeto
-    //Database.insertRow ('eszena_testuak', {'fk_eszena': $scope.uneko_eszena_id, 'fk_objektua': bokadiloa.id}).then (function (emaitza){
+    Database.insertRow ('eszena_testuak', {'fk_eszena': $scope.uneko_eszena_id, 'fk_objektua': bokadiloa.id}).then (function (emaitza){
       var modala = $uibModal.open ({
         animation: true,
         //backdrop: 'static',
@@ -610,7 +610,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
         controller: 'ModalEszenaTestuaCtrl',
         resolve: {
           eszena_id: $scope.uneko_eszena_id,
-          testua_id: 0
+          testua_id: emaitza.insertId
         }
       });
 
@@ -626,11 +626,11 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
         console.log ("IpuinaCtrl, addBokadiloa", error);
       });
 
-    //}, function (error){
-      //console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
-    //});
+    }, function (error){
+      console.log ("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+    });
   };
-  $scope.addTestua = function (){
+  /*$scope.addTestua = function (){
 
     var modala = $uibModal.open ({
       animation: true,
@@ -656,7 +656,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     });
 
   };
-
+ */
   function testuaEszenara (testua_id, show, lock){
     show = typeof show !== 'undefined' ? show : true;
     lock = typeof lock !== 'undefined' ? lock : false;
