@@ -11,7 +11,7 @@ app.directive("contenteditable",['$http', '$q', function($http, $q) {
          return tmp.textContent || tmp.innerText || "";
       }
       function placeCaretAtEnd(el) {
-          el.focus();
+          //el.focus();
           if (window.getSelection){
               if (typeof window.getSelection != "undefined"
                       && typeof document.createRange != "undefined") {
@@ -36,7 +36,7 @@ app.directive("contenteditable",['$http', '$q', function($http, $q) {
 
         $http({
           method: 'POST',
-          url:'http://ika-deklinappbidea.ametza.com/API/v1/zuzentzailea',
+          url:'https://deklinabidea.ikaeuskaltegiak.eus/API/v1/zuzentzailea',
           data: $.param({
             hitzak: textarea
           }),

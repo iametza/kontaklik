@@ -486,7 +486,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
 
             // Cargamos sus textos
             Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
-
+              console.log('testuak', testuak);
               angular.forEach (testuak, function (testua){
                 promiseak.push (testuaEszenara (testua.id, false, lock));
               });
@@ -602,6 +602,7 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
   $scope.addBokadiloa = function(bokadiloa){
     // Guardamos la relación en la base de datos y creamos el objeto
+
     Database.insertRow ('eszena_testuak', {'fk_eszena': $scope.uneko_eszena_id, 'fk_objektua': bokadiloa.id}).then (function (emaitza){
       var modala = $uibModal.open ({
         animation: true,
@@ -661,11 +662,9 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
     show = typeof show !== 'undefined' ? show : true;
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer ();
-
-    Database.query ('SELECT testua, style FROM eszena_testuak WHERE id=?', [testua_id]).then (function (testua){
-
+    Database.query ('SELECT i.cordova_file, i.path, i.izena, eo.style FROM eszena_testuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [testua_id]).then (function (testua){
       if (testua.length === 1){
-        var elem = angular.element ('<div testua="testua" class="testua" data-testua-id="' + testua_id + '" data-lock="' + lock + '"></div>');
+        var elem = angular.element ('<div data-src="' + Funtzioak.get_fullPath (testua[0]) + '" testua="testua" class="testua" data-testua-id="' + testua_id + '" data-lock="' + lock + '"></div>');
 
         elem.hide ();
 

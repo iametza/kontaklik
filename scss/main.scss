@@ -486,6 +486,11 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   -o-background-size: cover;
   background-size: cover;
 }
+.bokadilo-testua {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+}
 
 .objektua {
   z-index: 10;
@@ -608,7 +613,7 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
 }
 .gorringo {
-  color: #F00;  
+  color: #F00;
 }
 /* ANIMAZIOAK */
 .botoia-haunditu {

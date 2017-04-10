@@ -422,6 +422,11 @@ body.modal-open {
   -o-background-size: cover;
   background-size: cover; }
 
+.bokadilo-testua {
+  position: absolute;
+  top: 2%;
+  left: 2%; }
+
 .objektua {
   z-index: 10; }
 
