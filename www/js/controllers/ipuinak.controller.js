@@ -1,4 +1,4 @@
-app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Funtzioak', '$uibModal', function($scope, $route, Database, Funtzioak, $uibModal){
+app.controller('IpuinakCtrl',['$scope', '$route', '$timeout', '$location', 'Database', 'Funtzioak', '$uibModal', function($scope, $route, $timeout, $location, Database, Funtzioak, $uibModal){
 
   $scope.erabiltzailea = {};
   $scope.ipuinak = [];
@@ -15,7 +15,7 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Funtzioak', '$uib
 
       if (emaitza.length === 1){
         $scope.erabiltzailea = emaitza[0];
-
+        $scope.erabiltzailea.irudia = cordova.file.dataDirectory + $scope.erabiltzailea.argazkia;
         // Recogemos los ipuinak del erabiltzaile
         $scope.getIpuinak ();
       }
@@ -61,7 +61,13 @@ app.controller('IpuinakCtrl',['$scope', '$route', 'Database', 'Funtzioak', '$uib
     return (-1);
 
   };
-
+  $scope.atzera = function(id) {
+    Funtzioak.botoia_animatu(angular.element('#atzera_joan_ipuinak'), 'images/ikonoak/atzera.png', 'images/ikonoak/atzera-press.png');
+    $scope.soinuak.audio_play ('click');
+    $timeout(function() {
+      $location.url('/');
+    }, 500);
+  };
   $scope.ipuina_datuak = function (ipuina_id){
 
     var modala = $uibModal.open ({

@@ -486,7 +486,6 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
 
             // Cargamos sus textos
             Database.getRows ('eszena_testuak', {'fk_eszena': eszena.id}, ' ORDER BY id ASC').then (function (testuak){
-              console.log('testuak', testuak);
               angular.forEach (testuak, function (testua){
                 promiseak.push (testuaEszenara (testua.id, false, lock));
               });
@@ -602,8 +601,9 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
   $scope.addBokadiloa = function(bokadiloa){
     // Guardamos la relación en la base de datos y creamos el objeto
-
+    var testua_id;
     Database.insertRow ('eszena_testuak', {'fk_eszena': $scope.uneko_eszena_id, 'fk_objektua': bokadiloa.id}).then (function (emaitza){
+      testua_id = emaitza.insertId;
       var modala = $uibModal.open ({
         animation: true,
         //backdrop: 'static',
@@ -611,17 +611,16 @@ app.controller ('IpuinaCtrl',['$scope', '$compile', '$route', '$q', '$cordovaDia
         controller: 'ModalEszenaTestuaCtrl',
         resolve: {
           eszena_id: $scope.uneko_eszena_id,
-          testua_id: emaitza.insertId
+          testua_id: testua_id
         }
       });
 
       modala.rendered.then (function (){
         $scope.soinuak.audio_play ('popup');
+        testuaEszenara (testua_id);
       });
 
       modala.result.then (function (testua_id){
-
-        //testuaEszenara (testua_id);
 
       }, function (error){
         console.log ("IpuinaCtrl, addBokadiloa", error);

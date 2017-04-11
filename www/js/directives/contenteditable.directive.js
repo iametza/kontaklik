@@ -32,14 +32,15 @@ app.directive("contenteditable",['$http', '$q', function($http, $q) {
       function read() {
         canceler.resolve("cancelled");
         canceler = $q.defer();
-        var textarea = element.html().replace('<span class="gorringo">', '').replace('</span>', '').trim();
-
+        var textarea = strip(element.html());
+        
+        console.log(textarea);
         $http({
-          method: 'POST',
+          method: 'GET',
           url:'https://deklinabidea.ikaeuskaltegiak.eus/API/v1/zuzentzailea',
-          data: $.param({
+          params:{
             hitzak: textarea
-          }),
+          },
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
           timeout: canceler.promise
         }).then(function(res) {

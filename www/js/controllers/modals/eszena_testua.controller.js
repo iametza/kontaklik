@@ -20,6 +20,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
 
       if (testua.length === 1){
 
+        /*
         $scope.eremuak.testua = testua[0].testua;
         $scope.eremuak.fontSize = testua[0].fontSize;
         $scope.eremuak.color = testua[0].color;
@@ -27,8 +28,9 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
         $scope.eremuak.backgroundColor = testua[0].backgroundColor;
         $scope.eremuak.class = testua[0].class;
         $scope.ezabatu_button = true;
+        */
         //$scope.lerro_kopurua = $scope.eremuak.testua.split ("\n").length;
-
+        angular.element ('#testua-div').html(testua[0]["testua"]);
       }
 
     }, function (error){
@@ -39,9 +41,10 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
   $scope.testua_gorde = function (form){
     var testua = angular.element ('#testua-div').html();
     $scope.submit = true;
-
+    console.log('testua_gorde', $scope.submit, testua)
     if(testua != '') {
       Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {
+        console.log('close');
         $uibModalInstance.close (testua_id);
       }, function(err) {
         console.log ("ModalEszenaTestuaCtrl, testua_gorde insert", error);
@@ -49,54 +52,7 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
       });
     }
   }
-  /*
-  $scope.testua_gorde = function (form){
 
-    $scope.submit = true;
-
-    if (form.$valid){
-
-      //angular.element ('#testua').blur ();
-
-      $scope.lerro_kopurua = $scope.eremuak.testua.split ("\n").length;
-      if ($scope.lerro_kopurua <= 5){
-
-        // Guardamos los datos en la base de datos (insertar/modificar)
-        if (testua_id === 0){
-          Database.insertRow ('eszena_testuak', {'fk_eszena': eszena_id, 'testua': $scope.eremuak.testua, 'fontSize': $scope.eremuak.fontSize, 'color': $scope.eremuak.color, 'borderColor': $scope.eremuak.borderColor, 'backgroundColor': $scope.eremuak.backgroundColor, 'class': $scope.eremuak.class}).then (function (emaitza){
-
-            $uibModalInstance.close (emaitza.insertId);
-
-          }, function (error){
-            console.log ("ModalEszenaTestuaCtrl, testua_gorde insert", error);
-            $scope.itxi ();
-          });
-        }
-        else{
-          Database.query ('UPDATE eszena_testuak SET testua=?, fontSize=?, color=?, borderColor=?, backgroundColor=?, class=? WHERE id=?', [$scope.eremuak.testua, $scope.eremuak.fontSize, $scope.eremuak.color, $scope.eremuak.borderColor, $scope.eremuak.backgroundColor, $scope.eremuak.class, testua_id]).then (function (){
-
-            $uibModalInstance.close (testua_id);
-
-          }, function (error){
-            console.log ("ModalEszenaTestuaCtrl, testua_gorde update", error);
-            $scope.itxi ();
-          });
-        }
-
-
-      }
-      else{
-        $scope.errore_mezua = 'Gehienez ere bost lerro idatz ditzazkezu.';
-
-        // TODO: cuando se muestra este error en iOS la ventana modal desaparece.....
-
-        //angular.element ('#testua').focus ();
-      }
-
-    }
-
-  };
-  */
   $scope.testua_ezabatu = function (){
 
     $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){

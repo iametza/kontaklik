@@ -69,11 +69,15 @@ h1, h2, h3, h4, h5, h6, label {
 }
 
 #menua-kutxa {
-  width: 100%;
-  border: 1px solid #92a7ac;
+  width: 90%;
+  border: 15px solid #fff;
   border-radius: 10px;
   padding: 40px;
-  background-color: #fff;
+  background-color: rgba(255,255,255,0.5);
+  margin-right: auto;
+  margin-left:auto;
+  margin-top: 10%;
+  height: 60%;
 }
 
 #menua-kutxa #elementuak {
@@ -288,6 +292,7 @@ h1, h2, h3, h4, h5, h6, label {
   width: auto;
   z-index: 1001;
 }
+
 #beheko-menua .tab-edukia #eszena_berria,
 #beheko-menua .tab-edukia #testu_berria{
   height: 70px;
@@ -373,9 +378,16 @@ h1, h2, h3, h4, h5, h6, label {
   height: 70px;
   width: auto;
 }
-
-#audio_on_off {
+#atzera_joan_ipuinak {
   position: absolute;
+  top: -35px;
+  left: 35px;
+  height: 80px;
+  width: auto;
+  z-index: 1001;
+}
+#audio_on_off {
+  position: fixed;
   top: 20px;
   right: 20px;
   z-index: 1001;
@@ -488,6 +500,8 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
 }
 .bokadilo-testua {
   position: absolute;
+  width: 100px;
+  word-wrap: break-word;
   top: 2%;
   left: 2%;
 }
@@ -599,6 +613,7 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
    width: 50%;
 }
 #testua-div {
+
   width: 80%;
   padding: 1em;
   border-radius: 3px;
@@ -612,6 +627,7 @@ body.modal-open { /* para desabilitar el scroll por detrás de la ventana modal 
   border-color: #69c773;
   box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
 }
+
 .gorringo {
   color: #F00;
 }

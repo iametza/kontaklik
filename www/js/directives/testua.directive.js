@@ -1,9 +1,10 @@
-app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', 'Database', function ($cordovaDialogs, $timeout, $uibModal, Database){
+app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Database', function ($cordovaDialogs, $timeout, $uibModal, $q, Database){
 
   return {
     restrict: 'AE',
     scope: {},
-    template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()" alt="objektua" fallback-src="images/erabiltzailea.png" /><p class="bokadilo-testua">aslkf klasdfklj</p>',
+    template : '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()" alt="objektua" fallback-src="images/erabiltzailea.png" />'
+     + '<p class="bokadilo-testua" hm-press="onPress"></p>',
     link: function (scope, element, attrs){
 
       var testua_id = attrs.testuaId !== undefined ? attrs.testuaId : 0,
@@ -21,7 +22,12 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', 'Database'
 
       // Le damos "id" al elemento para poder hacer una txapuzilla luego
       element.children ().attr ('id', 'testua_' + testua_id);
+      Database.query ('SELECT testua FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
 
+        if (testua.length === 1) {
+            element.find('p').html(testua[0]['testua'].replace('<span class="gorringo">', '').replace('</span>', ''));
+        }
+      }, function(err) { console.log(err); });
       // Parece ser que con hacer "$timeout a 0ms." se asegura que el elemento está cargado en el DOM.... (necesario para obtener el tamaño)
       // Not true. Con 0ms. no estan cargadas las propiedades del elemento. Con 100ms. si, en las pruebas que he hecho al menos, enough?
       $timeout (function (){
@@ -57,11 +63,9 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', 'Database'
               transform.translate.y = transform_new.translate.y;
             }
             else if (bounds.left >= limits.left && bounds.right <= limits.right){
-              transform.translate.x = transform_new.translate.x;
-            }
-
+              traelement.find('p').html(testua[0]['testua'].replace('<span class="gorringo">', '').replace('</span>', ''));
             element.children ().css (transform2css (transform));
-
+            }
             // Aunque se mueva en un eje seguimos devolviendo false porque ha trasvasado algún limite
             // Además hay que tener en cuenta que esta función también se usa para rotar, agrandar...
             return (false);
@@ -120,6 +124,33 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', 'Database'
         return (p);
       };
 
+      var testua_eguneratu = function(testua_id){
+        var d = $q.defer ();
+
+        // Recogemos los datos del texto
+        Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
+
+          if (testua.length === 1){
+
+            // Le damos "id" al elemento para poder hacer una txapuzilla luego
+            element.children ().attr ('id', 'testua_' + testua_id);
+
+            // Cargamos el texto del elemento
+            element.find('p').html(testua[0]['testua'].replace('<span class="gorringo">', '').replace('</span>', ''));
+
+
+         }
+
+          d.resolve ();
+
+        }, function (error){
+          d.reject (error);
+          console.log ("Testua directive testua_eguneratu, SELECT", error);
+        });
+
+        return d.promise;
+
+      };
       scope.onPress = function (){
         if (!loki && testua_id > 0){
 
@@ -152,7 +183,11 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', 'Database'
                 }
                 else if (emaitza !== 'undefined'){
 
-                  //testua_eguneratu (emaitza).then (function (){
+                  testua_eguneratu (emaitza).then (function (){
+
+                  }, function (error){
+                      console.log ("Objektua directive SELECT", error);
+                  });
                 }
 
               });
@@ -161,31 +196,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', 'Database'
             console.log ("Objektua directive SELECT", error);
           });
 
-
-          /*$cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
-
-            if (buttonIndex == 1){
-
-              if (testua_id > 0){
-
-                Database.query ('DELETE FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (){
-
-                  element.fadeOut (500, function (){ element.remove (); });
-
-                }, function (error){
-                  console.log ("Objektua directive DELETE", error);
-                });
-
-              }
-
-            }
-
-          }, function (error){
-            console.log ("Objektua directive onPress", error);
-          });
-*/
         }
-
       };
 
       scope.onRotateStart = function (event){
@@ -295,8 +306,7 @@ app.directive ('testua', ['$cordovaDialogs', '$timeout', '$uibModal', 'Database'
 
     } // link
 
-  }; // return
-
+  } // return
 }]);
 /*app.directive ('testua', ['$cordovaDialogs', '$timeout', '$q', 'Database', 'Funtzioak', '$uibModal', function ($cordovaDialogs, $timeout, $q, Database, Funtzioak, $uibModal){
 

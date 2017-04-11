@@ -59,11 +59,15 @@ h1, h2, h3, h4, h5, h6, label {
   animation: erabiltzailea_sartu 1s linear 0.5s backwards; }
 
 #menua-kutxa {
-  width: 100%;
-  border: 1px solid #92a7ac;
+  width: 90%;
+  border: 15px solid #fff;
   border-radius: 10px;
   padding: 40px;
-  background-color: #fff; }
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10%;
+  height: 60%; }
 
 #menua-kutxa #elementuak {
   width: 100%;
@@ -328,8 +332,16 @@ h1, h2, h3, h4, h5, h6, label {
   height: 70px;
   width: auto; }
 
-#audio_on_off {
+#atzera_joan_ipuinak {
   position: absolute;
+  top: -35px;
+  left: 35px;
+  height: 80px;
+  width: auto;
+  z-index: 1001; }
+
+#audio_on_off {
+  position: fixed;
   top: 20px;
   right: 20px;
   z-index: 1001; }
@@ -424,6 +436,8 @@ body.modal-open {
 
 .bokadilo-testua {
   position: absolute;
+  width: 100px;
+  word-wrap: break-word;
   top: 2%;
   left: 2%; }
 
