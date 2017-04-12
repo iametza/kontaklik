@@ -8,8 +8,7 @@
 
   <div ng-if="errore_mezua !== ''" class="alert alert-warning" role="alert">
     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    <span class="sr-only">Oharra:</span>
-    {{errore_mezua}}
+    <span class="sr-only">Oharra:</span> {{errore_mezua}}
   </div>
 
   <form name="formularioa" novalidate="" ng-submit="testua_gorde (formularioa)">
@@ -24,8 +23,7 @@
     </div>
     <div ng-if="submit && formularioa.testua.$invalid" class="alert alert-warning" role="alert">
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span class="sr-only">Oharra:</span>
-      Testua eremua bete mesedez
+      <span class="sr-only">Oharra:</span> Testua eremua bete mesedez
     </div>
 
     <!--<div class="form-group">

@@ -1,4 +1,4 @@
-app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance', '$cordovaDialogs', 'Database', 'eszena_id', 'testua_id', function($scope, $compile, $uibModalInstance, $cordovaDialogs, Database, eszena_id, testua_id){
+app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstance', '$cordovaDialogs', 'Database', 'eszena_id', 'testua_id', function($scope, $compile, $uibModalInstance, $cordovaDialogs, Database, eszena_id, testua_id) {
 
   $scope.eremuak = {
     testua: '',
@@ -14,11 +14,11 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
   //$scope.lerro_kopurua = 0;
   $scope.koloreak = ['#000', '#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#fff'];
 
-  $scope.init = function () {
+  $scope.init = function() {
     // Recogemos los datos del texto
-    Database.query ('SELECT testua, fontSize, color, borderColor, backgroundColor, class, style FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (testua){
+    Database.query('SELECT testua, fontSize, color, borderColor, backgroundColor, class, style FROM eszena_testuak WHERE id=?', [parseInt(testua_id)]).then(function(testua) {
 
-      if (testua.length === 1){
+      if (testua.length === 1) {
 
         /*
         $scope.eremuak.testua = testua[0].testua;
@@ -30,58 +30,58 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
         $scope.ezabatu_button = true;
         */
         //$scope.lerro_kopurua = $scope.eremuak.testua.split ("\n").length;
-        angular.element ('#testua-div').html(testua[0]["testua"]);
+        angular.element('#testua-div').html(testua[0]["testua"]);
       }
 
-    }, function (error){
-      console.log ("ModalEszenaTestuaCtrl, select testua", error);
+    }, function(error) {
+      console.log("ModalEszenaTestuaCtrl, select testua", error);
     });
 
   };
-  $scope.testua_gorde = function (form){
-    var testua = angular.element ('#testua-div').html();
+  $scope.testua_gorde = function(form) {
+    var testua = angular.element('#testua-div').html();
     $scope.submit = true;
     console.log('testua_gorde', $scope.submit, testua)
-    if(testua != '') {
+    if (testua != '') {
       Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {
         console.log('close');
-        $uibModalInstance.close (testua_id);
+        $uibModalInstance.close(testua_id);
       }, function(err) {
-        console.log ("ModalEszenaTestuaCtrl, testua_gorde insert", error);
-        $scope.itxi ();
+        console.log("ModalEszenaTestuaCtrl, testua_gorde insert", error);
+        $scope.itxi();
       });
     }
   }
 
-  $scope.testua_ezabatu = function (){
+  $scope.testua_ezabatu = function() {
 
-    $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+    $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
 
-      if (buttonIndex == 1){
+      if (buttonIndex == 1) {
 
-        Database.query ('DELETE FROM eszena_testuak WHERE id=?', [parseInt (testua_id)]).then (function (){
+        Database.query('DELETE FROM eszena_testuak WHERE id=?', [parseInt(testua_id)]).then(function() {
 
           // Borramos el objeto de la escena AHORA SE HACE EN testua.directive.js
           /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
           angular.element (elementua).remove ();*/
 
-          $uibModalInstance.close ('ezabatu');
+          $uibModalInstance.close('ezabatu');
 
-        }, function (error){
-          console.log ("ModalEszenaTestuaCtrl, testua_ezabatu DELETE", error);
+        }, function(error) {
+          console.log("ModalEszenaTestuaCtrl, testua_ezabatu DELETE", error);
         });
 
       }
 
-    }, function (error){
-      console.log ("ModalEszenaTestuaCtrl, testua_ezabatu dialog", error);
+    }, function(error) {
+      console.log("ModalEszenaTestuaCtrl, testua_ezabatu dialog", error);
     });
 
   };
 
-  $scope.aldaketa = function (eremua, kolorea){
+  $scope.aldaketa = function(eremua, kolorea) {
 
-    switch (eremua){
+    switch (eremua) {
       case 'color':
         $scope.eremuak.color = kolorea;
         break;
@@ -95,22 +95,22 @@ app.controller('ModalEszenaTestuaCtrl',['$scope', '$compile', '$uibModalInstance
 
   };
 
-  $scope.itxi = function (){
+  $scope.itxi = function() {
 
-    $uibModalInstance.dismiss ('itxi');
+    $uibModalInstance.dismiss('itxi');
 
   };
 
-  $scope.$on ('$locationChangeStart', function (event){
+  $scope.$on('$locationChangeStart', function(event) {
 
     event.preventDefault();
-    $scope.itxi ();
+    $scope.itxi();
 
   });
 
-  document.addEventListener ('deviceready', function (){
+  document.addEventListener('deviceready', function() {
 
-    $scope.init ();
+    $scope.init();
 
   });
 

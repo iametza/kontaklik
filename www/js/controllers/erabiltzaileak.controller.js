@@ -1,68 +1,68 @@
-app.controller('ErabiltzaileakCtrl',['$scope', 'Database', '$uibModal', function($scope, Database, $uibModal){
+app.controller('ErabiltzaileakCtrl', ['$scope', 'Database', '$uibModal', function($scope, Database, $uibModal) {
 
   $scope.erabiltzaileak = [];
 
-  $scope.init = function (){
+  $scope.init = function() {
 
-    $scope.soinuak.audio_fondo_play ('sarrera');
+    $scope.soinuak.audio_fondo_play('sarrera');
 
-    angular.element ('#eszenatokia').css ('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
-    angular.element ('#eszenatokia').css ('background-size', "cover");
+    angular.element('#eszenatokia').css('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
+    angular.element('#eszenatokia').css('background-size', "cover");
 
     // Recogemos los erabiltzaileak
-    $scope.getErabiltzaileak ();
+    $scope.getErabiltzaileak();
 
   };
 
-  $scope.getErabiltzaileak = function (){
+  $scope.getErabiltzaileak = function() {
 
-    Database.getRows ('erabiltzaileak', '', ' ORDER BY izena ASC').then (function (emaitza){
+    Database.getRows('erabiltzaileak', '', ' ORDER BY izena ASC').then(function(emaitza) {
 
       $scope.erabiltzaileak = emaitza;
 
-      angular.forEach (emaitza, function (erab, ind){
-        if (erab.argazkia.trim () != '')
+      angular.forEach(emaitza, function(erab, ind) {
+        if (erab.argazkia.trim() != '')
           $scope.erabiltzaileak[ind].argazkia = cordova.file.dataDirectory + erab.argazkia;
       });
 
-    }, function (error){
-      console.log ("ErabiltzaileakCtrl, getErabiltzaileak", error);
+    }, function(error) {
+      console.log("ErabiltzaileakCtrl, getErabiltzaileak", error);
     });
 
   };
 
-  $scope.erabiltzailea_datuak = function (erabiltzailea_id){
+  $scope.erabiltzailea_datuak = function(erabiltzailea_id) {
 
-    var modala = $uibModal.open ({
+    var modala = $uibModal.open({
       animation: true,
       backdrop: 'static',
       templateUrl: 'views/modals/erabiltzailea_datuak.html',
       controller: 'ModalErabiltzaileaDatuakCtrl',
       resolve: {
-        erabiltzailea_id: function () {
+        erabiltzailea_id: function() {
           return erabiltzailea_id;
         }
       }
     });
 
-    modala.rendered.then (function (){
-      $scope.soinuak.audio_play ('popup');
+    modala.rendered.then(function() {
+      $scope.soinuak.audio_play('popup');
     });
 
-    modala.result.then (function (){
+    modala.result.then(function() {
 
       // Recogemos los erabiltzaileak
-      $scope.getErabiltzaileak ();
+      $scope.getErabiltzaileak();
 
-    }, function (error){
-      console.log ("ErabiltzaileakCtrl, erabiltzailea_datuak modala", error);
+    }, function(error) {
+      console.log("ErabiltzaileakCtrl, erabiltzailea_datuak modala", error);
     });
 
   };
 
-  document.addEventListener ('deviceready', function (){
+  document.addEventListener('deviceready', function() {
 
-    $scope.init ();
+    $scope.init();
 
   });
 

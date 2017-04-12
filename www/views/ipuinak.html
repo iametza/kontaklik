@@ -2,45 +2,28 @@
 <a ng-click="atzera(erabiltzailea.id)" class="play_gorde_ipuinak"><img src="images/ikonoak/atzera.png" id="atzera_joan_ipuinak" class="" alt="Atzera joan" /></a>
 
 <div class="container" id="menua-kutxa">
-
   <div class="row">
-    <div class="col-xs-2">
-      <img src="images/erabiltzailea.png" ng-src="{{ erabiltzailea.irudia }}" />
+    <div class="col-xs-2" id="erabiltzailea">
+      <img fallback-src="images/erabiltzailea.png" ng-src="{{ erabiltzailea.irudia }}" />
       <h3>{{ erabiltzailea.izena}}</h3>
     </div>
 
     <div class="col-xs-8">
-
       <div id="elementuak">
-
         <div class="elementua" ng-repeat="ipuina in ipuinak">
-
           <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}" ng-click="soinuak.audio_play ('click')" hm-press="ipuina_datuak (ipuina.id)">
-
-            <img ng-src="{{ipuina.fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="ipuina" />
-
+            <img ng-src="{{ipuina.fullPath}}" fallback-src="images/eszena_fondo_gabe.jpg" alt="ipuina" />
             <p>{{ipuina.izenburua}}</p>
-
           </a>
-
         </div>
-
       </div>
-
     </div>
 
     <div class="col-xs-2">
-
       <div id="berria">
-
         <a ng-click="ipuina_datuak (0)">
-
           <img src="images/ikonoak/plus.png" alt="ipuin berria" />
-
         </a>
-
       </div>
-
     </div>
-
-</div>
+  </div>

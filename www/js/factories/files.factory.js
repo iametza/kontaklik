@@ -1,10 +1,10 @@
-app.factory ('Files', ['$cordovaFile', '$cordovaDevice', '$q', function ($cordovaFile, $cordovaDevice, $q){
-  
+app.factory('Files', ['$cordovaFile', '$cordovaDevice', '$q', function($cordovaFile, $cordovaDevice, $q) {
+
   var Files = {};
-  
-  Files.saveFile = function (fitxategia){
+
+  Files.saveFile = function(fitxategia) {
     var d = $q.defer();
-    
+
     /*switch ($cordovaDevice.getPlatform()) {
       case 'iOS':
         var name = image.split('/').pop();
@@ -14,37 +14,36 @@ app.factory ('Files', ['$cordovaFile', '$cordovaDevice', '$q', function ($cordov
           d.reject(err);
         });
         break;
-      case 'Android':        
+      case 'Android':
       default:
         d.resolve(image);
         break;
     }*/
-    
-    var fitx_path = fitxategia.split ('/').slice (0, -1).join ('/');
-    var fitx_name = fitxategia.split ('/').pop ();
-    
-    if (fitx_path.length > 0){
-      
+
+    var fitx_path = fitxategia.split('/').slice(0, -1).join('/');
+    var fitx_name = fitxategia.split('/').pop();
+
+    if (fitx_path.length > 0) {
+
       if (fitx_path[0] == '/')
         fitx_path = 'file://' + fitx_path;
-      
-      $cordovaFile.copyFile (fitx_path, fitx_name, cordova.file.dataDirectory, fitx_name).then (function (){
-        
-        d.resolve (fitx_name);
-        
-      }, function (error){
-        d.reject (error);
+
+      $cordovaFile.copyFile(fitx_path, fitx_name, cordova.file.dataDirectory, fitx_name).then(function() {
+
+        d.resolve(fitx_name);
+
+      }, function(error) {
+        d.reject(error);
       });
-    
-    }
-    else
-      d.reject ('fitxategiaren path-a ezin jaso [' + fitxategia + ']');
-        
-    return d.promise;    
+
+    } else
+      d.reject('fitxategiaren path-a ezin jaso [' + fitxategia + ']');
+
+    return d.promise;
   };
-  
-  Files.getFiles = function (){};
-  
+
+  Files.getFiles = function() {};
+
   return Files;
 
 }]);

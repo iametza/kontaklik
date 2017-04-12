@@ -1,64 +1,64 @@
-app.factory ('Funtzioak', ['$q', '$timeout', function ($q, $timeout){
+app.factory('Funtzioak', ['$q', '$timeout', function($q, $timeout) {
 
   var Funtzioak = {};
 
-  Funtzioak.nl2br = function (str, is_xhtml){
+  Funtzioak.nl2br = function(str, is_xhtml) {
 
     var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
 
-    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 
   };
 
-  Funtzioak.listDir = function (path){
-    var d = $q.defer ();
+  Funtzioak.listDir = function(path) {
+    var d = $q.defer();
 
-    window.resolveLocalFileSystemURL (path, function (fileSystem){
+    window.resolveLocalFileSystemURL(path, function(fileSystem) {
 
-      var reader = fileSystem.createReader ();
+      var reader = fileSystem.createReader();
 
-      reader.readEntries (function (entries){
+      reader.readEntries(function(entries) {
 
         // Direktorioaren fitxategiak hartu bakarrik
         var fitxategiak = [];
-        angular.forEach (entries, function (entry){
+        angular.forEach(entries, function(entry) {
           if (entry.isFile)
-            fitxategiak.push (entry);
+            fitxategiak.push(entry);
         });
 
-        d.resolve (fitxategiak);
+        d.resolve(fitxategiak);
 
-      }, function (error){
-        d.reject (error);
+      }, function(error) {
+        d.reject(error);
       });
 
-    }, function (error){
-      d.reject (error);
+    }, function(error) {
+      d.reject(error);
     });
 
     return d.promise;
 
   };
 
-  Funtzioak.Timer = function (callback, delay){
+  Funtzioak.Timer = function(callback, delay) {
     var timerId, start, remaining = delay;
 
-    this.pause = function (){
-      $timeout.cancel (timerId);
-      remaining -= new Date () - start;
+    this.pause = function() {
+      $timeout.cancel(timerId);
+      remaining -= new Date() - start;
     };
 
-    this.resume = function (){
-      start = new Date ();
-      $timeout.cancel (timerId);
-      timerId = $timeout (callback, remaining);
+    this.resume = function() {
+      start = new Date();
+      $timeout.cancel(timerId);
+      timerId = $timeout(callback, remaining);
     };
 
-    this.stop = function (){
-      $timeout.cancel (timerId);
+    this.stop = function() {
+      $timeout.cancel(timerId);
     };
 
-    this.resume ();
+    this.resume();
   };
   /**
    *
@@ -71,20 +71,20 @@ app.factory ('Funtzioak', ['$q', '$timeout', function ($q, $timeout){
   Funtzioak.botoia_animatu = function(element, image1, image2) {
     console.log('botoia_animatu', image2, element);
     element.attr('src', image2);
-    $timeout( function() {
+    $timeout(function() {
       console.log('botoia_animatu 2', image1, element);
       element.attr('src', image1);
     }, 200);
   };
-  Funtzioak.get_fullPath = function (fitxategia){
+  Funtzioak.get_fullPath = function(fitxategia) {
     var fullPath = '';
 
-    if (fitxategia.hasOwnProperty ('cordova_file') &&
-        fitxategia.hasOwnProperty ('path') &&
-        fitxategia.hasOwnProperty ('izena') &&
-        fitxategia.izena.trim () != ''){
+    if (fitxategia.hasOwnProperty('cordova_file') &&
+      fitxategia.hasOwnProperty('path') &&
+      fitxategia.hasOwnProperty('izena') &&
+      fitxategia.izena.trim() != '') {
 
-      switch (fitxategia.cordova_file){
+      switch (fitxategia.cordova_file) {
         case 'applicationDirectory':
           fullPath = cordova.file.applicationDirectory;
           break;
@@ -94,7 +94,7 @@ app.factory ('Funtzioak', ['$q', '$timeout', function ($q, $timeout){
           break;
       }
 
-      if (fitxategia.path.trim () != '')
+      if (fitxategia.path.trim() != '')
         fullPath += fitxategia.path;
 
       fullPath += fitxategia.izena;

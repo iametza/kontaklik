@@ -1,63 +1,37 @@
 <a ng-click="audio_on_off ('sarrera')" id="audio_on_off"><img ng-src="{{audio_mutu && 'images/ikonoak/soinuak_off.png' || 'images/ikonoak/soinuak_on.png'}}" class="itzal" alt="audio" /></a>
 
 <div class="container">
-  
   <div class="row">
-    
     <div class="col-xs-12">
-      
       <div id="menua-burua">
-      
         <div id="kontaklik">
           <img src="images/kontaklik.png" alt="Kontaklik" />
         </div>
-        
       </div>
-      
     </div>
-    
+
   </div>
-  
+
   <div id="menua-kutxa">
-    
     <div class="row">
-      
       <div class="col-xs-9" style="padding-right: 0px">
-        
         <div id="elementuak">
-          
           <div class="elementua" ng-repeat="erabiltzailea in erabiltzaileak">
-            
             <a href="#/ipuinak/{{erabiltzailea.id}}" ng-click="soinuak.audio_play ('click')" hm-press="erabiltzailea_datuak (erabiltzailea.id)">
-              
               <img src="images/erabiltzailea.png" ng-src="{{erabiltzailea.argazkia}}" alt="argazkia" />
-              
               <p>{{erabiltzailea.izena}}</p>
-              
             </a>
-            
           </div>
-          
         </div>
-        
       </div>
-      
+
       <div class="col-xs-3">
-        
         <div id="berria">
-          
           <a ng-click="erabiltzailea_datuak (0)">
-            
             <img src="images/ikonoak/plus.png" alt="erabiltzaile berria" />
-            
             <p>Erabiltzaile berria sortu!</p>
-            
           </a>
-          
         </div>
-        
       </div>
-    
+    </div>
   </div>
-    
-</div>
