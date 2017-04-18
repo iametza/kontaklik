@@ -65,10 +65,11 @@ label {
   animation: erabiltzailea_sartu 1s linear 0.5s backwards; }
 
 #menua-kutxa {
+  font-family: ARCHRISTY;
   width: 90%;
   border: 10px solid #fff;
   border-radius: 20px;
-  padding: 40px;
+  padding: 40px 10px;
   background-color: rgba(255, 255, 255, 0.5);
   margin-right: auto;
   margin-left: auto;
@@ -77,8 +78,7 @@ label {
 #menua-kutxa #elementuak {
   width: 100%;
   white-space: nowrap;
-  overflow-x: scroll;
-  padding-left: 20px; }
+  overflow-x: scroll; }
 
 #menua-kutxa #elementuak .elementua {
   display: inline-block;
@@ -120,15 +120,19 @@ label {
 
 #menua-kutxa #berria {
   width: 100%;
-  height: 100px;
+  height: 120px;
   text-align: center;
-  background-color: #fff; }
+  vertical-align: middle;
+  background-color: #e73d64;
+  border: 10px solid #fff;
+  border-radius: 20px; }
 
 #menua-kutxa #berria img {
   width: auto;
-  height: 50px;
-  margin: 60px auto 20px;
-  animation: torloju 4s linear 0s infinite; }
+  margin-top: 10px;
+  padding-top: 10%;
+  height: 70px;
+  animation: torloju 3s linear 0s infinite; }
 
 #menua-kutxa #berria a,
 #menua-kutxa #berria a:focus,
@@ -141,6 +145,10 @@ label {
 
 #menua-kutxa #erabiltzailea {
   border-right: 5px solid #e73d64; }
+
+#menua-kutxa #erabiltzailea img {
+  border: 10px solid #fff;
+  border-radius: 20px; }
 
 #menua-kutxa #erabiltzailea h3 {
   color: #fff;
