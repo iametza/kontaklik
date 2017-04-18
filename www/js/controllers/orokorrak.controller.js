@@ -1,8 +1,13 @@
-app.controller('OrokorraCtrl', ['$scope', '$window', 'Soinuak', function($scope, $window, Soinuak) {
+app.controller('OrokorraCtrl', ['$scope', '$window', 'Soinuak', 'Funtzioak', function($scope, $window, Soinuak, Funtzioak) {
 
   $scope.audio_mutu = false;
 
   $scope.audio_on_off = function(audio_fondo) {
+    if($scope.audio_mutu) {
+      Funtzioak.botoia_animatu(angular.element('#audio_on_off'), 'images/ikonoak/bolumena-off.png', 'images/ikonoak/bolumena-off-press.png');
+    } else {
+      Funtzioak.botoia_animatu(angular.element('#audio_on_off'), 'images/ikonoak/bolumena-on.png', 'images/ikonoak/bolumena-on-press.png');
+    }
     Soinuak.on_off(audio_fondo);
     $scope.audio_mutu = !$scope.audio_mutu;
   };
