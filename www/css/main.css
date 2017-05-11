@@ -69,11 +69,13 @@ label {
   width: 90%;
   border: 10px solid #fff;
   border-radius: 20px;
-  padding: 40px 10px;
+  height: 290px;
+  padding: 35px 10px;
   background-color: rgba(255, 255, 255, 0.5);
   margin-right: auto;
   margin-left: auto;
-  margin-top: 10%; }
+  margin-top: 10%;
+  animation: menua_sarrera 1s ease-out; }
 
 #menua-kutxa #elementuak {
   width: 100%;
@@ -82,8 +84,8 @@ label {
 
 #menua-kutxa #elementuak .elementua {
   display: inline-block;
-  width: 32%;
-  margin-right: 15px;
+  width: 25%;
+  margin-right: 25px;
   vertical-align: top;
   text-align: center;
   word-wrap: break-word; }
@@ -99,14 +101,13 @@ label {
   text-decoration: none; }
 
 #menua-kutxa #elementuak .elementua a:active img {
-  border: 4px solid #e73d64 !important;
-  /*transform: translateY(4px);*/ }
+  border: 4px solid #e73d64 !important; }
 
 #menua-kutxa #elementuak .elementua img {
   border: 5px solid #fff;
   border-radius: 10px;
   max-width: 100%;
-  max-height: 100px;
+  height: 150px;
   width: auto;
   height: auto; }
 
@@ -119,8 +120,8 @@ label {
   color: #92a7ac; }
 
 #menua-kutxa #berria {
-  width: 100%;
-  height: 120px;
+  width: 80%;
+  height: 150px;
   text-align: center;
   vertical-align: middle;
   background-color: #e73d64;
@@ -129,10 +130,9 @@ label {
 
 #menua-kutxa #berria img {
   width: auto;
-  margin-top: 10px;
-  padding-top: 10%;
-  height: 70px;
-  animation: torloju 3s linear 0s infinite; }
+  padding-top: 25px;
+  height: 100px;
+  animation: torloju 2s linear 0s infinite; }
 
 #menua-kutxa #berria a,
 #menua-kutxa #berria a:focus,
@@ -148,7 +148,9 @@ label {
 
 #menua-kutxa #erabiltzailea img {
   border: 10px solid #fff;
-  border-radius: 20px; }
+  border-radius: 20px;
+  max-width: 100%;
+  max-height: 150px; }
 
 #menua-kutxa #erabiltzailea h3 {
   color: #fff;
@@ -244,12 +246,29 @@ label {
   overflow-x: scroll;
   margin-right: 10px; }
 
+#goiko-menua #eszenak .eszena-fondoa {
+  position: relative;
+  display: inline-block;
+  font-family: ARCHRISTY; }
+
 #goiko-menua #eszenak .fondoak .fondo,
 #goiko-menua #eszenak .fondoak .fondo:focus {
-  display: inline-block;
   height: 90px;
   width: auto;
   margin: 0 5px; }
+
+#goiko-menua #eszenak .fondoak .eszena-zenbakia {
+  position: absolute;
+  background-color: rgba(200, 102, 102, 0.7);
+  color: #fff;
+  top: 25%;
+  left: 30%;
+  text-align: center;
+  padding-top: 12px;
+  font-size: 1.5em;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; }
 
 #goiko-menua #eszenak .fondoak .fondo.active,
 #goiko-menua #eszenak .fondoak .fondo.active:focus {

@@ -9,7 +9,12 @@
             <!-- <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" alt="eszena aurreratu" /></a> -->
 
             <div class="fondoak">
-              <img ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)" ng-repeat="eszena in eszenak" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.fondoa_fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="eszena" />
+              <div ng-repeat="eszena in eszenak track by $index" class="eszena-fondoa">
+                <img ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)" class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.fondoa_fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="eszena"/>
+                <div class="eszena-zenbakia">
+                  {{ $index + 1  }}
+                </div>
+              </div>
             </div>
 
             <!-- <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext itzal" alt="eszena atzeratu" /></a> -->
@@ -33,16 +38,16 @@
     <uib-tab-heading><img class="pestaina-irudia"  src="images/pestaina-fondoak-aktibo.png"/></uib-tab-heading>
     <div class="tab-edukia menu-fondoa">
       <div class="row">
-        <div class="col-xs-10">
+        <div class="col-xs-9">
           <div class="elementuak">
             <a ng-click="addFondoa (fondoa)" hm-press="pressFondoa (fondoa)" ng-repeat="fondoa in fondoak"><img ng-src="{{fondoa.miniPath}}" class="irudia" alt="fondoa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
           </div>
         </div>
 
-        <div class="col-xs-2">
+        <div class="col-xs-3">
           <div class="kargatu">
-            <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.jpg" class="ikon" alt="galeria" /></a>
-            <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.jpg" class="ikon" alt="kamara" /></a>
+            <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.png" class="ikon galeria" alt="galeria" /></a>
+            <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.png" class="ikon kamara" alt="kamara" /></a>
           </div>
         </div>
       </div>
@@ -54,16 +59,16 @@
 
     <div class="tab-edukia menu-fondoa">
       <div class="row">
-        <div class="col-xs-10">
+        <div class="col-xs-9">
           <div class="elementuak">
             <a ng-click="addObjektua (objektua)" hm-press="pressObjektua (objektua)" ng-repeat="objektua in objektuak"><img ng-src="{{objektua.miniPath}}" class="irudia" alt="objektua" fallback-src="images/erabiltzailea.png"/></a>
           </div>
         </div>
 
-        <div class="col-xs-2">
+        <div class="col-xs-3">
           <div class="kargatu">
-            <a ng-click="takeGallery ('objektua')"><img src="images/ikonoak/galeria.jpg" class="ikon" alt="galeria" /></a>
-            <a ng-click="takePicture ('objektua')"><img src="images/ikonoak/kamara.jpg" class="ikon" alt="kamara" /></a>
+            <a ng-click="takeGallery ('objektua')"><img src="images/ikonoak/galeria.png" class="ikon galeria" alt="galeria" /></a>
+            <a ng-click="takePicture ('objektua')"><img src="images/ikonoak/kamara.png" class="ikon kamara" alt="kamara" /></a>
           </div>
         </div>
       </div>
@@ -134,7 +139,7 @@
 <!-- <img src="images/ikonoak/play.png" id="play_eszena" class="itzal" ng-click="play_eszena()" alt="play" /> -->
 <a ng-click="atzera(erabiltzailea.id)" class="play_gorde"><img src="images/ikonoak/atzera.png" id="atzera_joan" class="" alt="Atzera joan" /></a>
 <a ng-click="bideo_modua_play ()" class="play_gorde"><img src="images/ikonoak/play.png" id="play_ipuina" class="" alt="ipuina ikusi" /></a>
-<a ng-click="bideo_modua_stop ()" class="stop_erakutsi"><img src="images/ikonoak/audio_stop.png" id="stop_ipuina" class="" alt="ipuina ikusi" /></a>
+<a ng-click="bideo_modua_stop ()" class="stop_erakutsi"><img src="images/ikonoak/stop.png" id="stop_ipuina" class="" alt="ipuina ikusi" /></a>
 <div id="lanean"><img src="images/lanean.gif" alt="lanean" /></div>
 
 <!--

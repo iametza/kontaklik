@@ -930,6 +930,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     return d.promise;
   }
   $scope.takeGallery = function(atala) {
+    Funtzioak.botoia_animatu(angular.element('.galeria'), 'images/ikonoak/galeria.png', 'images/ikonoak/galeria-press.png');
+    $scope.soinuak.audio_play('click');
     var options = {
       quality: 50,
       destinationType: Camera.DestinationType.FILE_URI,
@@ -979,6 +981,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.takePicture = function(atala) {
+    Funtzioak.botoia_animatu(angular.element('.kamara'), 'images/ikonoak/kamara.png', 'images/ikonoak/kamara-press.png');
+    $scope.soinuak.audio_play('click');
     var options = {
       quality: 50,
       destinationType: Camera.DestinationType.FILE_URI,
@@ -1307,7 +1311,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
   $scope.bideo_modua_stop = function() {
     // Ikonoa aldatu
-    angular.element('#stop_ipuina').attr('src', 'images/ikonoak/stop-press.png');
+    Funtzioak.botoia_animatu(angular.element('.stop_erakutsi'), 'images/ikonoak/stop.png', 'images/ikonoak/stop-press.png');
+    $scope.soinuak.audio_play('click');
     if ($scope.bideo_modua.playing) {
 
       if ($scope.bideo_modua.timer !== undefined)

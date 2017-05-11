@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-xs-9">
       <div id="elementuak">
-        <div class="elementua" ng-repeat="erabiltzailea in erabiltzaileak">
+        <div class="elementua" ng-repeat="erabiltzailea in erabiltzaileak track by $index">
           <a href="#/ipuinak/{{erabiltzailea.id}}" ng-click="soinuak.audio_play ('click')" hm-press="erabiltzailea_datuak (erabiltzailea.id)">
             <img src="images/erabiltzailea.png" ng-src="{{erabiltzailea.argazkia}}" alt="argazkia" />
             <p>{{erabiltzailea.izena}}</p>
@@ -14,9 +14,9 @@
     </div>
 
     <div class="col-xs-3">
-      <div id="berria">
+      <div id="berria" class="pull-right">
         <a ng-click="erabiltzailea_datuak (0)">
-          <img src="images/ikonoak/cross.png" alt="erabiltzaile berria" />
+          <img src="images/ikonoak/gehitu.png" alt="erabiltzaile berria" />
         </a>
       </div>
     </div>
