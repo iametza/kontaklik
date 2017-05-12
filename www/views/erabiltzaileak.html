@@ -6,7 +6,7 @@
       <div id="elementuak">
         <div class="elementua" ng-repeat="erabiltzailea in erabiltzaileak track by $index">
           <a href="#/ipuinak/{{erabiltzailea.id}}" ng-click="soinuak.audio_play ('click')" hm-press="erabiltzailea_datuak (erabiltzailea.id)">
-            <img src="images/erabiltzailea.png" ng-src="{{erabiltzailea.argazkia}}" alt="argazkia" />
+            <img src="images/erabiltzailea.png" fallback-src="images/erabiltzailea.png" ng-src="{{erabiltzailea.argazkia}}" alt="argazkia" />
             <p>{{erabiltzailea.izena}}</p>
           </a>
         </div>

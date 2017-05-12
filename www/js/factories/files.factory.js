@@ -1,6 +1,36 @@
-app.factory('Files', ['$cordovaFile', '$cordovaDevice', '$q', function($cordovaFile, $cordovaDevice, $q) {
-
+app.factory('Files', ['$cordovaFile', '$cordovaDevice', '$q', 'Funtzioak', function($cordovaFile, $cordovaDevice, $q, Funtzioak) {
   var Files = {};
+  var fitxategiaGorde = function(path, name, argazkia) {
+    var d = $q.defer();
+    $cordovaFile.writeFile(path, name, argazkia, true).then(function(res){
+      console.log('ongi', path, name);
+      d.resolve();
+    }, function(err){
+      console.log('err writeFile', err);
+      d.reject(err);
+    });
+    return d.promise;
+  }
+  Files.saveBase64Image = function(original_file, base64_file) {
+    var o_file = original_file.split('/');
+    var name = o_file.pop();
+    var path = cordova.file.dataDirectory+'miniaturak';
+    var argazkia = Funtzioak.dataURItoBlob(base64_file);
+    $cordovaFile.checkDir(cordova.file.dataDirectory, 'miniaturak').then(function(res) {
+      console.log('res', res.isDirectory == true)
+      if(res.isDirectory == true) {
+        fitxategiaGorde(path, name, base64_file);
+      } else {
+        $cordovaFile.createDir(cordova.file.dataDirectory, 'miniaturak').then(function(res) {
+          fitxategiaGorde(path, name, base64_file);
+        }, function(err) {
+          fitxategiaGorde(path, name, base64_file);
+        });
+      }
+    }, function(err) {
+      console.log(err);
+    });
+  };
 
   Files.saveFile = function(fitxategia) {
     var d = $q.defer();

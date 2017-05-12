@@ -16,7 +16,8 @@ var app = angular.module('Kontaklik', [
     'ui.bootstrap',
     'hmTouchEvents',
     'ngCordova',
-    'mgo-angular-wizard'
+    'mgo-angular-wizard',
+    'ui.thumbnail'
   ])
   .config(function($routeProvider) {
     $routeProvider

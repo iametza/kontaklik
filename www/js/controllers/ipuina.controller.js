@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', '$http', '$location', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, $http, $location, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler) {
+app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', '$http', '$location', '$cordovaVibration', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, $http, $location, $cordovaVibration, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler) {
 
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -77,6 +77,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
               angular.forEach(objektuak, function(objektua, ind) {
                 objektuak[ind].fullPath = Funtzioak.get_fullPath(objektua);
                 objektuak[ind].miniPath = objektuak[ind].fullPath.replace(objektua.izena, 'miniaturak/' + objektua.izena);
+                console.log('objetuak', objektuak[ind]);
               });
 
               $scope.objektuak = objektuak;
@@ -93,6 +94,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
               angular.forEach(fondoak, function(fondoa, ind) {
                 fondoak[ind].fullPath = Funtzioak.get_fullPath(fondoa);
                 fondoak[ind].miniPath = fondoak[ind].fullPath.replace(fondoa.izena, 'miniaturak/' + fondoa.izena);
+                console.log('fondoak', fondoak[ind]);
               });
 
               $scope.fondoak = fondoak;
@@ -387,9 +389,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.pressEszena = function(eszena_id) {
-
+    $cordovaVibration.vibrate(100);
     if (!eszena_aldatzen) {
-
       $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
 
         if (buttonIndex == 1) {
@@ -420,7 +421,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.pressObjektua = function(objektua) {
-
+    $cordovaVibration.vibrate(100);
     if (objektua.fk_ipuina !== 0) {
 
       $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
@@ -457,7 +458,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.pressFondoa = function(fondoa) {
-
+    $cordovaVibration.vibrate(100);
     if (fondoa.fk_ipuina !== 0) {
 
       $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
@@ -937,13 +938,14 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       encodingType: Camera.EncodingType.JPEG,
-      allowEdit: true,
       saveToPhotoAlbum: false,
       correctOrientation: true
     };
 
     Kamera.getPicture(options).then(function(irudia) {
-
+      Kamera.generateThumbnail(irudia).then(function(data) {
+        Files.saveBase64Image(irudia, data);
+      }, onError);
       Files.saveFile(irudia).then(function(irudia) {
 
         Database.insertRow('irudiak', {
@@ -988,14 +990,15 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA,
       encodingType: Camera.EncodingType.JPEG,
-      allowEdit: true,
       cameraDirection: 0,
       saveToPhotoAlbum: true,
       correctOrientation: true
     };
 
     Kamera.getPicture(options).then(function(irudia) {
-
+      Kamera.generateThumbnail(irudia).then(function(data) {
+        Files.saveBase64Image(irudia, data);
+      }, onError);
       Files.saveFile(irudia).then(function(irudia) {
 
         Database.insertRow('irudiak', {

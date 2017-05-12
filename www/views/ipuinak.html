@@ -12,7 +12,7 @@
       <div id="elementuak">
         <div class="elementua" ng-repeat="ipuina in ipuinak">
           <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}" ng-click="soinuak.audio_play ('click')" hm-press="ipuina_datuak (ipuina.id)">
-            <img ng-src="{{ipuina.fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="ipuina" />
+            <img ng-src="{{ipuina.fullPath}}" src="images/eszena_fondo_gabe.jpg" fallback-src="images/eszena_fondo_gabe.jpg" alt="ipuina" />
             <p>{{ipuina.izenburua}}</p>
           </a>
         </div>
