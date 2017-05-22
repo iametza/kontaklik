@@ -156,21 +156,15 @@ app.directive('objektua', ['$cordovaDialogs', '$timeout', 'Database', function($
         if (!loki) {
 
           $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
-
             if (buttonIndex == 1) {
-
               if (objektua_id > 0) {
-
                 Database.query('DELETE FROM eszena_objektuak WHERE id=?', [parseInt(objektua_id)]).then(function() {
-
                   element.fadeOut(500, function() {
                     element.remove();
                   });
-
                 }, function(error) {
                   console.log("Objektua directive DELETE", error);
                 });
-
               }
 
             }
