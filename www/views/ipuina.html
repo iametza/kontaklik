@@ -1,12 +1,8 @@
-<!--
-<a ng-click="bideo_modua_stop ()" ng-hide="!bideo_modua.playing" id="bideo_modua_stop" class="itzal"><img src="images/ikonoak/atzera.png" id="eszena_berria" alt="atzera" /></a>
--->
  <a ng-click="goikoMenuaCollapse()" id="goiko-collapse" class="play_gorde"><img ng-src="images/izkutatu-eszenak.png"></a>
  <a ng-click="behekoMenuaCollapse()" id="beheko-collapse" class="play_gorde"><img ng-src="images/izkutatu-menua.png"></a>
  <div class="row menu-fondoa play_gorde" id="goiko-menua">
         <div class="col-xs-10">
           <div id="eszenak">
-            <!-- <a ng-click="eszenaAurreratu ()" ng-disabled="!eszenak_nabigazioa.aurrera"><img src="images/ikonoak/prev.png" class="prevnext itzal" alt="eszena aurreratu" /></a> -->
 
             <div class="fondoak">
               <div ng-repeat="eszena in eszenak track by $index" class="eszena-fondoa"  ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)">
@@ -16,20 +12,12 @@
                 </div>
               </div>
             </div>
-
-            <!-- <a ng-click="eszenaAtzeratu ()" ng-disabled="!eszenak_nabigazioa.atzera"><img src="images/ikonoak/next.png" class="prevnext itzal" alt="eszena atzeratu" /></a> -->
           </div>
         </div>
 
         <div class="col-xs-1">
           <a ng-click="addEszena ()"><img src="images/ikonoak/gehitu.png" id="eszena_berria" class="itzal" alt="eszena berria" /></a>
         </div>
-
-         <!--
-        <div class="col-xs-2">
-          <a ng-click="bideo_modua_play ()"><img src="images/ikonoak/play.png" id="play_ipuina" class="itzal" alt="ipuina ikusi" /></a>
-        </div>
-        -->
       </div>
     </div>
 
@@ -84,9 +72,6 @@
              <a ng-click="addBokadiloa (bokadiloa)" hm-press="pressBokadiloa (bokadiloa)" ng-repeat="bokadiloa in bokadiloak"><img ng-src="{{bokadiloa.fullPath}}" class="irudia" alt="bokadiloa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
           </div>
         </div>
-        <!--<div class="col-xs-2">
-          <a ng-click="addTestua ()"><img src="images/ikonoak/gehitu.png" id="testu_berria" class="itzal" alt="testua gehitu" /></a>
-        </div> -->
       </div>
     </div>
   </uib-tab>
@@ -99,7 +84,6 @@
         <div class="mikro">
           <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
           <p>{{uneko_audioa.counter | kontador}}</p>
-          <!--<p ng-hide="uneko_audioa.counter == 0">{{uneko_audioa.counter | kontador}}</p>-->
         </div>
 
         <div class="kontrols">
@@ -111,7 +95,6 @@
       <div ng-hide="uneko_audioa.izena == ''">
         <div class="mikro">
           <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
-          <!--<p>{{uneko_audioa.counter | kontador}} | {{uneko_audioa.iraupena | kontador}}</p>-->
           <p>{{uneko_audioa.counter | kontador}}</p>
         </div>
 
@@ -122,28 +105,11 @@
 
           <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
         </div>
-
-        <!--<uib-progressbar max="uneko_audioa.iraupena" value="uneko_audioa.counter+1"><span style="color:white; white-space:nowrap;">{{uneko_audioa.counter | kontador}} / {{uneko_audioa.iraupena | kontador}}</span></uib-progressbar>-->
       </div>
     </div>
   </uib-tab>
-
-  <!--  <div class="pull-right">
-
-    <a href="#/ipuinak/{{erabiltzailea.id}}">{{erabiltzailea.izena}}</a> &gt; {{ipuina.izenburua}}
-    <button type="button" class="btn btn-default" ng-click="menuaCollapse()"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></button>
-
-  </div>-->
-
 </uib-tabset>
-<!-- <img src="images/ikonoak/play.png" id="play_eszena" class="itzal" ng-click="play_eszena()" alt="play" /> -->
 <a ng-click="atzera(erabiltzailea.id)" class="play_gorde"><img src="images/ikonoak/atzera.png" id="atzera_joan" class="" alt="Atzera joan" /></a>
 <a ng-click="bideo_modua_play ()" class="play_gorde"><img src="images/ikonoak/play.png" id="play_ipuina" class="" alt="ipuina ikusi" /></a>
 <a ng-click="bideo_modua_stop ()" class="stop_erakutsi"><img src="images/ikonoak/stop.png" id="stop_ipuina" class="" alt="ipuina ikusi" /></a>
 <div id="lanean"><img src="images/lanean.gif" alt="lanean" /></div>
-
-<!--
-<div id="tutoriala" hm-swiperight="wizard_prev()" hm-swipeleft="wizard_next()">
-  <div ng-include="'views/wizard.html'"></div>
-</div>
--->

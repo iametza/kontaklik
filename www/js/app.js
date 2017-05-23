@@ -33,8 +33,12 @@ var app = angular.module('Kontaklik', [
         templateUrl: 'views/ipuina.html',
         controller: 'IpuinaCtrl'
       })
+      .when('/editorea', {
+        templateUrl: 'views/editorea.html',
+        controller: 'EditoreaCtrl'
+      })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/editorea'
       });
   })
   .run(['Database', 'Funtzioak', function(Database, Funtzioak) {
