@@ -1,11 +1,28 @@
-app.controller('EditoreaCtrl', function() {
+app.controller('EditoreaCtrl', ['$scope', function($scope) {
   //https://stackoverflow.com/questions/29273808/how-to-crop-a-polynomial-shape-from-an-image
-  var canvas, context, srcImage;
-  angular.element('#eszenatokia').css('background', "none");
+  var canvas,
+      ctx,
+      srcImage,
+      col12 = angular.element('.col-md-12'),
+      eszenatokia = angular.element('#eszenatokia'),
+      moztuBotoia = angular.element('#moztu')
+      garbituBotoia = angular.element('#garbitu')
+      gordeBotoia = angular.element('#gorde')
+      ezabatuBotoia = angular.element('#ezabatu'),
+      canvasElement = angular.element('#canvas');
+  ezabatuBotoia.hide();
+  gordeBotoia.hide();
+  eszenatokia.css('background', "none");
+  eszenatokia.css('padding', "0");
+  col12.css('padding', "0");
   document.addEventListener("deviceready", function() {
+    srcImage = new Image(); // create image object
+    srcImage.src = "assets/fondoak/baserria.png";
+    srcImage.onload = loadImage;
+
     canvas = document.getElementById('canvas');
-    canvas.width = document.body.clientWidth -20; //document.width is obsolete
-    canvas.height = document.body.clientHeight -20; //document.height is obsolete
+    canvas.width = document.body.clientWidth; //document.width is obsolete
+    canvas.height = document.body.clientHeight; //document.height is obsolete
 
     ctx = canvas.getContext('2d');
     ctx.fillStyle = "#fff";
@@ -16,34 +33,52 @@ app.controller('EditoreaCtrl', function() {
     canvas.addEventListener('touchend', handleEnd, false);
     canvas.addEventListener('touchmove', handleMove, false);
 
-    srcImage = new Image(); // create image object
-    srcImage.onload = crop; // set callback
-    srcImage.src = "assets/fondoak/baserria.png";
+
   }, false);
+
+  $scope.garbitu = function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    allTouches = new Array;
+    loadImage();
+  };
+  $scope.ezabatu = function() {
+    ezabatuBotoia.hide();
+    gordeBotoia.hide();
+    garbituBotoia.show();
+    moztuBotoia.show();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    allTouches = new Array;
+    loadImage();
+    angular.element('.irudi_moztua').remove();
+    canvasElement.show();
+  };
+  $scope.moztu = function() {
+    ezabatuBotoia.show();
+    gordeBotoia.show();
+    garbituBotoia.hide();
+    moztuBotoia.hide();
+
+    if(allTouches.length > 0) {
+      var img = new Image(); // create image object
+      img.src = "assets/fondoak/baserria.png";
+      img.onload = crop;
+    } else {
+      alert('Moztu baino lehenago zati bat aukeratu');
+    }
+  };
+
   var ongoingTouches = new Array;
-
+  var allTouches = new Array;
+  function loadImage() {
+    ctx.drawImage(srcImage, 0, 0,  canvas.width, canvas.height);
+  };
   function crop() {
-    // - image is loaded and is represented as "this" inside this callback
-
-    // some "random" points for demo
-    var arr = [{
-      x: 10,
-      y: 90
-    }, {
-      x: 70,
-      y: 10
-    }, {
-      x: 400,
-      y: 200
-    }, {
-      x: 200,
-      y: 220
-    }];
-
     // do the cropping, provide callback
-    cropImage(this, arr, function(img) {
+    cropImage(srcImage, allTouches, function(img) {
       // img is the cropped image - add to DOM for demo
-      context.drawImage(img, 69, 50);
+      canvasElement.hide();
+      //ctx.drawImage(img, 0, 0);
+      col12.append('<img src="'+img.src+'" class="irudi_moztua" />');
     })
   };
 
@@ -66,10 +101,13 @@ app.controller('EditoreaCtrl', function() {
 
   function handleStart(evt) {
     evt.preventDefault();
+    allTouches = new Array;
     var touches = evt.changedTouches;
 
     for (var i = 0; i < touches.length; i++) {
       ongoingTouches.push(touches[i]);
+      allTouches.push({ x: touches[i].pageX, y: touches[i].pageY });
+
       var color = colorForTouch(touches[i]);
       ctx.fillStyle = color;
       ctx.fillRect(touches[i].pageX - 2, touches[i].pageY - 2, 4, 4);
@@ -79,13 +117,13 @@ app.controller('EditoreaCtrl', function() {
   function handleMove(evt) {
     evt.preventDefault();
     var touches = evt.changedTouches;
-
+    console.log('handleMove', evt);
     ctx.lineWidth = 4;
 
     for (var i = 0; i < touches.length; i++) {
       var color = colorForTouch(touches[i]);
       var idx = ongoingTouchIndexById(touches[i].identifier);
-
+      allTouches.push({ x: touches[i].pageX, y: touches[i].pageY });
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
@@ -106,7 +144,7 @@ app.controller('EditoreaCtrl', function() {
       var color = colorForTouch(touches[i]);
       var idx = ongoingTouchIndexById(touches[i].identifier);
 
-      ctx.fillStyle = color;
+      ctx.fongoingTouchesillStyle = color;
       ctx.beginPath();
       ctx.moveTo(ongoingTouches[i].pageX, ongoingTouches[i].pageY);
       ctx.lineTo(touches[i].pageX, touches[i].pageY);
@@ -123,12 +161,13 @@ app.controller('EditoreaCtrl', function() {
     }
   };
 
+
   function cropImage(image, arr, callback) {
     // create a canvas element, and get 2D context for it:
-    var i, minx = 10000,
-      miny = 10000,
-      maxx = -1,
-      maxy = -1;
+    // create a canvas element, and get 2D context for it:
+var canvas2 = document.createElement("canvas"),
+    ctx = canvas2.getContext("2d"),
+    i, minx = 10000, miny = 10000, maxx = -1, maxy = -1;
 
     // find min max of array points here:
     for (i = 0; i < arr.length; i++) {
@@ -139,14 +178,14 @@ app.controller('EditoreaCtrl', function() {
     }
 
     // set proper size:
-    canvas.width = maxx - minx;
-    canvas.height = maxy - miny;
+    canvas2.width = maxx - minx;
+    canvas2.height = maxy - miny;
 
     // translate context so corner of clip is (0,0)
     ctx.translate(-minx, -miny);
 
     // draw in image;
-    ctx.drawImage(image, 0, 0);
+    ctx.drawImage(image, 0, 0,  canvas.width, canvas.height);
 
     // create a clip path:
     ctx.moveTo(arr[0].x, arr[0].y);
@@ -161,7 +200,7 @@ app.controller('EditoreaCtrl', function() {
     dstImage.onload = function() {
       callback(this)
     };
-    dstImage.src = canvas.toDataURL(); // saves PNG in this case as data-uri
+    dstImage.src = canvas2.toDataURL(); // saves PNG in this case as data-uri
   }
 
-});
+}]);

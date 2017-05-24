@@ -100,18 +100,13 @@ label {
   display: inline-block;
   text-decoration: none; }
 
-#menua-kutxa #elementuak .elementua a:active img {
-  border: 4px solid #e73d64 !important; }
-
 #menua-kutxa #elementuak .elementua img {
   border: 5px solid #fff;
   border-radius: 10px;
   max-width: 100%;
-  height: 150px;
-  width: auto;
   height: auto; }
 
-#menua-kutxa #elementuak .elementua p {
+#menua-kutxa #elementuak .elementu p {
   white-space: normal;
   text-transform: uppercase;
   font-weight: bold;
@@ -614,3 +609,19 @@ section > #testua-div:focus:hover {
   -webkit-filter: none;
   filter: none;
   transform: translateY(5px); }
+
+#canvas {
+  border: 1px solid #000; }
+
+.panela {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.8); }
+
+.irudi_moztua {
+  display: block;
+  margin: 0 auto; }

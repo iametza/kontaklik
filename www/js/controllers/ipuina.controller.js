@@ -77,7 +77,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
               angular.forEach(objektuak, function(objektua, ind) {
                 objektuak[ind].fullPath = Funtzioak.get_fullPath(objektua);
                 objektuak[ind].miniPath = objektuak[ind].fullPath.replace(objektua.izena, 'miniaturak/' + objektua.izena);
-                console.log('objetuak', objektuak[ind]);
               });
 
               $scope.objektuak = objektuak;
@@ -93,8 +92,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
               // Establecemos el path completo y 'real'
               angular.forEach(fondoak, function(fondoa, ind) {
                 fondoak[ind].fullPath = Funtzioak.get_fullPath(fondoa);
-                fondoak[ind].miniPath = fondoak[ind].fullPath.replace(fondoa.izena, 'miniaturak/' + fondoa.izena);
-                console.log('fondoak', fondoak[ind]);
+                fondoak[ind].miniPath = fondoak[ind].fullPath.replace(fondoa.izena, 'miniaturak/' + fondoa.izena);                
               });
 
               $scope.fondoak = fondoak;
@@ -961,7 +959,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
               'miniPath': cordova.file.dataDirectory + 'miniaturak/' + irudia,
               'fk_ipuina': $scope.ipuina.id
             };
-            console.log('elem.miniPath', elem.miniPath);
             switch (atala) {
               case 'objektua':
                 $scope.objektuak.unshift(elem);
@@ -1453,16 +1450,11 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   });
 
   document.addEventListener('pause', function() {
-
     inBackground = true;
-
     if ($scope.bideo_modua.playing) {
-
       pause_ipuina();
-
     } else
       audioa_kill(); // Paramos la posible reproducción/grabación del audio
-
   });
 
   document.addEventListener('resume', function() {

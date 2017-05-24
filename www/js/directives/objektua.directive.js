@@ -1,4 +1,4 @@
-app.directive('objektua', ['$cordovaDialogs', '$timeout', 'Database', function($cordovaDialogs, $timeout, Database) {
+app.directive('objektua', ['$cordovaDialogs', '$cordovaVibration', '$timeout', 'Database', function($cordovaDialogs, $cordovaVibration, $timeout, Database) {
 
   return {
     restrict: 'AE',
@@ -36,12 +36,11 @@ app.directive('objektua', ['$cordovaDialogs', '$timeout', 'Database', function($
           'left': 0
         },
         eszenatokia = angular.element('#eszenatokia'),
-        loki = attrs.lock == 'true'; // no se recibe como boolean....
-
-      element.children().attr('src', attrs.src);
+        loki = attrs.lock == 'true'; // no se recibe como boolean....      
+      element.children('.laukia').attr('src', attrs.src);
 
       // Le damos "id" al elemento para poder hacer una txapuzilla luego
-      element.children().attr('id', 'objektua_' + objektua_id);
+      element.children('.laukia').attr('id', 'objektua_' + objektua_id);
 
       // Parece ser que con hacer "$timeout a 0ms." se asegura que el elemento está cargado en el DOM.... (necesario para obtener el tamaño)
       // Not true. Con 0ms. no estan cargadas las propiedades del elemento. Con 100ms. si, en las pruebas que he hecho al menos, enough?
@@ -53,7 +52,7 @@ app.directive('objektua', ['$cordovaDialogs', '$timeout', 'Database', function($
         }
 
         if (attrs.scale === undefined) {
-          element.children().css({
+          element.children('.laukia').css({
             transform: 'translate3d(' + transform.translate.x + 'px, ' + transform.translate.y + 'px, 0)'
           });
         }
@@ -68,7 +67,7 @@ app.directive('objektua', ['$cordovaDialogs', '$timeout', 'Database', function($
         if (!loki) {
 
           // Aplicamos los cambios en el CSS
-          element.children().css(transform2css(transform_new));
+          element.children('.laukia').css(transform2css(transform_new));
 
           // Pase lo que pase, vayas donde vayas, hagas lo que hagas, ponte bragas
           // Comprobamos que tras aplicar los cambios el objeto no trasvase los limites
@@ -82,7 +81,7 @@ app.directive('objektua', ['$cordovaDialogs', '$timeout', 'Database', function($
               transform.translate.x = transform_new.translate.x;
             }
 
-            element.children().css(transform2css(transform));
+            element.children('.laukia').css(transform2css(transform));
 
             // Aunque se mueva en un eje seguimos devolviendo false porque ha trasvasado algún limite
             // Además hay que tener en cuenta que esta función también se usa para rotar, agrandar...
@@ -152,6 +151,7 @@ app.directive('objektua', ['$cordovaDialogs', '$timeout', 'Database', function($
       };
 
       scope.onPress = function() {
+        $cordovaVibration.vibrate(100);
 
         if (!loki) {
 
