@@ -58,7 +58,8 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`fk_eszena` INTEGER NOT NULL," +
       "`fk_objektua` INTEGER NOT NULL," +
-      "`style` TEXT);" +
+      "`style` TEXT," +
+      "`style2` TEXT);" +
       "CREATE INDEX fk_eszena_objektua ON eszena_objektuak (fk_eszena, fk_objektua);";
 
     var query_eszena_testuak = "CREATE TABLE IF NOT EXISTS `eszena_testuak` (" +
@@ -71,7 +72,8 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       "`backgroundColor` TEXT," +
       "`class` TEXT," +
       "`fk_objektua` INTEGER NOT NULL," +
-      "`style` TEXT);" +
+      "`style` TEXT," +
+      "`style2` TEXT);" +
       "CREATE INDEX fk_eszena ON eszena_testuak (fk_eszena);";
 
     var query_irudiak = "CREATE TABLE IF NOT EXISTS `irudiak` (" +
