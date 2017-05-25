@@ -33,7 +33,7 @@ app.controller('OrokorraCtrl', ['$scope', '$window', 'Soinuak', 'Funtzioak', fun
       Soinuak.audio_fondo_play(Soinuak.get_audio_fondo());
 
   });
-
+  
   // TIP: CSS ':active' pseudo-class beti funtzionatzeko. Y sigue sin funcionar siempre....
   document.addEventListener("touchstart", function() {}, false);
 

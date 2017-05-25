@@ -38,7 +38,7 @@ var app = angular.module('Kontaklik', [
         controller: 'EditoreaCtrl'
       })
       .otherwise({
-        redirectTo: '/editorea'
+        redirectTo: '/'
       });
   })
   .run(['Database', 'Funtzioak', function(Database, Funtzioak) {

@@ -1,4 +1,4 @@
-app.directive('objektua', ['$cordovaDialogs', '$cordovaVibration', '$timeout', 'Database', function($cordovaDialogs, $cordovaVibration, $timeout, Database) {
+app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Database', function($uibModal, $cordovaVibration, $timeout, Database) {
 
   return {
     restrict: 'AE',
@@ -36,7 +36,7 @@ app.directive('objektua', ['$cordovaDialogs', '$cordovaVibration', '$timeout', '
           'left': 0
         },
         eszenatokia = angular.element('#eszenatokia'),
-        loki = attrs.lock == 'true'; // no se recibe como boolean....      
+        loki = attrs.lock == 'true'; // no se recibe como boolean....
       element.children('.laukia').attr('src', attrs.src);
 
       // Le damos "id" al elemento para poder hacer una txapuzilla luego
@@ -154,25 +154,31 @@ app.directive('objektua', ['$cordovaDialogs', '$cordovaVibration', '$timeout', '
         $cordovaVibration.vibrate(100);
 
         if (!loki) {
-
-          $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
-            if (buttonIndex == 1) {
-              if (objektua_id > 0) {
-                Database.query('DELETE FROM eszena_objektuak WHERE id=?', [parseInt(objektua_id)]).then(function() {
-                  element.fadeOut(500, function() {
-                    element.remove();
-                  });
-                }, function(error) {
-                  console.log("Objektua directive DELETE", error);
-                });
+          var modala = $uibModal.open({
+            animation: true,
+            backdrop: 'static',
+            templateUrl: 'views/modals/objektu_menua.html',
+            controller: 'ObjektuMenuaCtrl',
+            resolve: {
+              objektua_id: function() {
+                return objektua_id;
               }
-
             }
-
-          }, function(error) {
-            console.log("Objektua directive onPress", error);
           });
-
+          modala.result.then(function(flag) {
+            switch(flag) {
+              case 1: // ezabatu
+                element.fadeOut(500, function() {
+                  element.remove();
+                });
+                break;
+              case 2: // bikoiztu
+              default:
+                break;
+            }
+          }, function(error) {
+            console.log("Objektua controller, objektu_menua modala", error);
+          });
         }
 
       };

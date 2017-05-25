@@ -127,10 +127,14 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
 
     $cordovaSQLite.execute(db, query, params).then(function(res) {
 
-      for (i = 0; i < res.rows.length; i++)
+      for (i = 0; i < res.rows.length; i++) {
         emaitza.push(res.rows.item(i));
-
-      d.resolve(emaitza);
+      }
+      if(res.rows.length > 0) {
+        d.resolve(emaitza);
+      } else {
+        d.resolve(res);
+      }
 
     }, function(err) {
       d.reject(err);

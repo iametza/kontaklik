@@ -92,7 +92,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
               // Establecemos el path completo y 'real'
               angular.forEach(fondoak, function(fondoa, ind) {
                 fondoak[ind].fullPath = Funtzioak.get_fullPath(fondoa);
-                fondoak[ind].miniPath = fondoak[ind].fullPath.replace(fondoa.izena, 'miniaturak/' + fondoa.izena);                
+                fondoak[ind].miniPath = fondoak[ind].fullPath.replace(fondoa.izena, 'miniaturak/' + fondoa.izena);
               });
 
               $scope.fondoak = fondoak;
@@ -246,7 +246,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       'fk_objektua': objektua.id
     }).then(function(emaitza) {
 
-      objektuaEszenara(emaitza.insertId);
+      Funtzioak.objektuaEszenara(emaitza.insertId, true, false, $scope);
 
     }, function(error) {
       console.log("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
@@ -254,75 +254,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
   };
 
-  function objektuaEszenara(eszena_objektua_id, show, lock) {
-    show = typeof show !== 'undefined' ? show : true;
-    lock = typeof lock !== 'undefined' ? lock : false;
-    var d = $q.defer();
 
-    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {
-
-      if (objektua.length === 1) {
-
-        if (objektua[0].izena !== null) {
-          var elem = angular.element('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + Funtzioak.get_fullPath(objektua[0]) + '" data-lock="' + lock + '" ></div>');
-
-          elem.hide();
-
-          if (objektua[0].style !== null) {
-
-            var style_object = JSON.parse(objektua[0].style);
-
-            // Sacamos la scale y el rotate del objeto para pasársela a la directiva
-            //console.log (style_object.transform);
-            //translate3d(683px, 356px, 0px) scale(3.10071, 3.10071) rotate(-17.6443deg)
-            var patroia_xy = /^translate3d\((.*?)px, (.*?)px,.*$/g;
-            var patroia_scale = /^.* scale\((.*?),.*$/g;
-            var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
-
-            if (style_object.transform.match(patroia_xy)) {
-              elem.attr('data-x', style_object.transform.replace(patroia_xy, "$1"));
-              elem.attr('data-y', style_object.transform.replace(patroia_xy, "$2"));
-            }
-
-            if (style_object.transform.match(patroia_scale))
-              elem.attr('data-scale', style_object.transform.replace(patroia_scale, "$1"));
-
-            if (style_object.transform.match(patroia_rotate))
-              elem.attr('data-rotate', style_object.transform.replace(patroia_rotate, "$1"));
-
-            // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
-            el = $compile(elem)($scope);
-
-            //elem.children ().css (style_object);
-            // Optimización (thaks to iOS): Sólo cargamos lo que nos haga falta
-            elem.children().css('transform', style_object.transform);
-
-          } else
-            el = $compile(elem)($scope);
-
-          angular.element('#eszenatokia').append(elem);
-          $scope.insertHere = el;
-
-          if (show)
-            elem.fadeIn(500, function() {
-              d.resolve();
-            });
-          else
-            d.resolve();
-        } else
-          d.resolve();
-
-      } else
-        d.reject('IpuinaCtrl objektuaEszenara, objektua.length != 1');
-
-    }, function(error) {
-      console.log("IpuinaCtrl, objektuaEszenara", error);
-      d.reject(error);
-    });
-
-    return d.promise;
-
-  }
 
   $scope.addFondoa = function(fondoa) {
 
@@ -536,7 +468,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
           }, ' ORDER BY id ASC').then(function(objektuak) {
 
             angular.forEach(objektuak, function(objektua) {
-              promiseak.push(objektuaEszenara(objektua.id, false, lock));
+              promiseak.push(Funtzioak.objektuaEszenara(objektua.id, false, lock, $scope));
             });
 
             // Cargamos sus textos

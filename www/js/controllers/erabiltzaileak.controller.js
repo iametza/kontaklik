@@ -3,23 +3,17 @@ app.controller('ErabiltzaileakCtrl', ['$scope', 'Database', '$uibModal', functio
   $scope.erabiltzaileak = [];
 
   $scope.init = function() {
-
     $scope.soinuak.audio_fondo_play('sarrera');
-
     angular.element('#eszenatokia').css('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
     angular.element('#eszenatokia').css('background-size', "cover");
-
     // Recogemos los erabiltzaileak
     $scope.getErabiltzaileak();
 
   };
 
   $scope.getErabiltzaileak = function() {
-
     Database.getRows('erabiltzaileak', '', ' ORDER BY izena ASC').then(function(emaitza) {
-
       $scope.erabiltzaileak = emaitza;
-
       angular.forEach(emaitza, function(erab, ind) {
         if (erab.argazkia.trim() != '')
           $scope.erabiltzaileak[ind].argazkia = cordova.file.dataDirectory + erab.argazkia;

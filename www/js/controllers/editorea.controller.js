@@ -35,7 +35,9 @@ app.controller('EditoreaCtrl', ['$scope', function($scope) {
 
 
   }, false);
-
+  $scope.atzera = function() {
+    window.history.back();
+  };
   $scope.garbitu = function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     allTouches = new Array;
@@ -117,7 +119,6 @@ app.controller('EditoreaCtrl', ['$scope', function($scope) {
   function handleMove(evt) {
     evt.preventDefault();
     var touches = evt.changedTouches;
-    console.log('handleMove', evt);
     ctx.lineWidth = 4;
 
     for (var i = 0; i < touches.length; i++) {
@@ -126,7 +127,9 @@ app.controller('EditoreaCtrl', ['$scope', function($scope) {
       allTouches.push({ x: touches[i].pageX, y: touches[i].pageY });
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+      if(ongoingTouches[idx] != undefined) {
+        ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+      }
       ctx.lineTo(touches[i].pageX, touches[i].pageY);
       ctx.closePath();
       ctx.stroke();
