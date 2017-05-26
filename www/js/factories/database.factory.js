@@ -132,12 +132,10 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       for (i = 0; i < res.rows.length; i++) {
         emaitza.push(res.rows.item(i));
       }
-      if(res.rows.length > 0) {
-        d.resolve(emaitza);
-      } else {
-        d.resolve(res);
-      }
-
+      if(res.insertId != undefined) {
+        emaitza.insertId = res.insertId;
+      } 
+      d.resolve(emaitza);
     }, function(err) {
       d.reject(err);
     });

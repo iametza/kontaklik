@@ -987,7 +987,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
           Audio.startRecord('audioa_' + $scope.uneko_eszena_id).then(function(audioa) {
 
             // Mover desde la carpeta temporal a una persistente
-            $cordovaFile.moveFile(audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then(function() {
+            //$cordovaFile.moveFile(audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then(function() {
 
               // Guardamos el audio en la base de datos
               Database.query('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then(function() {
@@ -1011,9 +1011,9 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
                 console.log("IpuinaCtrl, startRecord update", error);
               });
 
-            }, function(error) {
+            /*}, function(error) {
               console.log("IpuinaCtrl, startRecord movefile", error);
-            });
+            });*/
 
           }, function(error) {
             time_counter_reset();
@@ -1136,7 +1136,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         if (buttonIndex == 1) {
 
           // Borramos el fichero
-          $cordovaFile.removeFile(cordova.file.dataDirectory, $scope.uneko_audioa.izena).then(function() {
+          console.log(cordova.file.dataDirectory + 'audioak/'+ $scope.uneko_audioa.izena);
+          $cordovaFile.removeFile(cordova.file.dataDirectory + 'audioak', $scope.uneko_audioa.izena).then(function() {
 
             // Cambiamos el audio en la lista
             angular.forEach($scope.eszenak, function(eszena) {

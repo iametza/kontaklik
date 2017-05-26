@@ -1,4 +1,4 @@
-app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordovaMedia, $cordovaFile) {
+app.factory('Audio', ['$q', '$cordovaMedia', function($q, $cordovaMedia) {
 
   var Audio = {},
     media,
@@ -11,19 +11,14 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     switch (device.platform) {
       case 'iOS':
         extension = ".wav";
+        tmp_path = cordova.file.tempDirectory;
         break;
       case 'Android':
         extension = ".amr";
+        tmp_path = cordova.file.externalRootDirectory;
         break;
     }
-    $cordovaFile.checkDir(cordova.file.dataDirectory, 'audioak').then(function(res) {
-      if (res.isDirectory != true) {
-        $cordovaFile.createDir(cordova.file.dataDirectory, 'audioak');
-      }
-    }, function(error) {
-      $cordovaFile.createDir(cordova.file.dataDirectory, 'audioak');
-    });
-    tmp_path = cordova.file.dataDirectory + 'audioak';
+
   }, false);
 
   Audio.startRecord = function(audioa) {
@@ -34,9 +29,8 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
       if (media !== undefined)
         media.release();
 
-      //window.resolveLocalFileSystemURL(tmp_path, function(dirEntry) {
-
-        media = new Media(tmp_path + audioa + extension, function() {
+      window.resolveLocalFileSystemURL(tmp_path, function(dirEntry) {        
+        media = new Media(dirEntry.toInternalURL() + audioa + extension, function() {
 
           if (media !== undefined)
             media.release();
@@ -60,10 +54,10 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
         egoera = 'record';
 
 
-      /*}, function(error) {
+      }, function(error) {
         d.reject(error);
         console.log("Audio factory, resolveLocalFileSystemURL", error);
-      });*/
+      });
 
     } else
       d.reject('izen hutsa');
@@ -88,14 +82,14 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
     if (audioa.trim() !== '') {
 
-      //window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dirEntry) {
+      window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dirEntry) {
 
-        if (media === undefined || media.src != tmp_path + audioa) {
+        if (media === undefined || media.src != dirEntry.toInternalURL() + audioa) {
 
           if (media !== undefined)
             media.release();
 
-          media = new Media(tmp_path + audioa, function() {
+          media = new Media(dirEntry.toInternalURL() + audioa, function() {
 
             if (media !== undefined)
               media.release();
@@ -122,10 +116,10 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
         }
 
-      /*}, function(error) {
+      }, function(error) {
         d.reject(error);
         console.log("Audio factory, resolveLocalFileSystemURL", error);
-      });*/
+      });
 
     } else
       d.reject('izen hutsa');
@@ -179,8 +173,9 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
     if (audioa.trim() !== '') {
 
-      //window.resolveLocalFileSystemURL(cordova.file.dataDirectory + audioa, function(fileEntry) {
-        var m = new Media(tmp_path + audioa, function() {}, function(error) {
+      window.resolveLocalFileSystemURL(cordova.file.dataDirectory + audioa, function(fileEntry) {
+        console.log(fileEntry.toInternalURL());
+        var m = new Media(fileEntry.toInternalURL(), function() {}, function(error) {
           d.reject(error);
           console.log("Audio factory, getDuration", error);
         });
@@ -204,10 +199,10 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
         }, 100);
 
-      /*}, function(error) {
+      }, function(error) {
         d.reject(error);
         console.log("Audio factory, resolveLocalFileSystemURL", error);
-      });*/
+      });
 
     } else
       d.resolve(0);
