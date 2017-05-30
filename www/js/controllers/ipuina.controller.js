@@ -608,7 +608,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         testuaEszenara(testua_id);
       });
 
-      modala.result.then(function(testua_id) {
+      modala.result.then(function(result) {
+        testua_eguneratu(result);
 
       }, function(error) {
         console.log("IpuinaCtrl, addBokadiloa", error);
@@ -617,6 +618,13 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     }, function(error) {
       console.log("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
     });
+  };
+  var testua_eguneratu = function(emaitza) {
+
+
+    // Cargamos el texto del elemento
+    if(emaitza.testua != undefined)
+      angular.element('#testua_'+emaitza.testua_id).next('p.bokadilo-testua').html(emaitza.testua.replace('<span class="gorringo">', '').replace('</span>', ''));
   };
   /*$scope.addTestua = function (){
 

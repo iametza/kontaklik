@@ -60,12 +60,17 @@ app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Databa
         calculateLimits();
 
       }, 100);
+      var getScale = function() {
+        var style = element[0].children[0].style.transform;
+        var patroia_scale = /^.* scale\((.*?),.*$/g;
+        var scale = style.replace(patroia_scale, "$1");
 
+        return scale;
+      };
       var updateElementTransform = function(transform_new, dbGorde) {
         dbGorde = typeof dbGorde !== 'undefined' ? dbGorde : false;
 
         if (!loki) {
-
           // Aplicamos los cambios en el CSS
           element.children('.laukia').css(transform2css(transform_new));
 
@@ -80,7 +85,6 @@ app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Databa
             } else if (bounds.left >= limits.left && bounds.right <= limits.right) {
               transform.translate.x = transform_new.translate.x;
             }
-
             element.children('.laukia').css(transform2css(transform));
 
             // Aunque se mueva en un eje seguimos devolviendo false porque ha trasvasado algún limite
@@ -124,8 +128,13 @@ app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Databa
       };
 
       var transform2css = function(t) {
+        var scale = getScale();
+        if((scale < 0 && t.scale > 0) || (scale > 0 && t.scale < 0)) {
+          t.scale = t.scale * -1;
+          //t.angle = t.angle * -1;
+        }
         var value = 'translate3d(' + t.translate.x + 'px, ' + t.translate.y + 'px, 0) ' +
-          'scale(' + t.scale + ', ' + t.scale + ') ' +
+          'scale(' + t.scale + ', ' + Math.abs(t.scale) + ') ' +
           'rotate(' + t.angle + 'deg)';
 
         return ({
@@ -165,12 +174,16 @@ app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Databa
               }
             }
           });
-          modala.result.then(function(flag) {
-            switch(flag) {
+          modala.result.then(function(result) {
+            switch(result.aukera) {
               case 1: // ezabatu
                 element.fadeOut(500, function() {
                   element.remove();
                 });
+                break;
+              case 3:
+
+                element.children('.laukia').css('transform', result.style.transform);
                 break;
               case 2: // bikoiztu
               default:

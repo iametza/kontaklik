@@ -14,11 +14,12 @@ app.directive("contenteditable", ['$http', '$q', function($http, $q) {
 
       function placeCaretAtEnd(el) {
         //el.focus();
+
         if (window.getSelection) {
           if (typeof window.getSelection != "undefined" &&
             typeof document.createRange != "undefined") {
             var range = document.createRange();
-            range.selectNodeContents(el);
+            if(el != undefined) range.selectNodeContents(el);
             range.collapse(false);
             var sel = window.getSelection();
             sel.removeAllRanges();
@@ -54,12 +55,14 @@ app.directive("contenteditable", ['$http', '$q', function($http, $q) {
 
           var zuzenketak = res.data.zuzenketak;
           if (Array.isArray(zuzenketak) && zuzenketak.length > 0) {
+            scope.zuzenketak = [];
             for (var i = 0; i < zuzenketak.length; i++) {
               if (Array.isArray(zuzenketak[i]) || zuzenketak[i] == '+') {
                 var testua = '<span class="gorringo">' + testuak[i] + '</span>';
+                scope.zuzenketak.push({hitza: testuak[i], gomendioak: zuzenketak[i]});
                 testuak[i] = testua;
               }
-            }
+            }            
             element.html(testuak.join(' '));
             placeCaretAtEnd(document.getElementById('testua-div'));
           }

@@ -8,6 +8,7 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
     backgroundColor: '#fff',
     class: 'bubble none'
   };
+  $scope.zuzenketak = [];
   $scope.submit = false;
   $scope.ezabatu_button = false;
   $scope.errore_mezua = '';
@@ -41,12 +42,10 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
   $scope.testua_gorde = function(form) {
     var testua = angular.element('#testua-div').html();
     $scope.submit = true;
-    console.log('testua_gorde', $scope.submit, testua)
     if (testua != '') {
       Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {
-        console.log('close');
-        $uibModalInstance.close(testua_id);
-      }, function(err) {
+        $uibModalInstance.close({ aukera: 2, testua_id: testua_id, testua: testua});
+      }, function(error) {
         console.log("ModalEszenaTestuaCtrl, testua_gorde insert", error);
         $scope.itxi();
       });
@@ -54,33 +53,23 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
   }
 
   $scope.testua_ezabatu = function() {
-
-    $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
-
-      if (buttonIndex == 1) {
-
+    //$cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
+      //if (buttonIndex == 1) {
         Database.query('DELETE FROM eszena_testuak WHERE id=?', [parseInt(testua_id)]).then(function() {
-
           // Borramos el objeto de la escena AHORA SE HACE EN testua.directive.js
           /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
           angular.element (elementua).remove ();*/
-
-          $uibModalInstance.close('ezabatu');
-
+          $uibModalInstance.close({ aukera: 1, testua_id: testua_id, testua: undefined});
         }, function(error) {
           console.log("ModalEszenaTestuaCtrl, testua_ezabatu DELETE", error);
         });
-
-      }
-
-    }, function(error) {
-      console.log("ModalEszenaTestuaCtrl, testua_ezabatu dialog", error);
-    });
-
+      //}
+    //}, function(error) {
+      //console.log("ModalEszenaTestuaCtrl, testua_ezabatu dialog", error);
+    //});
   };
 
   $scope.aldaketa = function(eremua, kolorea) {
-
     switch (eremua) {
       case 'color':
         $scope.eremuak.color = kolorea;
@@ -96,22 +85,16 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
   };
 
   $scope.itxi = function() {
-
     $uibModalInstance.dismiss('itxi');
-
   };
 
   $scope.$on('$locationChangeStart', function(event) {
-
     event.preventDefault();
     $scope.itxi();
-
   });
 
   document.addEventListener('deviceready', function() {
-
     $scope.init();
-
   });
 
 }]);
