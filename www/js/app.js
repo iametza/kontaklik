@@ -33,7 +33,7 @@ var app = angular.module('Kontaklik', [
         templateUrl: 'views/ipuina.html',
         controller: 'IpuinaCtrl'
       })
-      .when('/editorea', {
+      .when('/editorea/:id', {
         templateUrl: 'views/editorea.html',
         controller: 'EditoreaCtrl'
       })

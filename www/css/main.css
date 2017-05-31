@@ -467,8 +467,8 @@ body.modal-open {
   position: absolute;
   width: 100px;
   word-wrap: break-word;
-  top: 30px;
-  left: 30px; }
+  top: 40px;
+  left: 40px; }
 
 .objektua {
   z-index: 10; }

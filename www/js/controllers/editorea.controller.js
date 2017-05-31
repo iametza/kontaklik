@@ -1,8 +1,10 @@
-app.controller('EditoreaCtrl', ['$scope', function($scope) {
+app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'Funtzioak', 'Files', 'Kamera', function($scope, $rootScope, $route, Database, Funtzioak, Files, Kamera) {
   //https://stackoverflow.com/questions/29273808/how-to-crop-a-polynomial-shape-from-an-image
   var canvas,
       ctx,
       srcImage,
+      objektua,
+      dstImage,
       col12 = angular.element('.col-md-12'),
       eszenatokia = angular.element('#eszenatokia'),
       moztuBotoia = angular.element('#moztu')
@@ -16,9 +18,18 @@ app.controller('EditoreaCtrl', ['$scope', function($scope) {
   eszenatokia.css('padding', "0");
   col12.css('padding', "0");
   document.addEventListener("deviceready", function() {
-    srcImage = new Image(); // create image object
-    srcImage.src = "assets/fondoak/baserria.png";
-    srcImage.onload = loadImage;
+    Database.getRows('irudiak', {
+      'ikusgai': 1,
+      'id': $route.current.params.id
+    }, '').then(function(objektuak) {
+
+      objektua = objektuak[0];
+      objektua.fullPath =  Funtzioak.get_fullPath(objektua);
+      srcImage = new Image(); // create image object
+      srcImage.src = objektua.fullPath;
+      srcImage.onload = loadImage;
+    });
+
 
     canvas = document.getElementById('canvas');
     canvas.width = document.body.clientWidth; //document.width is obsolete
@@ -32,10 +43,9 @@ app.controller('EditoreaCtrl', ['$scope', function($scope) {
     canvas.addEventListener('touchstart', handleStart, false);
     canvas.addEventListener('touchend', handleEnd, false);
     canvas.addEventListener('touchmove', handleMove, false);
-
-
   }, false);
   $scope.atzera = function() {
+    angular.element('.irudi_moztua').remove();
     window.history.back();
   };
   $scope.garbitu = function() {
@@ -68,7 +78,26 @@ app.controller('EditoreaCtrl', ['$scope', function($scope) {
       alert('Moztu baino lehenago zati bat aukeratu');
     }
   };
+  $scope.gorde = function() {
 
+    Files.saveBase64Image(objektua.fullPath, dstImage.src).then(function() {
+      Kamera.generateThumbnail(objektua.fullPath).then(function(data) {
+        Files.saveBase64ImageThumbnail(objektua.fullPath, data).then(function() {
+          angular.element('.irudi_moztua').remove();
+          window.history.back();
+        }, function(err) {
+          console.log('err', err);
+        });
+      }, function(err) {
+        console.log('err', err);
+      });
+    }, function(err) {
+      console.log('err', err);
+    });
+  };
+  $rootScope.$on("$routeChangeStart", function() {
+    angular.element('.irudi_moztua').remove();
+  });
   var ongoingTouches = new Array;
   var allTouches = new Array;
   function loadImage() {
@@ -168,9 +197,9 @@ app.controller('EditoreaCtrl', ['$scope', function($scope) {
   function cropImage(image, arr, callback) {
     // create a canvas element, and get 2D context for it:
     // create a canvas element, and get 2D context for it:
-var canvas2 = document.createElement("canvas"),
-    ctx = canvas2.getContext("2d"),
-    i, minx = 10000, miny = 10000, maxx = -1, maxy = -1;
+    var canvas2 = document.createElement("canvas"),
+        ctx = canvas2.getContext("2d"),
+        i, minx = 10000, miny = 10000, maxx = -1, maxy = -1;
 
     // find min max of array points here:
     for (i = 0; i < arr.length; i++) {
@@ -199,7 +228,7 @@ var canvas2 = document.createElement("canvas"),
     ctx.fill();
 
     // done, create an image object:
-    var dstImage = new Image();
+    dstImage = new Image();
     dstImage.onload = function() {
       callback(this)
     };

@@ -201,7 +201,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
 
   $scope.wizard_end = function() {
-
     if (tutoriala_ikusita.indexOf($scope.erabiltzailea.id) < 0) {
       tutoriala_ikusita.push($scope.erabiltzailea.id);
       $window.localStorage.tutoriala_ikusita = JSON.stringify(tutoriala_ikusita);
@@ -212,16 +211,12 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.wizard_next = function() {
-
     WizardHandler.wizard().next();
-
   };
 
   $scope.wizard_prev = function() {
-
     if (WizardHandler.wizard().currentStepNumber() > 1)
       WizardHandler.wizard().previous();
-
   };
 
   function clearEszena(background) {
@@ -351,40 +346,46 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.pressObjektua = function(objektua) {
+    console.log('Press');
     $cordovaVibration.vibrate(100);
     if (objektua.fk_ipuina !== 0) {
-
-      $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
-
-        if (buttonIndex == 1) {
-
-          Database.query('UPDATE irudiak SET ikusgai=0 WHERE id=?', [objektua.id]).then(function() {
-
-            // Borramos el objeto de la lista
-            var ind = -1;
-            angular.forEach($scope.objektuak, function(o, i) {
-
-              if (o.id == objektua.id)
-                ind = i;
-
-            });
-
-            if (ind > -1)
-              $scope.objektuak.splice(ind, 1);
-
-          }, function(error) {
-            console.log("IpuinaCtrl, objektua 'ezabatzerakoan'", error);
-            d.reject(error);
-          });
-
+      var modala = $uibModal.open({
+        animation: true,
+        //backdrop: 'static',
+        templateUrl: 'views/modals/menu_aukerak.html',
+        controller: 'MenuAukerakCtrl',
+        resolve: {
+          objektua_id: objektua.id
         }
-
-      }, function(error) {
-        console.log("IpuinaCtrl, pressObjektua confirm", error);
       });
 
-    }
+      modala.rendered.then(function() {
+        $scope.soinuak.audio_play('popup');
+      });
 
+      modala.result.then(function(result) {
+        switch (result.aukera) {
+          case 1:
+            Database.query('UPDATE irudiak SET ikusgai=0 WHERE id=?', [objektua.id]).then(function() {
+              // Borramos el objeto de la lista
+              var ind = -1;
+              angular.forEach($scope.objektuak, function(o, i) {
+                if (o.id == objektua.id)
+                  ind = i;
+              });
+              if (ind > -1)
+                $scope.objektuak.splice(ind, 1);
+            }, function(error) {
+              console.log("IpuinaCtrl, objektua 'ezabatzerakoan'", error);
+              d.reject(error);
+            });
+            break;
+          case 0:
+          default:
+            break;
+        }
+      });
+    }
   };
 
   $scope.pressFondoa = function(fondoa) {
@@ -623,36 +624,10 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
 
     // Cargamos el texto del elemento
-    if(emaitza.testua != undefined)
-      angular.element('#testua_'+emaitza.testua_id).next('p.bokadilo-testua').html(emaitza.testua.replace('<span class="gorringo">', '').replace('</span>', ''));
+    if (emaitza.testua != undefined)
+      angular.element('#testua_' + emaitza.testua_id).next('p.bokadilo-testua').html(emaitza.testua.replace('<span class="gorringo">', '').replace('</span>', ''));
   };
-  /*$scope.addTestua = function (){
 
-    var modala = $uibModal.open ({
-      animation: true,
-      //backdrop: 'static',
-      templateUrl: 'views/modals/eszena_testua.html',
-      controller: 'ModalEszenaTestuaCtrl',
-      resolve: {
-        eszena_id: $scope.uneko_eszena_id,
-        testua_id: 0
-      }
-    });
-
-    modala.rendered.then (function (){
-      $scope.soinuak.audio_play ('popup');
-    });
-
-    modala.result.then (function (testua_id){
-
-      testuaEszenara (testua_id);
-
-    }, function (error){
-      console.log ("IpuinaCtrl, addTestua", error);
-    });
-
-  };
- */
   function testuaEszenara(testua_id, show, lock) {
     show = typeof show !== 'undefined' ? show : true;
     lock = typeof lock !== 'undefined' ? lock : false;
@@ -717,27 +692,19 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
 
   $scope.eszenaAurreratu = function() {
-
     if ($scope.eszenak_nabigazioa.aurrera) {
-
       // bloqueamos la navegación para que no se cuelen otras peticiones
       $scope.eszenak_nabigazioa.aurrera = $scope.eszenak_nabigazioa.atzera = false;
-
       for (var ind = 0; ind < $scope.eszenak.length; ind++) {
-
         if ($scope.eszenak[ind].id == $scope.uneko_eszena_id)
           break;
-
       }
 
       if (ind > 0) {
-
         // Cambiamos el orden del elemento en la base de datos
         Database.query('UPDATE eszenak SET orden=orden-1 WHERE id=?', [$scope.eszenak[ind].id]).then(function() {
-
           // Cambiamos el orden del elemento anterior en la base de datos
           Database.query('UPDATE eszenak SET orden=orden+1 WHERE id=?', [$scope.eszenak[ind - 1].id]).then(function() {
-
             // Cambiamos el orden de los elementos en la lista y la reordenamos
             $scope.eszenak[ind].orden--;
             $scope.eszenak[ind - 1].orden++;
@@ -748,30 +715,21 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
             $scope.eszenak_nabigazioa.aurrera = (ind - 1 > 0);
             $scope.eszenak_nabigazioa.atzera = true;
-
           }, function(error) {
             console.log("IpuinaCtrl, eszenaAurreratu second update", error);
           });
-
         }, function(error) {
           console.log("IpuinaCtrl, eszenaAurreratu first update", error);
         });
-
       }
-
     }
-
   };
 
   $scope.eszenaAtzeratu = function() {
-
     if ($scope.eszenak_nabigazioa.atzera) {
-
       // bloqueamos la navegación para que no se cuelen otras peticiones
       $scope.eszenak_nabigazioa.aurrera = $scope.eszenak_nabigazioa.atzera = false;
-
       for (var ind = 0; ind < $scope.eszenak.length; ind++) {
-
         if ($scope.eszenak[ind].id == $scope.uneko_eszena_id)
           break;
 
@@ -882,7 +840,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
     Kamera.getPicture(options).then(function(irudia) {
       Kamera.generateThumbnail(irudia).then(function(data) {
-        Files.saveBase64Image(irudia, data);
+        Files.saveBase64ImageThumbnail(irudia, data);
         Files.saveFile(irudia).then(function(irudia) {
           Database.insertRow('irudiak', {
             'cordova_file': 'dataDirectory',
@@ -910,7 +868,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
                 $scope.addFondoa(elem);
                 break;
             }
-
+            window.location = '#/editorea/' + emaitza.insertId;
           }, onError);
         }, onError);
       }, onError);
@@ -932,7 +890,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
     Kamera.getPicture(options).then(function(irudia) {
       Kamera.generateThumbnail(irudia).then(function(data) {
-        Files.saveBase64Image(irudia, data);
+        Files.saveBase64ImageThumbnail(irudia, data);
         Files.saveFile(irudia).then(function(irudia) {
 
           Database.insertRow('irudiak', {
@@ -962,6 +920,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
                 $scope.addFondoa(elem);
                 break;
             }
+            window.location = '#/editorea/' + emaitza.insertId;
           }, onError);
         }, onError);
       }, onError);
@@ -985,39 +944,34 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       // necesarios. Es lo que hay.
 
       Baimenak.konprobatu().then(function(baimenak) {
-
         if (baimenak == 'ok') {
-
           $scope.uneko_audioa.egoera = 'record';
-
           kontador = $timeout(time_counter, 1000);
-
           Audio.startRecord('audioa_' + $scope.uneko_eszena_id).then(function(audioa) {
-
             // Mover desde la carpeta temporal a una persistente
             //$cordovaFile.moveFile(audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then(function() {
 
-              // Guardamos el audio en la base de datos
-              Database.query('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then(function() {
+            // Guardamos el audio en la base de datos
+            Database.query('UPDATE eszenak SET audioa=? WHERE id=?', [audioa.izena, $scope.uneko_eszena_id]).then(function() {
 
-                // Cambiamos el audio en la lista
-                angular.forEach($scope.eszenak, function(eszena) {
+              // Cambiamos el audio en la lista
+              angular.forEach($scope.eszenak, function(eszena) {
 
-                  if (eszena.id === $scope.uneko_eszena_id)
-                    eszena.audioa = audioa.izena;
+                if (eszena.id === $scope.uneko_eszena_id)
+                  eszena.audioa = audioa.izena;
 
-                });
-
-                $scope.uneko_audioa.izena = audioa.izena;
-                Audio.getDuration(audioa.izena).then(function(iraupena) {
-                  $scope.uneko_audioa.iraupena = iraupena;
-                }, function() {
-                  $scope.uneko_audioa.iraupena = 0;
-                });
-
-              }, function(error) {
-                console.log("IpuinaCtrl, startRecord update", error);
               });
+
+              $scope.uneko_audioa.izena = audioa.izena;
+              Audio.getDuration(audioa.izena).then(function(iraupena) {
+                $scope.uneko_audioa.iraupena = iraupena;
+              }, function() {
+                $scope.uneko_audioa.iraupena = 0;
+              });
+
+            }, function(error) {
+              console.log("IpuinaCtrl, startRecord update", error);
+            });
 
             /*}, function(error) {
               console.log("IpuinaCtrl, startRecord movefile", error);
@@ -1144,7 +1098,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         if (buttonIndex == 1) {
 
           // Borramos el fichero
-          console.log(cordova.file.dataDirectory + 'audioak/'+ $scope.uneko_audioa.izena);
+          console.log(cordova.file.dataDirectory + 'audioak/' + $scope.uneko_audioa.izena);
           $cordovaFile.removeFile(cordova.file.dataDirectory + 'audioak', $scope.uneko_audioa.izena).then(function() {
 
             // Cambiamos el audio en la lista
