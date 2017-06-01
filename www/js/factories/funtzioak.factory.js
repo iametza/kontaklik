@@ -91,6 +91,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
    */
   Funtzioak.botoia_animatu = function(element, image1, image2) {
     element.attr('src', image2);
+    //element.addClass(className);
     $timeout(function() {
       element.attr('src', image1);
     }, 200);
@@ -125,7 +126,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer();
 
-    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {
+    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, eo.zindex FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {
 
       if (objektua.length === 1) {
 
@@ -155,7 +156,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
 
             if (style_object.transform.match(patroia_rotate))
               elem.attr('data-rotate', style_object.transform.replace(patroia_rotate, "$1"));
-
+            elem.attr('z-index', parseInt(objektua[0].zindex));
             // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
             el = $compile(elem)($scope);
 
@@ -188,7 +189,35 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
 
     return d.promise;
 
-  }
+  };
+  Funtzioak.setOrder = function(objektua) {
+    var d = $q.defer();
+    Funtzioak.getTotalObjects(objektua.fk_eszena).then(function(totala) {
+      d.resolve();
+    }, function(error) {
+      console.log("IpuinaCtrl, getTotalObjects", error);
+      d.reject(error);
+    });
+    return d.promise;
+  };
+  Funtzioak.getTotalObjects = function(fk_eszena) {
+    var d = $q.defer();
+    var totala  = 0;
+    Database.query("SELECT * FROM eszena_objektuak WHERE fk_eszena = ?", [fk_eszena]).then(function(res) {
+      totala = res.length;
+      Database.query("SELECT * FROM eszena_testuak WHERE fk_eszena = ?", [fk_eszena]).then(function(res) {
+        totala = totala + res.length;
+        d.resolve(totala);
+      }, function(error) {
+        console.log("IpuinaCtrl, getTotalObjects", error);
+        d.reject(error);
+      });
+    }, function(error) {
+      console.log("IpuinaCtrl, getTotalObjects", error);
+      d.reject(error);
+    });
+    return d.promise;
+  };
   return Funtzioak;
 
 }]);

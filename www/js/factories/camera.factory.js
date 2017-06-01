@@ -13,14 +13,15 @@ app.factory("Kamera", ['ThumbnailService', '$cordovaCamera', '$q', function(Thum
    * Irudiak txikitzeko funtzioa
    *
    */
-  Kamera.generateThumbnail = function(image) {
+  Kamera.generateThumbnail = function(image, png) {
     var d = $q.defer();
     var newImg = new Image();
+    var formatua = png == true? 'image/png' : 'image/jpeg';
     newImg.onload = function(){
 
       var height = (newImg.naturalHeight*300)/newImg.naturalWidth;
 
-      ThumbnailService.generate(image, { width: 300, height: height, type: 'image/jpeg'}).then(function(data){
+      ThumbnailService.generate(image, { width: 300, height: height, type: formatua}).then(function(data){
         d.resolve(data);
       }, function(err) {
         d.reject(err);

@@ -10,8 +10,23 @@ app.controller('ObjektuMenuaCtrl', ['$scope', '$uibModalInstance', 'Database', '
     }
   };
   $scope.lehenengo_planora = function() {
-
+    if (objektua_id > 0) {
+      Database.query('SELECT * FROM eszena_objektuak WHERE id = ?', [parseInt(objektua_id)]).then(function(res) {
+        var objektua = res[0];
+        Funtzioak.setOrder(objektua).then(function() {
+          $uibModalInstance.close({ aukera:4, style: undefined});
+          // TODO: aldaketa egin
+        }, function(error) {
+          $uibModalInstance.close({ aukera:4, style: undefined});
+          console.log("Objektua directive buelta eman", error);
+        });
+      }, function(error) {
+        $uibModalInstance.close({ aukera:4, style: undefined});
+        console.log("Objektua directive buelta eman", error);
+      });
+    }
   };
+
   $scope.buelta_eman = function() {
     if (objektua_id > 0) {
       Database.query('SELECT * FROM eszena_objektuak WHERE id = ?', [parseInt(objektua_id)]).then(function(res) {

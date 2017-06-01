@@ -611,7 +611,9 @@ section > #testua-div:focus:hover {
   transform: translateY(5px); }
 
 #canvas {
-  border: 1px solid #000; }
+  border: 1px solid #000;
+  margin-right: auto;
+  margin-left: auto; }
 
 .panela {
   position: fixed;

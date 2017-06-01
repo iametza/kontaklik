@@ -11,10 +11,10 @@ app.factory('Files', ['$cordovaFile', '$cordovaDevice', '$q', 'Funtzioak', funct
     });
     return d.promise;
   }
-  Files.saveBase64ImageThumbnail = function(original_file, base64_file) {
+  Files.saveBase64ImageThumbnail = function(original_file, base64_file, src_name) {
     var d = $q.defer();
     var o_file = original_file.split('/');
-    var name = o_file.pop();
+    var name = src_name == undefined ? o_file.pop() : src_name;
     var path = cordova.file.dataDirectory+'miniaturak';
     var argazkia = Funtzioak.dataURItoBlob(base64_file);
 
@@ -50,15 +50,15 @@ app.factory('Files', ['$cordovaFile', '$cordovaDevice', '$q', 'Funtzioak', funct
     return d.promise;
   };
 
-  Files.saveBase64Image = function(original_file, base64_file) {
+  Files.saveBase64Image = function(original_file, base64_file, src_name) {
     var d = $q.defer();
     var o_file = original_file.split('/');
-    var name = o_file.pop();
+    var name = src_name == undefined ? o_file.pop() : src_name;
     var path = cordova.file.dataDirectory;
     var argazkia = Funtzioak.dataURItoBlob(base64_file);
 
     fitxategiaGorde(path, name, argazkia).then(function() {
-      d.resolve();
+      d.resolve(name);
     }, function(err) {
       console.log(err);
       d.reject(err);

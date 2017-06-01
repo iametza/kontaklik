@@ -234,19 +234,20 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
 
   $scope.addObjektua = function(objektua) {
-
-    // Guardamos la relación en la base de datos y creamos el objeto
-    Database.insertRow('eszena_objektuak', {
-      'fk_eszena': $scope.uneko_eszena_id,
-      'fk_objektua': objektua.id
-    }).then(function(emaitza) {
-
-      Funtzioak.objektuaEszenara(emaitza.insertId, true, false, $scope);
-
+    Funtzioak.getTotalObjects(objektua.fk_eszena).then(function(kopurua) {
+      // Guardamos la relación en la base de datos y creamos el objeto
+      Database.insertRow('eszena_objektuak', {
+        'fk_eszena': $scope.uneko_eszena_id,
+        'fk_objektua': objektua.id,
+        'zindex': kopurua
+      }).then(function(emaitza) {
+        Funtzioak.objektuaEszenara(emaitza.insertId, true, false, $scope);
+      }, function(error) {
+        console.log("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+      });
     }, function(error) {
-      console.log("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
+      console.log("IpuinaCtrl, getTotalObjects", error);
     });
-
   };
 
 
@@ -590,7 +591,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     var testua_id;
     Database.insertRow('eszena_testuak', {
       'fk_eszena': $scope.uneko_eszena_id,
-      'fk_objektua': bokadiloa.id
+      'fk_objektua': bokadiloa.id,
+      'zindex': objektuak.length
     }).then(function(emaitza) {
       testua_id = emaitza.insertId;
       var modala = $uibModal.open({
@@ -851,7 +853,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             'ikusgai': 1
           }).then(function(emaitza) {
 
-            var elem = {
+            /*var elem = {
               'id': emaitza.insertId,
               'fullPath': cordova.file.dataDirectory + irudia,
               'miniPath': cordova.file.dataDirectory + 'miniaturak/' + irudia,
@@ -867,7 +869,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
                 $scope.fondoak.unshift(elem);
                 $scope.addFondoa(elem);
                 break;
-            }
+            }*/
             window.location = '#/editorea/' + emaitza.insertId;
           }, onError);
         }, onError);
@@ -902,7 +904,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             'ikusgai': 1
           }).then(function(emaitza) {
 
-            var elem = {
+            /*var elem = {
               'id': emaitza.insertId,
               'fullPath': cordova.file.dataDirectory + irudia,
               'miniPath': cordova.file.dataDirectory + 'miniaturak/' + irudia,
@@ -919,7 +921,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
                 $scope.fondoak.unshift(elem);
                 $scope.addFondoa(elem);
                 break;
-            }
+            }*/
             window.location = '#/editorea/' + emaitza.insertId;
           }, onError);
         }, onError);
@@ -1098,7 +1100,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         if (buttonIndex == 1) {
 
           // Borramos el fichero
-          console.log(cordova.file.dataDirectory + 'audioak/' + $scope.uneko_audioa.izena);
           $cordovaFile.removeFile(cordova.file.dataDirectory + 'audioak', $scope.uneko_audioa.izena).then(function() {
 
             // Cambiamos el audio en la lista

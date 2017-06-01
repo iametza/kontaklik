@@ -36,7 +36,7 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
       //window.resolveLocalFileSystemURL(tmp_path, function(dirEntry) {
 
-        media = new Media(tmp_path + audioa + extension, function() {
+        media = new Media(tmp_path + '/' + audioa + extension, function() {
 
           if (media !== undefined)
             media.release();
@@ -90,12 +90,12 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
       //window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dirEntry) {
 
-        if (media === undefined || media.src != tmp_path + audioa) {
+        if (media === undefined || media.src != tmp_path + '/' + audioa) {
 
           if (media !== undefined)
             media.release();
 
-          media = new Media(tmp_path + audioa, function() {
+          media = new Media(tmp_path + '/' + audioa, function() {
 
             if (media !== undefined)
               media.release();
@@ -180,7 +180,7 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     if (audioa.trim() !== '') {
 
       //window.resolveLocalFileSystemURL(cordova.file.dataDirectory + audioa, function(fileEntry) {
-        var m = new Media(tmp_path + audioa, function() {}, function(error) {
+        var m = new Media(tmp_path + '/' + audioa, function() {}, function(error) {
           d.reject(error);
           console.log("Audio factory, getDuration", error);
         });

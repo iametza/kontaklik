@@ -185,6 +185,8 @@ app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Databa
 
                 element.children('.laukia').css('transform', result.style.transform);
                 break;
+              case 4: // lehenengo_planora
+                break;
               case 2: // bikoiztu
               default:
                 break;

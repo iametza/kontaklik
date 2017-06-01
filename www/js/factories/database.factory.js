@@ -58,7 +58,9 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
       "`fk_eszena` INTEGER NOT NULL," +
       "`fk_objektua` INTEGER NOT NULL," +
+      "`zindex` INTEGER DEFAULT 0," +
       "`style` TEXT," +
+      "`style1` TEXT," +
       "`style2` TEXT);" +
       "CREATE INDEX fk_eszena_objektua ON eszena_objektuak (fk_eszena, fk_objektua);";
 
@@ -72,7 +74,9 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       "`backgroundColor` TEXT," +
       "`class` TEXT," +
       "`fk_objektua` INTEGER NOT NULL," +
+      "`zindex` INTEGER NOT NULL," +
       "`style` TEXT," +
+      "`style1` TEXT," +
       "`style2` TEXT);" +
       "CREATE INDEX fk_eszena ON eszena_testuak (fk_eszena);";
 
@@ -134,7 +138,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       }
       if(res.insertId != undefined) {
         emaitza.insertId = res.insertId;
-      } 
+      }
       d.resolve(emaitza);
     }, function(err) {
       d.reject(err);

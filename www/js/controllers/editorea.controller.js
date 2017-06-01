@@ -79,12 +79,23 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     }
   };
   $scope.gorde = function() {
-
-    Files.saveBase64Image(objektua.fullPath, dstImage.src).then(function() {
-      Kamera.generateThumbnail(objektua.fullPath).then(function(data) {
-        Files.saveBase64ImageThumbnail(objektua.fullPath, data).then(function() {
-          angular.element('.irudi_moztua').remove();
-          window.history.back();
+    var name = 'argazkia_' + Date.now() + '.png';
+    Database.insertRow('irudiak', {
+      'cordova_file': 'dataDirectory',
+      'path': '',
+      'izena': name,
+      'atala': objektua.atala,
+      'fk_ipuina': objektua.fk_ipuina,
+      'ikusgai': 1
+    }).then(function(irudiak) {
+      Files.saveBase64Image(objektua.fullPath, dstImage.src, name).then(function() {
+        Kamera.generateThumbnail(dstImage.src, true).then(function(data) {
+          Files.saveBase64ImageThumbnail(objektua.fullPath, data, name).then(function() {
+            angular.element('.irudi_moztua').remove();
+            window.history.back();
+          }, function(err) {
+            console.log('err', err);
+          });
         }, function(err) {
           console.log('err', err);
         });
@@ -100,8 +111,29 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
   });
   var ongoingTouches = new Array;
   var allTouches = new Array;
+
   function loadImage() {
-    ctx.drawImage(srcImage, 0, 0,  canvas.width, canvas.height);
+    var imgWidth = srcImage.naturalWidth;
+    var screenWidth  = $(window).width() - 20;
+    var scaleX = 1;
+    if (imgWidth > screenWidth)
+        scaleX = screenWidth/imgWidth;
+    var imgHeight = srcImage.naturalHeight;
+    var screenHeight = $(window).height() - canvas.offsetTop-10;
+    var scaleY = 1;
+    if (imgHeight > screenHeight)
+        scaleY = screenHeight/imgHeight;
+    var scale = scaleY;
+    if(scaleX < scaleY)
+        scale = scaleX;
+    if(scale < 1){
+        imgHeight = imgHeight*scale;
+        imgWidth = imgWidth*scale;
+    }
+    canvas.height = imgHeight;
+    canvas.width = imgWidth;
+    ctx.drawImage(srcImage, 0, 0, srcImage.naturalWidth, srcImage.naturalHeight, 0,0, imgWidth, imgHeight);
+    //ctx.drawImage(srcImage, 0, 0,  srcImage.width, srcImage.height);
   };
   function crop() {
     // do the cropping, provide callback

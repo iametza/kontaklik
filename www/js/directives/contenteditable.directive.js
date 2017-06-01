@@ -38,7 +38,6 @@ app.directive("contenteditable", ['$http', '$q', function($http, $q) {
         canceler = $q.defer();
         var textarea = strip(element.html());
 
-        console.log(textarea);
         $http({
           method: 'GET',
           url: 'https://deklinabidea.ikaeuskaltegiak.eus/API/v1/zuzentzailea',
@@ -62,7 +61,7 @@ app.directive("contenteditable", ['$http', '$q', function($http, $q) {
                 scope.zuzenketak.push({hitza: testuak[i], gomendioak: zuzenketak[i]});
                 testuak[i] = testua;
               }
-            }            
+            }
             element.html(testuak.join(' '));
             placeCaretAtEnd(document.getElementById('testua-div'));
           }
