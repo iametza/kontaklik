@@ -74,7 +74,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       "`backgroundColor` TEXT," +
       "`class` TEXT," +
       "`fk_objektua` INTEGER NOT NULL," +
-      "`zindex` INTEGER NOT NULL," +
+      "`zindex` INTEGER DEFAULT 0," +
       "`style` TEXT," +
       "`style1` TEXT," +
       "`style2` TEXT);" +

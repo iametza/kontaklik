@@ -156,7 +156,10 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
 
             if (style_object.transform.match(patroia_rotate))
               elem.attr('data-rotate', style_object.transform.replace(patroia_rotate, "$1"));
+
+            //z-index
             elem.attr('z-index', parseInt(objektua[0].zindex));
+
             // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
             el = $compile(elem)($scope);
 
@@ -190,10 +193,22 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
     return d.promise;
 
   };
-  Funtzioak.setOrder = function(objektua) {
+  Funtzioak.maxZindex = function(fk_eszena) {
     var d = $q.defer();
-    Funtzioak.getTotalObjects(objektua.fk_eszena).then(function(totala) {
-      d.resolve();
+    var zindex = 0;    
+    Database.query("SELECT zindex as max FROM eszena_objektuak WHERE fk_eszena = ? ORDER BY zindex DESC LIMIT 1", [fk_eszena]).then(function(res) {
+      if(res.length > 0) {
+        zindex = res[0].max;
+      }
+      Database.query("SELECT zindex as max FROM eszena_testuak WHERE fk_eszena = ? ORDER BY zindex DESC LIMIT 1", [fk_eszena]).then(function(res) {
+        if(res.length > 0 && res[0].max > zindex) {
+          zindex = res[0].max;
+        }
+        d.resolve(zindex);
+      }, function(error) {
+        console.log("IpuinaCtrl, getTotalObjects", error);
+        d.reject(error);
+      });
     }, function(error) {
       console.log("IpuinaCtrl, getTotalObjects", error);
       d.reject(error);
@@ -203,11 +218,15 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
   Funtzioak.getTotalObjects = function(fk_eszena) {
     var d = $q.defer();
     var totala  = 0;
+    var objektuak = [];
     Database.query("SELECT * FROM eszena_objektuak WHERE fk_eszena = ?", [fk_eszena]).then(function(res) {
       totala = res.length;
+      objektuak = res;
       Database.query("SELECT * FROM eszena_testuak WHERE fk_eszena = ?", [fk_eszena]).then(function(res) {
         totala = totala + res.length;
-        d.resolve(totala);
+        objektuak.push.apply(objektuak, res);
+        console.log('objektuak', objektuak, totala);
+        d.resolve(objektuak);
       }, function(error) {
         console.log("IpuinaCtrl, getTotalObjects", error);
         d.reject(error);

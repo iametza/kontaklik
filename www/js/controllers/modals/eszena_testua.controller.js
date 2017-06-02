@@ -39,6 +39,28 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
     });
 
   };
+  $scope.lehenengo_planora = function() {
+    if (objektua_id > 0) {
+      Database.query('SELECT * FROM eszena_testuak WHERE id = ?', [parseInt(objektua_id)]).then(function(res) {
+        var objektua = res[0];
+        Funtzioak.maxZindex(objektua.fk_eszena).then(function(res) {
+          var zindex = parseInt(res) + 1;
+          Database.query('UPDATE eszena_testuak SET zindex = ? WHERE id = ?', [zindex, parseInt(objektua_id)]).then(function(res) {
+            $uibModalInstance.close({ aukera: 3, testua_id: testua_id, testua: testua, zindex: zindex});
+          }, function(error) {
+            $uibModalInstance.close({ aukera: 3, testua_id: testua_id, testua: testua, zindex: zindex});
+            console.log("Objektua directive lehenengo planoa UPDATE", error);
+          });
+        }, function(error) {
+          $uibModalInstance.close({ aukera:4, style: undefined});
+          console.log("Objektua directive lehenengo plano maxZindex", error);
+        });
+      }, function(error) {
+        $uibModalInstance.close({ aukera:4, style: undefined});
+        console.log("Objektua directive lehenengo planoko SELECT", error);
+      });
+    }
+  };
   $scope.testua_gorde = function(form) {
     var testua = angular.element('#testua-div').html();
     $scope.submit = true;

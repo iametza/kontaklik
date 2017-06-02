@@ -234,12 +234,14 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
 
   $scope.addObjektua = function(objektua) {
-    Funtzioak.getTotalObjects(objektua.fk_eszena).then(function(kopurua) {
+    Funtzioak.maxZindex($scope.uneko_eszena_id).then(function(res) {
+      var zindex = res + 1;
+      console.log('zindex', zindex);
       // Guardamos la relación en la base de datos y creamos el objeto
       Database.insertRow('eszena_objektuak', {
         'fk_eszena': $scope.uneko_eszena_id,
         'fk_objektua': objektua.id,
-        'zindex': kopurua
+        'zindex':  zindex
       }).then(function(emaitza) {
         Funtzioak.objektuaEszenara(emaitza.insertId, true, false, $scope);
       }, function(error) {
@@ -470,6 +472,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
           }, ' ORDER BY id ASC').then(function(objektuak) {
 
             angular.forEach(objektuak, function(objektua) {
+              console.log('objektua', objektua);
               promiseak.push(Funtzioak.objektuaEszenara(objektua.id, false, lock, $scope));
             });
 
@@ -589,35 +592,40 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.addBokadiloa = function(bokadiloa) {
     // Guardamos la relación en la base de datos y creamos el objeto
     var testua_id;
-    Database.insertRow('eszena_testuak', {
-      'fk_eszena': $scope.uneko_eszena_id,
-      'fk_objektua': bokadiloa.id,
-      'zindex': objektuak.length
-    }).then(function(emaitza) {
-      testua_id = emaitza.insertId;
-      var modala = $uibModal.open({
-        animation: true,
-        //backdrop: 'static',
-        templateUrl: 'views/modals/eszena_testua.html',
-        controller: 'ModalEszenaTestuaCtrl',
-        resolve: {
-          eszena_id: $scope.uneko_eszena_id,
-          testua_id: testua_id
-        }
-      });
+    Funtzioak.maxZindex($scope.uneko_eszena_id).then(function(res) {
+      var zindex = res + 1;      
+      Database.insertRow('eszena_testuak', {
+        'fk_eszena': $scope.uneko_eszena_id,
+        'fk_objektua': bokadiloa.id,
+        'zindex':  zindex
+      }).then(function(emaitza) {
+        testua_id = emaitza.insertId;
+        var modala = $uibModal.open({
+          animation: true,
+          //backdrop: 'static',
+          templateUrl: 'views/modals/eszena_testua.html',
+          controller: 'ModalEszenaTestuaCtrl',
+          resolve: {
+            eszena_id: $scope.uneko_eszena_id,
+            testua_id: testua_id
+          }
+        });
 
-      modala.rendered.then(function() {
-        $scope.soinuak.audio_play('popup');
-        testuaEszenara(testua_id);
-      });
+        modala.rendered.then(function() {
+          $scope.soinuak.audio_play('popup');
+          testuaEszenara(testua_id);
+        });
 
-      modala.result.then(function(result) {
-        testua_eguneratu(result);
+        modala.result.then(function(result) {
+          testua_eguneratu(result);
+
+        }, function(error) {
+          console.log("IpuinaCtrl, addBokadiloa", error);
+        });
 
       }, function(error) {
-        console.log("IpuinaCtrl, addBokadiloa", error);
+        console.log("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
       });
-
     }, function(error) {
       console.log("IpuinaCtrl, defektuzko eszena sortzerakoan", error);
     });
@@ -661,6 +669,9 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
           if (style_object.transform.match(patroia_rotate))
             elem.attr('data-rotate', style_object.transform.replace(patroia_rotate, "$1"));
+
+          //z-index
+          elem.attr('z-index', parseInt(objektua[0].zindex));
 
           // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
           el = $compile(elem)($scope);

@@ -19,13 +19,14 @@
     </div>
     <div class="botoiak">
       <button type="submit" class="btn button-icon icon ion-checkmark btn-balanced">Gorde</button>
-      <button type="button" class="btn btn-danger" ng-click="testua_ezabatu ()">Ezabatu</button>
+      <button type="button" class="btn btn-danger" ng-click="lehenengo_planora ()">Lehenengo planoan jarri</button>
+      <button type="button" class="btn btn-danger" ng-click="testua_ezabatu ()">Ezabatu</button>      
     </div>
     <div ng-if="submit && formularioa.testua.$invalid" class="alert alert-warning" role="alert">
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
       <span class="sr-only">Oharra:</span> Testua eremua bete mesedez
     </div>
-    <h3 ng-if="zuzenketak.length > 0">Gomendioak</h3>    
+    <h3 ng-if="zuzenketak.length > 0">Gomendioak</h3>
     <p ng-repeat="zuzenketa in zuzenketak">
       <strong>{{ zuzenketa.hitza }}</strong>
       <span ng-repeat="gomendioa in zuzenketa.gomendioak">, {{ gomendioa }}</span>

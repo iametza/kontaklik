@@ -203,6 +203,11 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
                   case 2:
                     testua_eguneratu(result);
                     break;
+                  case 3:
+                    element.children('.laukia').css('z-index', result.zindex);
+                    break;
+                  default:
+                    break;
                 }
               });
             }
