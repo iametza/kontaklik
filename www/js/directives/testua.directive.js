@@ -182,7 +182,8 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
                   },
                   testua_id: function() {
                     return testua_id;
-                  }
+                  },
+                  first: false
                 }
               });
 
@@ -193,7 +194,6 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
                 console.log('closed', result);
               });
               modala.result.then(function(result) {
-                console.log('result', result);
                 switch(result.aukera) {
                   case 1:
                     element.fadeOut(500, function() {
@@ -205,6 +205,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
                     break;
                   case 3:
                     element.children('.laukia').css('z-index', result.zindex);
+                    element.children('.bokadilo-testua').css('z-index', result.zindex);
                     break;
                   default:
                     break;

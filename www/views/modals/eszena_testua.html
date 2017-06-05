@@ -19,8 +19,8 @@
     </div>
     <div class="botoiak">
       <button type="submit" class="btn button-icon icon ion-checkmark btn-balanced">Gorde</button>
-      <button type="button" class="btn btn-danger" ng-click="lehenengo_planora ()">Lehenengo planoan jarri</button>
-      <button type="button" class="btn btn-danger" ng-click="testua_ezabatu ()">Ezabatu</button>      
+      <button type="button" class="btn btn-danger" ng-click="lehenengo_planora ()" ng-if="!first">Lehenengo planoan jarri</button>
+      <button type="button" class="btn btn-danger" ng-click="testua_ezabatu ()" ng-if="!first">Ezabatu</button>
     </div>
     <div ng-if="submit && formularioa.testua.$invalid" class="alert alert-warning" role="alert">
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

@@ -16,37 +16,40 @@ app.factory('Files', ['$cordovaFile', '$cordovaDevice', '$q', 'Funtzioak', funct
     var o_file = original_file.split('/');
     var name = src_name == undefined ? o_file.pop() : src_name;
     var path = cordova.file.dataDirectory+'miniaturak';
+    console.log('path.name', path, name);
     var argazkia = Funtzioak.dataURItoBlob(base64_file);
 
-    $cordovaFile.checkDir(cordova.file.dataDirectory, 'miniaturak').then(function(res) {
+    /*$cordovaFile.checkDir(cordova.file.dataDirectory, 'miniaturak').then(function(res) {
       if(res.isDirectory == true) {
         fitxategiaGorde(path, name, argazkia).then(function() {
           d.resolve();
         }, function(err) {
-          console.log(err);
+          console.log('isDirectory fitxategiaGorde', err);
           d.reject(err);
         });
-      } else {
+      } else {*/
         $cordovaFile.createDir(cordova.file.dataDirectory, 'miniaturak').then(function(res) {
           fitxategiaGorde(path, name, argazkia).then(function() {
             d.resolve();
           }, function(err) {
-            console.log(err);
+            console.log('fitxategiaGorde', err);
             d.reject(err);
           });
         }, function(err) {
+           console.log('createDir', err);
            fitxategiaGorde(path, name, argazkia).then(function() {
              d.resolve();
            }, function(err) {
-             console.log(err);
+             console.log('fitxategiaGorde', err);
              d.reject(err);
            });
         });
+        /*
       }
     }, function(err) {
-      console.log(err);
+      console.log('checkDir', err);
       d.reject(err);
-    });
+    });*/
     return d.promise;
   };
 

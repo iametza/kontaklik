@@ -236,7 +236,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.addObjektua = function(objektua) {
     Funtzioak.maxZindex($scope.uneko_eszena_id).then(function(res) {
       var zindex = res + 1;
-      console.log('zindex', zindex);
       // Guardamos la relación en la base de datos y creamos el objeto
       Database.insertRow('eszena_objektuak', {
         'fk_eszena': $scope.uneko_eszena_id,
@@ -318,45 +317,34 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
   $scope.pressEszena = function(eszena_id) {
     $cordovaVibration.vibrate(100);
-    if (!eszena_aldatzen) {
-      $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
-
-        if (buttonIndex == 1) {
-
-          Ipuinak.ezabatu_eszena(eszena_id).then(function() {
-
-            Ipuinak.eszenak_ordenatu($scope.ipuina.id).then(function() {
-
+    if (!eszena_aldatzen){
+      $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
+        if (buttonIndex == 1){
+          Ipuinak.ezabatu_eszena (eszena_id).then (function (){
+            Ipuinak.eszenak_ordenatu ($scope.ipuina.id).then (function (){
               // Recogemos las eszenak que queden del ipuina
-              getEszenak();
-
-            }, function(error) {
-              console.log("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
+              getEszenak ();
+            }, function (error){
+              console.log ("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
             });
-
-          }, function(error) {
-            console.log("IpuinaCtrl, pressEszena ezabatu_eszena", error);
+          }, function (error){
+            console.log ("IpuinaCtrl, pressEszena ezabatu_eszena", error);
           });
-
         }
-
-      }, function(error) {
-        console.log("IpuinaCtrl, pressEszena confirm", error);
+      }, function (error){
+        console.log ("IpuinaCtrl, pressEszena confirm", error);
       });
-
     }
-
   };
 
   $scope.pressObjektua = function(objektua) {
-    console.log('Press');
     $cordovaVibration.vibrate(100);
     if (objektua.fk_ipuina !== 0) {
       var modala = $uibModal.open({
         animation: true,
         //backdrop: 'static',
-        templateUrl: 'views/modals/menu_aukerak.html',
-        controller: 'MenuAukerakCtrl',
+        templateUrl: 'views/modals/objektu_menu_aukerak.html',
+        controller: 'ObjektuMenuAukerakCtrl',
         resolve: {
           objektua_id: objektua.id
         }
@@ -394,38 +382,45 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.pressFondoa = function(fondoa) {
     $cordovaVibration.vibrate(100);
     if (fondoa.fk_ipuina !== 0) {
-
-      $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
-
-        if (buttonIndex == 1) {
-
-          Database.query('UPDATE irudiak SET ikusgai=0 WHERE id=?', [fondoa.id]).then(function() {
-
-            // Borramos el fondo de la lista
-            var ind = -1;
-            angular.forEach($scope.fondoak, function(f, i) {
-
-              if (f.id == fondoa.id)
-                ind = i;
-
-            });
-
-            if (ind > -1)
-              $scope.fondoak.splice(ind, 1);
-
-          }, function(error) {
-            console.log("IpuinaCtrl, fondoa 'ezabatzerakoan'", error);
-            d.reject(error);
-          });
-
+      var modala = $uibModal.open({
+        animation: true,
+        //backdrop: 'static',
+        templateUrl: 'views/modals/fondo_menu_aukerak.html',
+        controller: 'FondoMenuAukerakCtrl',
+        resolve: {
+          fondo_id: fondoa.id
         }
-
-      }, function(error) {
-        console.log("IpuinaCtrl, pressFondoa confirm", error);
       });
 
-    }
+      modala.rendered.then(function() {
+        $scope.soinuak.audio_play('popup');
+      });
 
+      modala.result.then(function(result) {
+        switch (result.aukera) {
+          case 1:
+            Database.query('UPDATE irudiak SET ikusgai=0 WHERE id=?', [fondoa.id]).then(function() {
+              // Borramos el fondo de la lista
+              var ind = -1;
+              angular.forEach($scope.fondoak, function(f, i) {
+                if (f.id == fondoa.id)
+                  ind = i;
+              });
+
+              if (ind > -1)
+                $scope.fondoak.splice(ind, 1);
+
+            }, function(error) {
+              console.log("IpuinaCtrl, fondoa 'ezabatzerakoan'", error);
+              d.reject(error);
+            });
+            break;
+          case 0:
+          default:
+            break;
+        }
+      });
+    }
   };
 
   function changeFondoa(fondoa) {
@@ -471,8 +466,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             'fk_eszena': eszena.id
           }, ' ORDER BY id ASC').then(function(objektuak) {
 
-            angular.forEach(objektuak, function(objektua) {
-              console.log('objektua', objektua);
+            angular.forEach(objektuak, function(objektua) {              
               promiseak.push(Funtzioak.objektuaEszenara(objektua.id, false, lock, $scope));
             });
 
@@ -593,7 +587,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     // Guardamos la relación en la base de datos y creamos el objeto
     var testua_id;
     Funtzioak.maxZindex($scope.uneko_eszena_id).then(function(res) {
-      var zindex = res + 1;      
+      var zindex = res + 1;
       Database.insertRow('eszena_testuak', {
         'fk_eszena': $scope.uneko_eszena_id,
         'fk_objektua': bokadiloa.id,
@@ -607,7 +601,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
           controller: 'ModalEszenaTestuaCtrl',
           resolve: {
             eszena_id: $scope.uneko_eszena_id,
-            testua_id: testua_id
+            testua_id: testua_id,
+            first: true
           }
         });
 
@@ -617,8 +612,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         });
 
         modala.result.then(function(result) {
-          testua_eguneratu(result);
-
         }, function(error) {
           console.log("IpuinaCtrl, addBokadiloa", error);
         });
@@ -642,7 +635,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     show = typeof show !== 'undefined' ? show : true;
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer();
-    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style FROM eszena_testuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [testua_id]).then(function(testua) {
+    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, zindex FROM eszena_testuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [testua_id]).then(function(testua) {
       if (testua.length === 1) {
         var elem = angular.element('<div data-src="' + Funtzioak.get_fullPath(testua[0]) + '" testua="testua" class="testua" data-testua-id="' + testua_id + '" data-lock="' + lock + '"></div>');
 
@@ -671,7 +664,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             elem.attr('data-rotate', style_object.transform.replace(patroia_rotate, "$1"));
 
           //z-index
-          elem.attr('z-index', parseInt(objektua[0].zindex));
 
           // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
           el = $compile(elem)($scope);
@@ -679,6 +671,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
           //elem.children ().css (style_object);
           // Optimización (thaks to iOS): Sólo cargamos lo que nos haga falta
           elem.children().css('transform', style_object.transform);
+          elem.children().css('z-index', parseInt(testua[0].zindex));
 
         } else
           el = $compile(elem)($scope);

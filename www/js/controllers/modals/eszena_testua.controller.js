@@ -1,5 +1,5 @@
-app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstance', '$cordovaDialogs', 'Database', 'eszena_id', 'testua_id', function($scope, $compile, $uibModalInstance, $cordovaDialogs, Database, eszena_id, testua_id) {
-
+app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstance', '$cordovaDialogs', 'Database', 'Funtzioak', 'eszena_id', 'testua_id', 'first', function($scope, $compile, $uibModalInstance, $cordovaDialogs, Database, Funtzioak, eszena_id, testua_id, first) {
+  $scope.first = first;
   $scope.eremuak = {
     testua: '',
     fontSize: 24,
@@ -40,12 +40,12 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
 
   };
   $scope.lehenengo_planora = function() {
-    if (objektua_id > 0) {
-      Database.query('SELECT * FROM eszena_testuak WHERE id = ?', [parseInt(objektua_id)]).then(function(res) {
-        var objektua = res[0];
-        Funtzioak.maxZindex(objektua.fk_eszena).then(function(res) {
+    if (testua_id > 0) {
+      Database.query('SELECT * FROM eszena_testuak WHERE id = ?', [parseInt(testua_id)]).then(function(res) {
+        var testua = res[0];
+        Funtzioak.maxZindex(testua.fk_eszena).then(function(res) {
           var zindex = parseInt(res) + 1;
-          Database.query('UPDATE eszena_testuak SET zindex = ? WHERE id = ?', [zindex, parseInt(objektua_id)]).then(function(res) {
+          Database.query('UPDATE eszena_testuak SET zindex = ? WHERE id = ?', [zindex, parseInt(testua_id)]).then(function(res) {
             $uibModalInstance.close({ aukera: 3, testua_id: testua_id, testua: testua, zindex: zindex});
           }, function(error) {
             $uibModalInstance.close({ aukera: 3, testua_id: testua_id, testua: testua, zindex: zindex});
@@ -68,6 +68,7 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
       Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {
         $uibModalInstance.close({ aukera: 2, testua_id: testua_id, testua: testua});
       }, function(error) {
+          $uibModalInstance.close({ aukera:4, style: undefined});
         console.log("ModalEszenaTestuaCtrl, testua_gorde insert", error);
         $scope.itxi();
       });
@@ -83,6 +84,7 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
           angular.element (elementua).remove ();*/
           $uibModalInstance.close({ aukera: 1, testua_id: testua_id, testua: undefined});
         }, function(error) {
+            $uibModalInstance.close({ aukera:4, style: undefined});
           console.log("ModalEszenaTestuaCtrl, testua_ezabatu DELETE", error);
         });
       //}

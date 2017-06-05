@@ -158,7 +158,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
               elem.attr('data-rotate', style_object.transform.replace(patroia_rotate, "$1"));
 
             //z-index
-            elem.attr('z-index', parseInt(objektua[0].zindex));
+
 
             // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
             el = $compile(elem)($scope);
@@ -166,6 +166,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
             //elem.children ().css (style_object);
             // Optimización (thaks to iOS): Sólo cargamos lo que nos haga falta
             elem.children().css('transform', style_object.transform);
+            elem.children().css('z-index', parseInt(objektua[0].zindex));
 
           } else
             el = $compile(elem)($scope);
@@ -195,7 +196,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
   };
   Funtzioak.maxZindex = function(fk_eszena) {
     var d = $q.defer();
-    var zindex = 0;    
+    var zindex = 0;
     Database.query("SELECT zindex as max FROM eszena_objektuak WHERE fk_eszena = ? ORDER BY zindex DESC LIMIT 1", [fk_eszena]).then(function(res) {
       if(res.length > 0) {
         zindex = res[0].max;
