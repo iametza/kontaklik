@@ -3,6 +3,8 @@ app.controller('ObjektuMenuaCtrl', ['$scope', '$uibModalInstance', 'Database', '
   if (objektua_id > 0) {
     Database.query('SELECT * FROM eszena_objektuak WHERE id = ?', [parseInt(objektua_id)]).then(function(res) {
       objektua = res[0];
+      $scope.objektua = objektua;
+      console.log(objektua);
     }, function(error) {
       $uibModalInstance.close({ aukera:4, style: undefined});
       console.log("Objektua directive buelta eman", error);

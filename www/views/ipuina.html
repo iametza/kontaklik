@@ -3,7 +3,6 @@
  <div class="row menu-fondoa play_gorde" id="goiko-menua">
         <div class="col-xs-10">
           <div id="eszenak">
-
             <div class="fondoak">
               <div ng-repeat="eszena in eszenak track by $index" class="eszena-fondoa"  ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)">
                 <img class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.fondoa_fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="eszena"/>

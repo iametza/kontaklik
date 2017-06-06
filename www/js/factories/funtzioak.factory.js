@@ -126,7 +126,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer();
 
-    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, eo.zindex FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {
+    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, eo.style1, eo.style2, eo.zindex FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {
 
       if (objektua.length === 1) {
 
@@ -136,8 +136,19 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
           elem.hide();
 
           if (objektua[0].style !== null) {
+            var style_object;
+            if(!lock) {
+              style_object = JSON.parse(objektua[0].style);
+            } else {
+              if(objektua[0].style1 != null && objektua[0].style2 != null) {
+                style_object = JSON.parse(objektua[0].style1);
+              } else {
+                style_object = JSON.parse(objektua[0].style);
+              }
+            }
 
-            var style_object = JSON.parse(objektua[0].style);
+            //z-index
+            var x, y, scale, rotate;
 
             // Sacamos la scale y el rotate del objeto para pasársela a la directiva
             //console.log (style_object.transform);
@@ -147,18 +158,21 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
             var patroia_rotate = /^.*rotate\((.*?)deg.*$/g;
 
             if (style_object.transform.match(patroia_xy)) {
-              elem.attr('data-x', style_object.transform.replace(patroia_xy, "$1"));
-              elem.attr('data-y', style_object.transform.replace(patroia_xy, "$2"));
+              x = style_object.transform.replace(patroia_xy, "$1");
+              y = style_object.transform.replace(patroia_xy, "$2");
+              elem.attr('data-x', x);
+              elem.attr('data-y', y);
             }
 
-            if (style_object.transform.match(patroia_scale))
-              elem.attr('data-scale', style_object.transform.replace(patroia_scale, "$1"));
+            if (style_object.transform.match(patroia_scale)) {
+              scale = style_object.transform.replace(patroia_scale, "$1");
+              elem.attr('data-scale', scale);
+            }
 
-            if (style_object.transform.match(patroia_rotate))
-              elem.attr('data-rotate', style_object.transform.replace(patroia_rotate, "$1"));
-
-            //z-index
-
+            if (style_object.transform.match(patroia_rotate)) {
+              rotate = style_object.transform.replace(patroia_rotate, "$1");
+              elem.attr('data-rotate', rotate);
+            }
 
             // Ojo que el orden es importante: 'el' tiene que estar después de asignar scale y antes de darle el CSS
             el = $compile(elem)($scope);
@@ -173,16 +187,56 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
 
           angular.element('#eszenatokia').append(elem);
           $scope.insertHere = el;
-
-          if (show)
+          if (show) {
             elem.fadeIn(500, function() {
               d.resolve();
             });
-          else
-            d.resolve();
-        } else
-          d.resolve();
+          } else {
+            if(lock == true && objektua[0].style1 != null && objektua[0].style2 != null) {
+              var x2, y2, scale2, rotate2, style_object2 = JSON.parse(objektua[0].style2);
+              if (style_object2.transform.match(patroia_xy)) {
+                x2 = style_object2.transform.replace(patroia_xy, "$1");
+                y2 = style_object2.transform.replace(patroia_xy, "$2");
+              }
 
+              if (style_object2.transform.match(patroia_scale))
+                scale2 =  style_object2.transform.replace(patroia_scale, "$1");
+
+              if (style_object.transform.match(patroia_rotate))
+                 rotate2 = style_object2.transform.replace(patroia_rotate, "$1");
+              console.log(x, y, scale, rotate, 'nora', x2, y2, scale2, rotate2);
+              //scale2 = scale;
+              
+              elem.children()
+              .velocity({
+                   translateX: x + 'px',
+                   translateY: y + 'px',
+                   scale: scale,
+                   rotateZ: rotate + 'deg',
+               },
+               {
+                  duration: 0,
+                  loop: false,
+                  easing: 'ease-in-out'
+                })
+                .velocity({
+                   translateX: x2 + 'px',
+                   translateY: y2 + 'px',
+                   scale: scale2,
+                   rotateZ: rotate2 + 'deg'
+               },
+               {
+                  duration: 3000,
+                  loop: false,
+                  easing: 'ease-in-out'
+                });
+
+            }
+            d.resolve();
+          }
+        } else {
+          d.resolve();
+        }
       } else
         d.reject('IpuinaCtrl objektuaEszenara, objektua.length != 1');
 
