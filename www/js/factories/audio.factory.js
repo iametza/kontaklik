@@ -5,7 +5,9 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     egoera = 'stop',
     extension = '',
     tmp_path = '';
-
+  function mediaError(e) {
+      console.log('err', e, JSON.stringify(e));
+  }
   document.addEventListener("deviceready", function() {
 
     switch (device.platform) {
@@ -82,7 +84,11 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     }
 
   };
-
+  Audio.playMp3 = function(src){
+    console.log('matzu play', cordova.file.applicationDirectory+ 'www/' +src);
+    var media = $cordovaMedia.newMedia(cordova.file.applicationDirectory+ 'www/' +src);
+     media.play(); // Android
+  }
   Audio.play = function(audioa) {
     var d = $q.defer();
 

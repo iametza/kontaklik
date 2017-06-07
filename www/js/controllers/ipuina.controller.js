@@ -22,7 +22,17 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     'uneko_eszena': 0,
     'timer': undefined
   };
-
+  $scope.ahotsak = [
+    { audioa: "assets/audioak/arranopola.mp3", izena: 'Arranopola!'},
+    { audioa: "assets/audioak/bazen-behin-euskal-herrian.mp3", izena: 'Bazen behin Euskal Herrian...'},
+    { audioa: "assets/audioak/bazen-behin2.mp3", izena: 'Bazen behin...'},
+    { audioa: "assets/audioak/beldurra.mp3", izena: 'Beldurra!'},
+    { audioa: "assets/audioak/hau-da-komeria.mp3", izena: 'Hau da komeria!'},
+    { audioa: "assets/audioak/hau-poza.mp3", izena: 'Hau poza!'},
+    { audioa: "assets/audioak/hau-poza2.mp3", izena: 'Hau poza2!'},
+    { audioa: "assets/audioak/hau-poza3.mp3", izena: 'Hau poza3!'},
+    { audioa: "assets/audioak/kalabazan.mp3", izena: 'Kalabazan'}
+  ];
   var kontador;
   //var img_play_eszena;
   var inBackground = false;
@@ -126,7 +136,10 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     });
 
   };
-
+  $scope.addAudioa = function(ahotsa) {
+    console.log(ahotsa);
+    Audio.playMp3(ahotsa.audioa);
+  };
   function getEszenak() {
 
     Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
@@ -466,7 +479,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             'fk_eszena': eszena.id
           }, ' ORDER BY id ASC').then(function(objektuak) {
 
-            angular.forEach(objektuak, function(objektua) {              
+            angular.forEach(objektuak, function(objektua) {
               promiseak.push(Funtzioak.objektuaEszenara(objektua.id, false, lock, $scope));
             });
 

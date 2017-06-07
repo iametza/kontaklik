@@ -79,30 +79,41 @@
     <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-audioak-aktibo.png"/></uib-tab-heading>
 
     <div class="tab-edukia menu-fondoa">
-      <div ng-hide="uneko_audioa.izena != ''">
-        <div class="mikro">
-          <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
-          <p>{{uneko_audioa.counter | kontador}}</p>
+      <div class="row">
+        <div class="col-xs-3" ng-hide="uneko_audioa.izena != ''">
+          <div class="mikro">
+            <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
+            <p>{{uneko_audioa.counter | kontador}}</p>
+          </div>
+
+          <div class="kontrols">
+            <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/grabatu.png" class="itzal" alt="grabatzen hasi" /></a>
+            <a ng-click="audioa_stopRecord ()" ng-hide="uneko_audioa.egoera == 'stop'"><img src="images/ikonoak/stop.png" class="itzal" alt="grabazioa gelditu" /></a>
+          </div>
         </div>
 
-        <div class="kontrols">
-          <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/grabatu.png" class="itzal" alt="grabatzen hasi" /></a>
-          <a ng-click="audioa_stopRecord ()" ng-hide="uneko_audioa.egoera == 'stop'"><img src="images/ikonoak/stop.png" class="itzal" alt="grabazioa gelditu" /></a>
+        <div class="col-xs-3" ng-hide="uneko_audioa.izena == ''">
+          <div class="mikro">
+            <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
+            <p>{{uneko_audioa.counter | kontador}}</p>
+          </div>
+
+          <div class="kontrols">
+            <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/play.png" class="itzal" alt="entzun" /></a>
+            <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/pause.png" class="itzal" alt="pausatu" /></a>
+            <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/stop.png" class="itzal" alt="gelditu" /></a>
+
+            <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+          </div>
         </div>
-      </div>
 
-      <div ng-hide="uneko_audioa.izena == ''">
-        <div class="mikro">
-          <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
-          <p>{{uneko_audioa.counter | kontador}}</p>
-        </div>
-
-        <div class="kontrols">
-          <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/play.png" class="itzal" alt="entzun" /></a>
-          <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/pause.png" class="itzal" alt="pausatu" /></a>
-          <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/stop.png" class="itzal" alt="gelditu" /></a>
-
-          <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+        <div class="col-xs-9">
+          <div class="elementuak">
+            <a ng-click="addAudioa (ahotsa)" ng-repeat="ahotsa in ahotsak">
+              <img src="images/kantari.png" class="irudia" alt="ahotsa"/>
+              {{ ahotsa.izena }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
