@@ -4,7 +4,6 @@ app.controller('ObjektuMenuaCtrl', ['$scope', '$uibModalInstance', 'Database', '
     Database.query('SELECT * FROM eszena_objektuak WHERE id = ?', [parseInt(objektua_id)]).then(function(res) {
       objektua = res[0];
       $scope.objektua = objektua;
-      console.log(objektua);
     }, function(error) {
       $uibModalInstance.close({ aukera:4, style: undefined});
       console.log("Objektua directive buelta eman", error);
@@ -77,7 +76,7 @@ app.controller('ObjektuMenuaCtrl', ['$scope', '$uibModalInstance', 'Database', '
       console.log("Objektua directive buelta eman", error);
     });
   };
-  $scope.bikoiztu= function() {
+  $scope.bikoiztu = function() {
     var style;
 
     if(objektua.style != null) {
@@ -95,7 +94,7 @@ app.controller('ObjektuMenuaCtrl', ['$scope', '$uibModalInstance', 'Database', '
       style = JSON.stringify({ transform: 'translate3d(200px, 350px, 0px) scale(1, 1) rotate(0)' });
     }
 
-    Database.query('INSERT INTO eszena_objektuak(fk_eszena, fk_objektua, style) VALUES(?,?,?)', [objektua.fk_eszena, objektua.fk_objektua, style]).then(function(res) {
+    Database.query('INSERT INTO eszena_objektuak(fk_eszena, fk_objektua, style, style1, style2) VALUES(?,?,?,?,?)', [objektua.fk_eszena, objektua.fk_objektua, style, objektua.style1, objektua.style2]).then(function(res) {
       var new_id = res.insertId;
       Funtzioak.objektuaEszenara(new_id, true, false, $scope.$parent).then(function() {
         $uibModalInstance.close({ aukera: 2, style: undefined });

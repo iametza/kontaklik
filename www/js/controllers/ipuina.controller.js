@@ -28,9 +28,9 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     { audioa: "assets/audioak/bazen-behin2.mp3", izena: 'Bazen behin...'},
     { audioa: "assets/audioak/beldurra.mp3", izena: 'Beldurra!'},
     { audioa: "assets/audioak/hau-da-komeria.mp3", izena: 'Hau da komeria!'},
-    { audioa: "assets/audioak/hau-poza.mp3", izena: 'Hau poza!'},
-    { audioa: "assets/audioak/hau-poza2.mp3", izena: 'Hau poza2!'},
-    { audioa: "assets/audioak/hau-poza3.mp3", izena: 'Hau poza3!'},
+    { audioa: "assets/audioak/hau-poza.mp3", izena: 'Hau poza! (1)'},
+    { audioa: "assets/audioak/hau-poza2.mp3", izena: 'Hau poza! (2)'},
+    { audioa: "assets/audioak/hau-poza3.mp3", izena: 'Hau poza! (3)'},
     { audioa: "assets/audioak/kalabazan.mp3", izena: 'Kalabazan'}
   ];
   var kontador;
@@ -137,15 +137,12 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
   };
   $scope.addAudioa = function(ahotsa) {
-    console.log(ahotsa);
     Audio.playMp3(ahotsa.audioa);
   };
   function getEszenak() {
-
     Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
-
       $scope.eszenak = emaitza;
-
+      console.log('$scope.eszenak', $scope.eszenak);
       if ($scope.eszenak.length === 0) {
 
         // Creamos una eszena por defecto
@@ -621,10 +618,11 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
         modala.rendered.then(function() {
           $scope.soinuak.audio_play('popup');
-          testuaEszenara(testua_id);
+
         });
 
         modala.result.then(function(result) {
+          testuaEszenara(testua_id);
         }, function(error) {
           console.log("IpuinaCtrl, addBokadiloa", error);
         });
@@ -684,11 +682,12 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
           //elem.children ().css (style_object);
           // Optimización (thaks to iOS): Sólo cargamos lo que nos haga falta
           elem.children().css('transform', style_object.transform);
-          elem.children().css('z-index', parseInt(testua[0].zindex));
+
 
         } else
           el = $compile(elem)($scope);
 
+        elem.children().css('z-index', parseInt(testua[0].zindex));
         angular.element('#eszenatokia').append(elem);
         $scope.insertHere = el;
 
@@ -1172,17 +1171,19 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     if (!lock_play) {
 
       lock_play = true;
+      portada().then(function() {
+        $scope.bideo_modua.uneko_eszena = 0;
 
-      $scope.bideo_modua.uneko_eszena = 0;
+        var zenbat = angular.element('.play_gorde').length; // x elementos -> x callback
+        angular.element('.play_gorde').fadeOut(500, function() {
 
-      var zenbat = angular.element('.play_gorde').length; // x elementos -> x callback
-      angular.element('.play_gorde').fadeOut(500, function() {
+          if (--zenbat > 0) return; // si no es el último callback nos piramos
+          angular.element('.stop_erakutsi').fadeIn(1000, function() {});
+          play_ipuina();
 
-        if (--zenbat > 0) return; // si no es el último callback nos piramos
-        angular.element('.stop_erakutsi').fadeIn(1000, function() {});
-        play_ipuina();
+        });
+      }, function(err) { console.log(err); });
 
-      });
 
     }
 
@@ -1250,7 +1251,14 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       $location.url('/ipuinak/' + id);
     }, 500);
   };
-
+  function portada() {
+    var d = $q.defer();
+    changeFondoa({ fullPath: 'images/fondoa-aukeratu.png'} );
+    $timeout(function() {
+      d.resolve();
+    }, 5000);
+    return d.promise;
+  };
   function play_ipuina(osorik) {
     osorik = typeof osorik !== 'undefined' ? osorik : true;
 
@@ -1263,46 +1271,33 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         $scope.bideo_modua.timer.stop();
 
       Audio.getDuration($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa).then(function(iraupena) {
-
         lapso = Math.max(lapso, iraupena);
-
         $scope.changeEszena($scope.eszenak[$scope.bideo_modua.uneko_eszena], true).then(function() {
-
           // Ojete: puede que en lo que se tarda en cargar la eszena se haya parado la reproducción....
           if ($scope.bideo_modua.playing) {
-
             if (iraupena > 0)
               Audio.play($scope.eszenak[$scope.bideo_modua.uneko_eszena].audioa);
 
             $scope.bideo_modua.timer = new Funtzioak.Timer(function() {
-
               if (osorik) {
                 $scope.bideo_modua.uneko_eszena++;
                 play_ipuina();
               } else
                 $scope.bideo_modua_stop();
-
             }, lapso * 1000);
-
             if (inBackground)
               pause_ipuina();
-
           }
-
         }, function(error) {
           console.log("IpuinaCtrl, play_ipuina changeEszena audiokin", error);
           $scope.bideo_modua_stop();
         });
 
       }, function() {
-
         $scope.changeEszena($scope.eszenak[$scope.bideo_modua.uneko_eszena], true).then(function() {
-
           // Ojete: puede que en lo que se tarda en cargar la eszena se haya parado la reproducción....
           if ($scope.bideo_modua.playing) {
-
             $scope.bideo_modua.timer = new Funtzioak.Timer(function() {
-
               if (osorik) {
                 $scope.bideo_modua.uneko_eszena++;
                 play_ipuina();
@@ -1310,21 +1305,16 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
                 $scope.bideo_modua_stop();
 
             }, lapso * 1000);
-
             if (inBackground)
               pause_ipuina();
 
           }
-
         }, function(error) {
           console.log("IpuinaCtrl, play_ipuina changeEszena audio gabe", error);
           $scope.bideo_modua_stop();
         });
-
       });
-
     } else {
-
       // Hemos llegado al final -> desactivamos el timer y nos quedamos en la última eszena
       $scope.bideo_modua_stop();
 

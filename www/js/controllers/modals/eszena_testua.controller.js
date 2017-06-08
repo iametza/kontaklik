@@ -65,7 +65,7 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
     var testua = angular.element('#testua-div').html();
     $scope.submit = true;
     if (testua != '') {
-      Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {
+      Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {        
         $uibModalInstance.close({ aukera: 2, testua_id: testua_id, testua: testua});
       }, function(error) {
           $uibModalInstance.close({ aukera:4, style: undefined});

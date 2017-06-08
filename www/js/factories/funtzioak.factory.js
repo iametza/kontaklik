@@ -126,13 +126,10 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer();
 
-    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, eo.style1, eo.style2, eo.zindex FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {
-
+    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, eo.style1, eo.style2, eo.zindex FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {      
       if (objektua.length === 1) {
-
         if (objektua[0].izena !== null) {
           var elem = angular.element('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + Funtzioak.get_fullPath(objektua[0]) + '" data-lock="' + lock + '" ></div>');
-
           elem.hide();
 
           if (objektua[0].style !== null) {
@@ -180,11 +177,10 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
             //elem.children ().css (style_object);
             // Optimización (thaks to iOS): Sólo cargamos lo que nos haga falta
             elem.children().css('transform', style_object.transform);
-            elem.children().css('z-index', parseInt(objektua[0].zindex));
-
-          } else
+          } else {
             el = $compile(elem)($scope);
-
+          }
+          elem.children().css('z-index', parseInt(objektua[0].zindex));
           angular.element('#eszenatokia').append(elem);
           $scope.insertHere = el;
           if (show) {
@@ -206,12 +202,13 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
                  rotate2 = style_object2.transform.replace(patroia_rotate, "$1");
               console.log(x, y, scale, rotate, 'nora', x2, y2, scale2, rotate2);
               //scale2 = scale;
-              
+
               elem.children()
               .velocity({
                    translateX: x + 'px',
                    translateY: y + 'px',
-                   scale: scale,
+                   scaleX: scale,
+                   scaleY: Math.abs(scale),
                    rotateZ: rotate + 'deg',
                },
                {
@@ -222,7 +219,8 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
                 .velocity({
                    translateX: x2 + 'px',
                    translateY: y2 + 'px',
-                   scale: scale2,
+                   scaleX: scale2,
+                   scaleY: Math.abs(scale2),
                    rotateZ: rotate2 + 'deg'
                },
                {
