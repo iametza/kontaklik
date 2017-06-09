@@ -136,13 +136,15 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     });
 
   };
-  $scope.addAudioa = function(ahotsa) {
+  $scope.playAudioa = function(ahotsa) {
     Audio.playMp3(ahotsa.audioa);
+  };
+  $scope.checkAudioa = function(ahotsa) {
+    console.log('check');
   };
   function getEszenak() {
     Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
       $scope.eszenak = emaitza;
-      console.log('$scope.eszenak', $scope.eszenak);
       if ($scope.eszenak.length === 0) {
 
         // Creamos una eszena por defecto
