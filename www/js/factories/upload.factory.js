@@ -40,6 +40,9 @@ app.factory('Upload',['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTrans
   }
   var igotzenHasi = function() {
        $http({ method: 'POST', url: url, params: ipuina });
+       ipuina.eszenak.forEach(function(eszena) {
+
+       });
 
   };
   Upload.ipuinaIgo = function(ipuina_id, erabiltzaile_id){
