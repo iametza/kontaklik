@@ -1,4 +1,4 @@
-app.factory('Upload',['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTransfer', function(Database, Funtzioak, $q, $http, $cordovaFileTransfer) {
+app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTransfer', function(Database, Funtzioak, $q, $http, $cordovaFileTransfer) {
   var Upload = {};
   var ipuina = [];
   var url = 'http://haziak.ametza.com/uploads';
@@ -12,7 +12,7 @@ app.factory('Upload',['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTrans
       'atala': 'fondoa',
       'id': eszena.fk_fondoa
     }, '').then(function(emaitza) {
-      ipuina.eszenak[ind].irudiak = emaitza;
+      ipuina.eszenak[ind].fondoa = emaitza;
       // Cargamos sus objetos
       Database.getRows('eszena_objektuak', {
         'fk_eszena': eszena.id
@@ -39,11 +39,22 @@ app.factory('Upload',['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTrans
     return d.promise;
   }
   var igotzenHasi = function() {
-       $http({ method: 'POST', url: url, params: ipuina });
-       ipuina.eszenak.forEach(function(eszena) {
-
-       });
-
+   //$http({ method: 'POST', url: url, params: ipuina });
+   if(ipuina.eszenak.length > 0) {
+     ipuina.eszenak.forEach(function(eszena) {
+        console.log('eszena.fondoa_fullPath', eszena.fondoa_fullPath, eszena.fondoa);
+        if(eszena.eszena_objektuak.length > 0) {
+          eszena.eszena_objektuak.forEach(function(objektua) {
+            console.log('objektua', Funtzioak.get_fullPath(objektua));
+          });
+        }
+        if(eszena.eszena_testuak.length > 0) {
+          eszena.eszena_testuak.forEach(function(testua) {
+            console.log('testua', Funtzioak.get_fullPath(testua));
+          });
+        }
+     });
+   }
   };
   Upload.ipuinaIgo = function(ipuina_id, erabiltzaile_id){
     ipuina = [];
@@ -72,4 +83,4 @@ app.factory('Upload',['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTrans
     }
   };
   return Upload;
-});
+}]);

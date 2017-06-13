@@ -1,4 +1,4 @@
-app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', '$http', '$location', '$cordovaVibration', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', function($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, $http, $location, $cordovaVibration, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler) {
+app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDialogs', '$uibModal', '$cordovaFile', '$timeout', '$window', '$http', '$location', '$cordovaVibration', 'Kamera', 'Audio', 'Files', 'Database', 'Funtzioak', 'Ipuinak', 'Baimenak', 'WizardHandler', 'Upload', function($scope, $compile, $route, $q, $cordovaDialogs, $uibModal, $cordovaFile, $timeout, $window, $http, $location, $cordovaVibration, Kamera, Audio, Files, Database, Funtzioak, Ipuinak, Baimenak, WizardHandler, Upload) {
 
   $scope.erabiltzailea = {};
   $scope.ipuina = {};
@@ -44,7 +44,10 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     'goikoa': false,
     'behekoa': false
   };
-
+  $scope.elkarbanatu = function() {
+    console.log('elkarbanatu', $route.current.params.erabiltzailea_id, $route.current.params.ipuina_id);
+    Upload.ipuinaIgo($route.current.params.erabiltzailea_id, $route.current.params.ipuina_id);
+  }
   $scope.init = function() {
     angular.element('.stop_erakutsi').hide();
     // Cargando....
