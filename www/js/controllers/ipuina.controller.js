@@ -67,7 +67,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
       if (emaitza.length === 1) {
         $scope.erabiltzailea = emaitza[0];
-
+        console.log('$scope.erabiltzailea', $scope.erabiltzailea);
         // Recogemos los datos del ipuina
         Database.getRows('ipuinak', {
           'fk_erabiltzailea': $scope.erabiltzailea.id,

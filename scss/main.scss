@@ -72,28 +72,30 @@ label {
 }
 
 #menua-kutxa {
+  position: relative;
   font-family: ARCHRISTY;
   width: 90%;
   border: 10px solid #fff;
   border-radius: 20px;
-  height: 290px;
+  height: 270px;
   padding: 35px 10px;
   background-color: rgba(255,255,255,0.5);
   margin-right: auto;
   margin-left: auto;
-  margin-top: 10%;
+  margin-top: 12%;
   animation: menua_sarrera 1s ease-out;
 }
 
 #menua-kutxa #elementuak {
   width: 100%;
   white-space: nowrap;
+  margin-left: 20px;
   overflow-x: scroll;
 }
 
 #menua-kutxa #elementuak .elementua {
   display: inline-block;
-  width: 25%;
+  width: 125px;
   margin-right: 25px;
   vertical-align: top;
   text-align: center;
@@ -129,7 +131,7 @@ label {
 }
 
 #menua-kutxa #berria {
-  width: 80%;
+  width: 150px;
   height: 150px;
   text-align: center;
   vertical-align: middle;
@@ -418,8 +420,8 @@ label {
 
 #atzera_joan_ipuinak {
   position: absolute;
-  top: -35px;
-  left: 35px;
+  top: -45px;
+  left: -45px;
   height: 80px;
   width: auto;
   z-index: 1001;

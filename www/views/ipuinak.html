@@ -1,7 +1,8 @@
 <a ng-click="audio_on_off ('sarrera')" id="audio_on_off"><img ng-src="{{audio_mutu && 'images/ikonoak/bolumena-off.png' || 'images/ikonoak/bolumena-on.png'}}" class="itzal" alt="audio" /></a>
-<a ng-click="atzera(erabiltzailea.id)" class="play_gorde_ipuinak"><img src="images/ikonoak/atzera.png" id="atzera_joan_ipuinak" class="" alt="Atzera joan" /></a>
+
 
 <div class="container" id="menua-kutxa">
+  <a ng-click="atzera(erabiltzailea.id)" class="play_gorde_ipuinak"><img src="images/ikonoak/atzera.png" id="atzera_joan_ipuinak" class="" alt="Atzera joan" /></a>
   <div class="row">
     <div class="col-xs-2" id="erabiltzailea">
       <img width="100%" fallback-src="images/erabiltzailea.png" ng-src="{{ erabiltzailea.irudia }}" />
@@ -22,7 +23,7 @@
     <div class="col-xs-3">
       <div id="berria" class="pull-right">
         <a ng-click="ipuina_datuak (0)">
-          <img src="images/ikonoak/gehitu.png" alt="ipuin berria" />
+          <img src="images/ikonoak/plus.png" alt="ipuin berria" />
         </a>
       </div>
     </div>
