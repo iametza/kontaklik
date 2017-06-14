@@ -90,11 +90,13 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
    *
    */
   Funtzioak.botoia_animatu = function(element, image1, image2) {
+    element.addClass('botoia-haunditu');
     element.attr('src', image2);
     //element.addClass(className);
     $timeout(function() {
       element.attr('src', image1);
-    }, 200);
+      element.removeClass('botoia-haunditu');  
+    }, 500);
   };
   Funtzioak.get_fullPath = function(fitxategia) {
     var fullPath = '';
@@ -126,7 +128,7 @@ app.factory('Funtzioak', ['$q', '$timeout', '$compile', 'Database', function($q,
     lock = typeof lock !== 'undefined' ? lock : false;
     var d = $q.defer();
 
-    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, eo.style1, eo.style2, eo.zindex FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {      
+    Database.query('SELECT i.cordova_file, i.path, i.izena, eo.style, eo.style1, eo.style2, eo.zindex FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.id=?', [eszena_objektua_id]).then(function(objektua) {
       if (objektua.length === 1) {
         if (objektua[0].izena !== null) {
           var elem = angular.element('<div objektua="objektua" class="objektua" data-objektua-id="' + eszena_objektua_id + '" data-src="' + Funtzioak.get_fullPath(objektua[0]) + '" data-lock="' + lock + '" ></div>');

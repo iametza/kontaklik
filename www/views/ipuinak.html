@@ -1,17 +1,22 @@
-<a ng-click="audio_on_off ('sarrera')" id="audio_on_off"><img ng-src="{{audio_mutu && 'images/ikonoak/bolumena-off.png' || 'images/ikonoak/bolumena-on.png'}}" class="itzal" alt="audio" /></a>
+<a ng-click="audio_on_off ('sarrera')" id="audio_on_off"><img ng-src="{{audio_mutu && 'images/ikonoak/bolumena-off.png' || 'images/ikonoak/bolumena-on.png'}}" class="" alt="audio" /></a>
 
 
 <div class="container" id="menua-kutxa">
-  <a ng-click="atzera(erabiltzailea.id)" class="play_gorde_ipuinak"><img src="images/ikonoak/atzera.png" id="atzera_joan_ipuinak" class="" alt="Atzera joan" /></a>
+  <a ng-click="atzera(erabiltzailea.id)" class="play_gorde_ipuinak">
+    <img src="images/ikonoak/atzera.png" id="atzera_joan_ipuinak" class="" alt="Atzera joan" />
+  </a>
+  <a ng-click="ipuina_datuak (0)" class="">
+    <img src="images/ikonoak/plus.png" id="berria" class="" alt="ipuin berria" />
+  </a>
   <div class="row">
     <div class="col-xs-2" id="erabiltzailea">
       <img width="100%" fallback-src="images/erabiltzailea.png" ng-src="{{ erabiltzailea.irudia }}" />
       <h3>{{ erabiltzailea.izena}}</h3>
     </div>
 
-    <div class="col-xs-7">
+    <div class="col-xs-10">
       <div id="elementuak">
-        <div class="elementua" ng-repeat="ipuina in ipuinak">
+        <div class="elementua ipuin-elementua" ng-repeat="ipuina in ipuinak">
           <a href="#/ipuinak/{{erabiltzailea.id}}/{{ipuina.id}}" ng-click="soinuak.audio_play ('click')" hm-press="ipuina_datuak (ipuina.id)">
             <img ng-src="{{ipuina.fullPath}}" src="images/eszena_fondo_gabe.jpg" fallback-src="images/eszena_fondo_gabe.jpg" alt="ipuina" />
             <p>{{ipuina.izenburua}}</p>
@@ -19,12 +24,5 @@
         </div>
       </div>
     </div>
-
-    <div class="col-xs-3">
-      <div id="berria" class="pull-right">
-        <a ng-click="ipuina_datuak (0)">
-          <img src="images/ikonoak/plus.png" alt="ipuin berria" />
-        </a>
-      </div>
-    </div>
   </div>
+</div>

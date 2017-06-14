@@ -82,7 +82,7 @@ label {
   background-color: rgba(255,255,255,0.5);
   margin-right: auto;
   margin-left: auto;
-  margin-top: 12%;
+  margin-top: 15%;
   animation: menua_sarrera 1s ease-out;
 }
 
@@ -100,6 +100,10 @@ label {
   vertical-align: top;
   text-align: center;
   word-wrap: break-word;
+}
+
+#menua-kutxa #elementuak .ipuin-elementua {
+  margin-top:25px;
 }
 
 #menua-kutxa #elementuak .elementua:last-child {
@@ -121,31 +125,25 @@ label {
   height: auto;
 }
 
-#menua-kutxa #elementuak .elementu p {
+#menua-kutxa #elementuak .elementua p {
   white-space: normal;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 14px;
   padding-top: 10px;
-  color: #92a7ac;
+  color: #333;
 }
 
 #menua-kutxa #berria {
-  width: 150px;
-  height: 150px;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #e73d64;
-  border: 10px solid #fff;
-  border-radius: 20px;
+  position:absolute;
+  width: 80px;
+  height: auto;
+  top: -45px;
+  right: -45px;
+  animation: torloju 2s ease-out 0s infinite;
 }
 
-#menua-kutxa #berria img {
-  width: auto;
-  padding-top: 25px;
-  height: 100px;
-  animation: torloju 2s linear 0s infinite;
-}
+
 
 #menua-kutxa #berria a,
 #menua-kutxa #berria a:focus,
@@ -158,7 +156,7 @@ label {
 }
 
 #menua-kutxa #erabiltzailea {
-  border-right: 5px solid #e73d64;
+  border-right: 5px solid #f7414a;
 }
 
 #menua-kutxa #erabiltzailea img {
@@ -170,7 +168,7 @@ label {
 }
 
 #menua-kutxa #erabiltzailea h3 {
-  color: #fff;
+  color: #f7414a;
   text-align: center;
 }
 /** Ipuinak editatzeko menu nagusia **/
@@ -312,7 +310,20 @@ label {
 #goiko-menua #eszenak .fondoak .fondo:last-child {
   margin-right: 0;
 }
+#portada_izenburua {
+  display: none;
+  font-family: ARCHRISTY;
+  color: #333;
+  font-size: 36px;
+  position: absolute;
+  width: 50%;
+  height: auto;
+  left: 25%;
+  text-align: center;
+  /* margin is -0.5 * dimension */
 
+  z-index: 1001;
+}
 #play_ipuina,
 #stop_ipuina {
   position: fixed;
@@ -679,7 +690,6 @@ section > #testua-div:focus:hover {
 .botoia-haunditu {
   animation: botoia-haunditu 0.5s ease-in;
 }
-
 .goiko-menua-gorde {
   animation: goiko-menua-gorde 1s ease-in forwards;
 }

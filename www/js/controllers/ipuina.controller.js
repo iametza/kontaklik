@@ -22,17 +22,44 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     'uneko_eszena': 0,
     'timer': undefined
   };
-  $scope.ahotsak = [
-    { audioa: "assets/audioak/arranopola.mp3", izena: 'Arranopola!'},
-    { audioa: "assets/audioak/bazen-behin-euskal-herrian.mp3", izena: 'Bazen behin Euskal Herrian...'},
-    { audioa: "assets/audioak/bazen-behin2.mp3", izena: 'Bazen behin...'},
-    { audioa: "assets/audioak/beldurra.mp3", izena: 'Beldurra!'},
-    { audioa: "assets/audioak/hau-da-komeria.mp3", izena: 'Hau da komeria!'},
-    { audioa: "assets/audioak/hau-poza.mp3", izena: 'Hau poza! (1)'},
-    { audioa: "assets/audioak/hau-poza2.mp3", izena: 'Hau poza! (2)'},
-    { audioa: "assets/audioak/hau-poza3.mp3", izena: 'Hau poza! (3)'},
-    { audioa: "assets/audioak/kalabazan.mp3", izena: 'Kalabazan'}
+  $scope.ahotsak = [{
+      audioa: "assets/audioak/arranopola.mp3",
+      izena: 'Arranopola!'
+    },
+    {
+      audioa: "assets/audioak/bazen-behin-euskal-herrian.mp3",
+      izena: 'Bazen behin Euskal Herrian...'
+    },
+    {
+      audioa: "assets/audioak/bazen-behin2.mp3",
+      izena: 'Bazen behin...'
+    },
+    {
+      audioa: "assets/audioak/beldurra.mp3",
+      izena: 'Beldurra!'
+    },
+    {
+      audioa: "assets/audioak/hau-da-komeria.mp3",
+      izena: 'Hau da komeria!'
+    },
+    {
+      audioa: "assets/audioak/hau-poza.mp3",
+      izena: 'Hau poza! (1)'
+    },
+    {
+      audioa: "assets/audioak/hau-poza2.mp3",
+      izena: 'Hau poza! (2)'
+    },
+    {
+      audioa: "assets/audioak/hau-poza3.mp3",
+      izena: 'Hau poza! (3)'
+    },
+    {
+      audioa: "assets/audioak/kalabazan.mp3",
+      izena: 'Kalabazan'
+    }
   ];
+  var portadaTimeout, atzekaldeaTimeout;
   var kontador;
   //var img_play_eszena;
   var inBackground = false;
@@ -145,6 +172,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   $scope.checkAudioa = function(ahotsa) {
     console.log('check');
   };
+
   function getEszenak() {
     Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
       $scope.eszenak = emaitza;
@@ -255,7 +283,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       Database.insertRow('eszena_objektuak', {
         'fk_eszena': $scope.uneko_eszena_id,
         'fk_objektua': objektua.id,
-        'zindex':  zindex
+        'zindex': zindex
       }).then(function(emaitza) {
         Funtzioak.objektuaEszenara(emaitza.insertId, true, false, $scope);
       }, function(error) {
@@ -332,22 +360,22 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
   $scope.pressEszena = function(eszena_id) {
     $cordovaVibration.vibrate(100);
-    if (!eszena_aldatzen){
-      $cordovaDialogs.confirm ('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then (function (buttonIndex){
-        if (buttonIndex == 1){
-          Ipuinak.ezabatu_eszena (eszena_id).then (function (){
-            Ipuinak.eszenak_ordenatu ($scope.ipuina.id).then (function (){
+    if (!eszena_aldatzen) {
+      $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
+        if (buttonIndex == 1) {
+          Ipuinak.ezabatu_eszena(eszena_id).then(function() {
+            Ipuinak.eszenak_ordenatu($scope.ipuina.id).then(function() {
               // Recogemos las eszenak que queden del ipuina
-              getEszenak ();
-            }, function (error){
-              console.log ("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
+              getEszenak();
+            }, function(error) {
+              console.log("IpuinaCtrl, pressEszena eszenak_ordenatu", error);
             });
-          }, function (error){
-            console.log ("IpuinaCtrl, pressEszena ezabatu_eszena", error);
+          }, function(error) {
+            console.log("IpuinaCtrl, pressEszena ezabatu_eszena", error);
           });
         }
-      }, function (error){
-        console.log ("IpuinaCtrl, pressEszena confirm", error);
+      }, function(error) {
+        console.log("IpuinaCtrl, pressEszena confirm", error);
       });
     }
   };
@@ -606,7 +634,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       Database.insertRow('eszena_testuak', {
         'fk_eszena': $scope.uneko_eszena_id,
         'fk_objektua': bokadiloa.id,
-        'zindex':  zindex
+        'zindex': zindex
       }).then(function(emaitza) {
         testua_id = emaitza.insertId;
         var modala = $uibModal.open({
@@ -924,25 +952,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             'fk_ipuina': $scope.ipuina.id,
             'ikusgai': 1
           }).then(function(emaitza) {
-
-            /*var elem = {
-              'id': emaitza.insertId,
-              'fullPath': cordova.file.dataDirectory + irudia,
-              'miniPath': cordova.file.dataDirectory + 'miniaturak/' + irudia,
-              'fk_ipuina': $scope.ipuina.id
-            };
-
-            switch (atala) {
-              case 'objektua':
-                $scope.objektuak.unshift(elem);
-                $scope.addObjektua(elem);
-                break;
-
-              case 'fondoa':
-                $scope.fondoak.unshift(elem);
-                $scope.addFondoa(elem);
-                break;
-            }*/
             window.location = '#/editorea/' + emaitza.insertId;
           }, onError);
         }, onError);
@@ -1161,37 +1170,36 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   function audioa_kill() {
-
     Audio.geratuMakinak();
-
     time_counter_reset();
-
     $scope.uneko_audioa.egoera = 'stop';
-
   }
 
   $scope.bideo_modua_play = function() {
     // Ikonoa aldatu
     Funtzioak.botoia_animatu(angular.element('#play_ipuina'), 'images/ikonoak/play.png', 'images/ikonoak/play-press.png');
     if (!lock_play) {
-
       lock_play = true;
-      portada().then(function() {
-        $scope.bideo_modua.uneko_eszena = 0;
+      $scope.bideo_modua.uneko_eszena = 0;
 
-        var zenbat = angular.element('.play_gorde').length; // x elementos -> x callback
-        angular.element('.play_gorde').fadeOut(500, function() {
+      var zenbat = angular.element('.play_gorde').length; // x elementos -> x callback
+      angular.element('.play_gorde').fadeOut(500, function() {
 
-          if (--zenbat > 0) return; // si no es el último callback nos piramos
-          angular.element('.stop_erakutsi').fadeIn(1000, function() {});
-          play_ipuina();
+        if (--zenbat > 0) return; // si no es el último callback nos piramos
+        angular.element('.stop_erakutsi').fadeIn(1000, function() {});
 
+        portada().then(function() {
+          if (lock_play) {
+            play_ipuina();
+          } else {
+            $scope.changeEszena($scope.eszenak[0]);
+          }
+        }, function(err) {
+          $scope.changeEszena($scope.eszenak[0]);
+          console.log('changeEszena ' + err);
         });
-      }, function(err) { console.log(err); });
-
-
+      });
     }
-
   };
 
   $scope.play_eszena = function() {
@@ -1235,6 +1243,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       if ($scope.bideo_modua.timer !== undefined)
         $scope.bideo_modua.timer.stop();
 
+      $timeout.cancel(portadaTimeout);
       // Paramos la posible reproducción del audio
       Audio.geratuMakinak();
 
@@ -1256,14 +1265,21 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       $location.url('/ipuinak/' + id);
     }, 500);
   };
+
   function portada() {
-    var d = $q.defer();
-    changeFondoa({ fullPath: 'images/fondoa-aukeratu.png'} );
-    $timeout(function() {
-      d.resolve();
+    $scope.bideo_modua.playing = true;
+    clearEszena();
+    changeFondoa({
+      fullPath: 'images/ipuin-azala.png'
+    });
+
+    portadaTimeout = $timeout(function() {
     }, 5000);
-    return d.promise;
+
+
+    return portadaTimeout;
   };
+
   function play_ipuina(osorik) {
     osorik = typeof osorik !== 'undefined' ? osorik : true;
 

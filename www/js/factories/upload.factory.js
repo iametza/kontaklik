@@ -1,7 +1,7 @@
 app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTransfer', '$cordovaDevice', function(Database, Funtzioak, $q, $http, $cordovaFileTransfer, $cordovaDevice) {
   var Upload = {};
-  var ipuina = [];
-  var server = 'http://haziak.ametza.com/jquery/uploads';
+  var ipuina;
+  var server = 'http://haziak.ametza.com/upload.php';
 
   var onError = function(err) {
     console.log(err);
@@ -43,15 +43,11 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
     return d.promise;
   }
   var igotzenHasi = function() {
-    $http({
-      method: 'POST',
-      url: server,
-      dataType: 'json',
-      data: ipuina,
-      headers: { 'Content-Type': 'application/json; charset=UTF-8' }
-    }).then(function(res) {
+    console.log('ipuina', ipuina);
+    $http({ method: 'POST', url: server, data:ipuina }).then(function(res) {
       console.log('POST', res);
-      if (ipuina.eszenak.length > 0) {
+      /*
+      if (ipuina.eszenak.length > 0 && res.status === 200) {
         ipuina.eszenak.forEach(function(eszena) {
           if (eszena.fondoa) {
             var datuak = {
@@ -61,7 +57,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
               uuid: ipuina.uuid
             };
             $cordovaFileTransfer.upload(server, eszena.fondoa.fullPath, datuak, true).then(function(res) {
-              console.log('res', res.response);
+              console.log('fondoa upload ongi!');
             }, function(err) {
               console.log('cordovaFileTransfer.upload objektua', err);
             }, onProgress);
@@ -77,7 +73,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
                 uuid: ipuina.uuid
               };
               $cordovaFileTransfer.upload(server, targetPath, datuak, true).then(function(res) {
-                console.log('res', res);
+                console.log('objektua upload ongi!');
               }, function(err) {
                 console.log('cordovaFileTransfer.upload objektua', err);
               }, onProgress);
@@ -94,19 +90,19 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
                 uuid: ipuina.uuid
               };
               $cordovaFileTransfer.upload(server, targetPath, datuak, true).then(function(res) {
-                console.log('res', res);
+                console.log('testua upload ongi!');
               }, function(err) {
                 console.log('cordovaFileTransfer.upload testua', err);
               }, onProgress);
             });
           }
         });
-      }
+      }*/
     }, onError);
   };
   Upload.ipuinaIgo = function(erabiltzaile_id, ipuina_id) {
     console.log('ipuinaIgo', ipuina_id, erabiltzaile_id);
-    ipuina = [];
+    ipuina = {};
     var promises = [];
     if (ipuina_id > 0 && erabiltzaile_id > 0) {
       ipuina.uuid = $cordovaDevice.getUUID();
