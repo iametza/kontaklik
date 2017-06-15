@@ -1,5 +1,5 @@
 app.controller('OrokorraCtrl', ['$scope', '$window', 'Soinuak', 'Funtzioak', function($scope, $window, Soinuak, Funtzioak) {
-
+  angular.element('#xuria').hide();
   $scope.audio_mutu = false;
 
   $scope.audio_on_off = function(audio_fondo) {
@@ -33,7 +33,7 @@ app.controller('OrokorraCtrl', ['$scope', '$window', 'Soinuak', 'Funtzioak', fun
       Soinuak.audio_fondo_play(Soinuak.get_audio_fondo());
 
   });
-  
+
   // TIP: CSS ':active' pseudo-class beti funtzionatzeko. Y sigue sin funcionar siempre....
   document.addEventListener("touchstart", function() {}, false);
 

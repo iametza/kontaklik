@@ -172,6 +172,19 @@ label {
   text-align: center;
 }
 /** Ipuinak editatzeko menu nagusia **/
+#xuria {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 2000;
+  transition: opacity 3s linear;
+}
+.xuria_gorde {
+  opacity: 0;
+}
 .menu-fondoa {
   border-radius: 12px 12px 12px 12px;
   -moz-border-radius: 12px 12px 12px 12px;
@@ -311,17 +324,27 @@ label {
   margin-right: 0;
 }
 #portada_izenburua {
-  display: none;
+  display:none;
   font-family: ARCHRISTY;
   color: #333;
   font-size: 36px;
-  position: absolute;
+  position: fixed;
   width: 50%;
   height: auto;
-  left: 25%;
+  left: 30%;
+  top: 35%;
   text-align: center;
   /* margin is -0.5 * dimension */
 
+  z-index: 1001;
+}
+#elkarbanatu {
+  display:none;
+  height: 100px;
+  width: auto;
+  position: fixed;
+  right: 35px;
+  top: 35px;
   z-index: 1001;
 }
 #play_ipuina,
@@ -383,7 +406,7 @@ label {
 }
 
 #beheko-menua .tab-edukia .kargatu .ikon {
-  width: 45%;
+
 }
 
 #beheko-menua .tab-edukia .mikro {

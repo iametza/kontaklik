@@ -1,30 +1,30 @@
- <a ng-click="goikoMenuaCollapse()" id="goiko-collapse" class="play_gorde"><img ng-src="images/izkutatu-eszenak.png"></a>
- <a ng-click="behekoMenuaCollapse()" id="beheko-collapse" class="play_gorde"><img ng-src="images/izkutatu-menua.png"></a>
- <a ng-click="elkarbanatu()">Elkarbanatu</a>
- <p id="portada_izenburua">{{ ipuina.izenburua }}</p>
- <div class="row menu-fondoa play_gorde" id="goiko-menua">
-        <div class="col-xs-10">
-          <div id="eszenak">
-            <div class="fondoak">
-              <div ng-repeat="eszena in eszenak track by $index" class="eszena-fondoa"  ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)">
-                <img class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.fondoa_fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="eszena"/>
-                <div class="eszena-zenbakia">
-                  {{ $index + 1  }}
-                </div>
-              </div>
-            </div>
+<a ng-click="goikoMenuaCollapse()" id="goiko-collapse" class="play_gorde"><img ng-src="images/izkutatu-eszenak.png"></a>
+<a ng-click="behekoMenuaCollapse()" id="beheko-collapse" class="play_gorde"><img ng-src="images/izkutatu-menua.png"></a>
+<a ng-click="elkarbanatu()"><img id="elkarbanatu" src="images/ikonoak/elkarbanatu.png" class="" alt="gelditu" /></a>
+<p id="portada_izenburua">{{ ipuina.izenburua }}</p>
+<div class="row menu-fondoa play_gorde" id="goiko-menua">
+  <div class="col-xs-10">
+    <div id="eszenak">
+      <div class="fondoak">
+        <div ng-repeat="eszena in eszenak track by $index" class="eszena-fondoa" ng-click="changeEszena (eszena)" hm-press="pressEszena (eszena.id)">
+          <img class="fondo" ng-class="{'active': eszena.id == uneko_eszena_id}" ng-src="{{eszena.fondoa_fullPath}}" src="images/eszena_fondo_gabe.jpg" alt="eszena" />
+          <div class="eszena-zenbakia">
+            {{ $index + 1 }}
           </div>
-        </div>
-
-        <div class="col-xs-1">
-          <a ng-click="addEszena ()"><img src="images/ikonoak/plus.png" id="eszena_berria" class="itzal" alt="eszena berria" /></a>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="col-xs-1">
+    <a ng-click="addEszena ()"><img src="images/ikonoak/plus.png" id="eszena_berria" alt="eszena berria" /></a>
+  </div>
+</div>
+</div>
 
 <uib-tabset active="0" id="beheko-menua" class="play_gorde">
   <uib-tab index="0">
-    <uib-tab-heading><img class="pestaina-irudia"  src="images/pestaina-fondoak-aktibo.png"/></uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-fondoak-aktibo.png" /></uib-tab-heading>
     <div class="tab-edukia menu-fondoa">
       <div class="row">
         <div class="col-xs-9">
@@ -35,8 +35,8 @@
 
         <div class="col-xs-3">
           <div class="kargatu">
-            <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.png" class="ikon galeria" alt="galeria" /></a>
-            <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.png" class="ikon kamara" alt="kamara" /></a>
+            <a ng-click="takeGallery ('fondoa')"><img src="images/ikonoak/galeria.png" height="70px" class="ikon galeria" alt="galeria" /></a>
+            <a ng-click="takePicture ('fondoa')"><img src="images/ikonoak/kamara.png" height="70px" class="ikon kamara" alt="kamara" /></a>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@
   </uib-tab>
 
   <uib-tab index="1">
-    <uib-tab-heading><img class="pestaina-irudia"  src="images/pestaina-pertsonaiak-aktibo.png"/></uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-pertsonaiak-aktibo.png" /></uib-tab-heading>
 
     <div class="tab-edukia menu-fondoa">
       <div class="row">
@@ -65,12 +65,12 @@
   </uib-tab>
 
   <uib-tab index="2">
-    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-testuak-aktibo.png"/></uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-testuak-aktibo.png" /></uib-tab-heading>
     <div class="tab-edukia menu-fondoa">
       <div class="row">
         <div class="col-xs-10">
           <div class="elementuak">
-             <a ng-click="addBokadiloa (bokadiloa)" hm-press="pressBokadiloa (bokadiloa)" ng-repeat="bokadiloa in bokadiloak"><img ng-src="{{bokadiloa.fullPath}}" class="irudia" alt="bokadiloa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
+            <a ng-click="addBokadiloa (bokadiloa)" hm-press="pressBokadiloa (bokadiloa)" ng-repeat="bokadiloa in bokadiloak"><img ng-src="{{bokadiloa.fullPath}}" class="irudia" alt="bokadiloa" fallback-src="images/eszena_fondo_gabe.jpg"/></a>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@
   </uib-tab>
 
   <uib-tab index="3" deselect="audioa_tab_desaukeratua()">
-    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-audioak-aktibo.png"/></uib-tab-heading>
+    <uib-tab-heading><img class="pestaina-irudia" src="images/pestaina-audioak-aktibo.png" /></uib-tab-heading>
 
     <div class="tab-edukia menu-fondoa">
       <div class="row">
@@ -89,23 +89,23 @@
           </div>
 
           <div class="kontrols">
-            <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/grabatu.png" class="itzal" alt="grabatzen hasi" /></a>
-            <a ng-click="audioa_stopRecord ()" ng-hide="uneko_audioa.egoera == 'stop'"><img src="images/ikonoak/stop.png" class="itzal" alt="grabazioa gelditu" /></a>
+            <a ng-click="audioa_startRecord ()" ng-hide="uneko_audioa.egoera == 'record'"><img src="images/ikonoak/grabatu.png" class="" alt="grabatzen hasi" /></a>
+            <a ng-click="audioa_stopRecord ()" ng-hide="uneko_audioa.egoera == 'stop'"><img src="images/ikonoak/stop.png" class="" alt="grabazioa gelditu" /></a>
           </div>
         </div>
 
         <div class="col-xs-3" ng-hide="uneko_audioa.izena == ''">
           <div class="mikro">
-            <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
+            <img src="images/ikonoak/mikroa.png" alt="mikrofonoa" />
             <p>{{uneko_audioa.counter | kontador}}</p>
           </div>
 
           <div class="kontrols">
-            <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/play.png" class="itzal" alt="entzun" /></a>
-            <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/pause.png" class="itzal" alt="pausatu" /></a>
+            <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/play.png" class="" alt="entzun" /></a>
+            <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/pause.png" class="" alt="pausatu" /></a>
             <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/stop.png" class="itzal" alt="gelditu" /></a>
 
-            <button ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+            <a ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><img src="images/ikonoak/trash.png" class="" alt="gelditu" /></a>
           </div>
         </div>
 
@@ -114,7 +114,7 @@
             <span ng-repeat="ahotsa in ahotsak">
               <img src="images/kantari.png" class="irudia" alt="ahotsa"/>
               <img ng-click="playAudioa (ahotsa)" src="images/ikonoak/play.png" class="irudia" alt="ahotsa"/>
-              <img ng-click="checkAudioa (ahotsa)" src="images/ikonoak/check.png" class="irudia" alt="ahotsa"/>
+              <img ng-click="saveAudioa (ahotsa)" src="images/ikonoak/check.png" class="irudia" alt="ahotsa"/>
               {{ ahotsa.izena }}
             </span>
           </div>
