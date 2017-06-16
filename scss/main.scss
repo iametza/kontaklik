@@ -481,14 +481,17 @@ body.modal-open {
 
 .modal-dialog {
   margin: 50px auto !important;
+
 }
 
 .modal-content {
-  background-color: #9ac140 !important;
-  border-radius: 0 !important;
+  background-color: #f7414a !important;
+  border-radius: 15px !important;
+  border: 10px solid #fff !important;
 }
 
 .modal-header {
+  padding: 0;
   border-bottom: none !important;
 }
 
@@ -500,14 +503,59 @@ body.modal-open {
 
 .modal-header .itxi {
   position: absolute;
-  top: -25px;
-  right: -25px;
-  width: 50px;
+  top: -35px;
+  right: -35px;
+  width: 70px;
   height: auto;
 }
-
+.modal-body .fotua {
+  float: left;
+  position: relative;
+  width: 30%;
+}
+.modal-body #argazkia{
+  height: 140px;
+  width: auto;
+  margin-left: 15px;
+  margin-bottom: 20px;
+  border: 10px solid #fff !important;
+}
+.modal-body .testua {
+  float: left;
+  width: 60%;
+}
+.modal-body .testua input{
+  font-family: ARCHRISTY;
+  color: #333;
+  font-size: 24px;
+}
+.modal-body #kamera {
+  bottom: -15px;
+  left: -10px;
+}
+.modal-body #argazkia_ezabatu {
+  bottom: -15px;
+  right: 0px;
+}
+.modal-body #kamera,
+.modal-body #argazkia_ezabatu,
+.modal-body #erabiltzailea_ezabatu,
+.modal-body #check {
+  position: absolute;
+  width: 70px !important;
+  height: auto;
+}
+.modal-body #erabiltzailea_ezabatu {
+  right: 35px;
+  bottom: -35px;
+}
+.modal-body #check {
+  bottom: -35px;
+  right: -35px;
+}
 .modal-body label {
   color: #fff;
+  font-size: 32px;
 }
 
 .modal-body .form-control,
@@ -517,28 +565,6 @@ body.modal-open {
   box-shadow: none;
 }
 
-.modal-body .botoiak {
-  text-align: center;
-  padding-top: 20px;
-}
-
-.modal-body .botoiak button,
-.modal-body .botoiak button:focus,
-.modal-body .botoiak button:hover {
-  background-color: #fff;
-  color: #e73d64;
-  border-color: #fff;
-  text-transform: uppercase;
-  font-weight: bold;
-  padding: 6px 24px;
-  outline: none;
-}
-
-.modal-body .botoiak button:active {
-  background-color: #e73d64;
-  color: #fff;
-  border-color: #e73d64;
-}
 
 .modal-body .has-error .form-control {
   border-color: #e73d64;
@@ -550,14 +576,6 @@ body.modal-open {
   border-color: #e73d64;
 }
 
-.modal-body #argazkia {
-  text-align: center;
-}
-
-.modal-body #argazkia img {
-  width: 200px;
-  height: auto;
-}
 /** Cojón, digo cajón desastre **/
 .laukia {
   position: absolute;

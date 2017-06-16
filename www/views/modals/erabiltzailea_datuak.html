@@ -1,6 +1,5 @@
 <div class="modal-header">
   <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
-  <h4 class="modal-title" id="myModalLabel">Erabiltzailea</h4>
   <img class="itxi" src="images/ikonoak/itxi.png" ng-click="itxi ()" alt="itxi" />
 </div>
 <div class="modal-body">
@@ -9,9 +8,17 @@
     <span class="sr-only">Oharra:</span> {{errore_mezua}}
   </div>
 
-  <form name="formularioa" novalidate="" ng-submit="erabiltzailea_gorde (formularioa)">
-    <div class="form-group" ng-class="{'has-error': errore_mezua !== '' || (submit && formularioa.izena.$invalid)}">
-      <label for="izena">Izena</label>
+  <form name="formularioa" novalidate="">
+    <div class="form-group fotua">
+
+        <!-- ng-src="{{argazkia_fullPath == '' && 'images/erabiltzailea.png' || argazkia_fullPath}}" -->
+        <img src="images/erabiltzailea-neska.png" id="argazkia" alt="argazkia" />
+        <a ng-click="takePicture ()"><img src="images/ikonoak/kamara.png" id="kamera"/></a>
+        <a ng-if="eremuak.argazkia != ''" ng-click="argazkia_ezabatu ()"><img src="images/ikonoak/cross.png" id="argazkia_ezabatu"/></a>
+
+    </div>
+    <div class="form-group testua" ng-class="{'has-error': errore_mezua !== '' || (submit && formularioa.izena.$invalid)}">
+      <label for="izena">Zure izena</label>
       <input type="text" class="form-control" id="izena" name="izena" ng-model="eremuak.izena" placeholder="Izena" required autofocus />
     </div>
 
@@ -20,22 +27,10 @@
       <span class="sr-only">Oharra:</span> Izena eremua bete mesedez
     </div>
 
-    <div class="form-group">
-      <label for="argazkia">Argazkia</label>
 
-      <div id="argazkia">
-        <img ng-src="{{argazkia_fullPath == '' && 'images/erabiltzailea.png' || argazkia_fullPath}}" alt="argazkia" />
-      </div>
-
-      <div class="botoiak">
-        <button type="button" class="btn btn-primary" ng-click="takePicture ()">Argazkia atera</button>
-        <button type="button" class="btn btn-primary" ng-if="eremuak.argazkia != ''" ng-click="argazkia_ezabatu ()">Argazkia ezabatu</button>
-      </div>
-    </div>
-
-    <div class="botoiak">
-      <button type="submit" class="btn btn-primary">Gorde</button>
-      <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="erabiltzailea_ezabatu ()">Ezabatu</button>
-    </div>
   </form>
+
+  <a ng-if="ezabatu_button" ng-click="erabiltzailea_ezabatu ()"><img src="images/ikonoak/cross.png" id="erabiltzailea_ezabatu"/></a>
+  <a ng-click="erabiltzailea_gorde (formularioa)"><img src="images/ikonoak/check.png" id="check"/></button>
+  <div style="clear:both"></div>
 </div>

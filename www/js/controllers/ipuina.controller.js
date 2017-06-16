@@ -1222,6 +1222,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.bideo_modua_stop = function() {
+    angular.element('#xuria').hide();
+    audioa_kill();
     // Ikonoa aldatu
     Funtzioak.botoia_animatu(angular.element('.stop_erakutsi'), 'images/ikonoak/stop.png', 'images/ikonoak/stop-press.png');
     $scope.soinuak.audio_play('click');
@@ -1286,7 +1288,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     xuria.removeClass('xuria_gorde');
     var lapso = 5; // Numero de segundos minimo entre una eszena y la siguiente
     xuria.show();
-    console.log('addClass');
     xuria.addClass('xuria_gorde');
 
     if ($scope.bideo_modua.uneko_eszena < $scope.eszenak.length) {
