@@ -10,9 +10,7 @@
 
   <form name="formularioa" novalidate="">
     <div class="form-group fotua">
-
-        <!-- ng-src="{{argazkia_fullPath == '' && 'images/erabiltzailea.png' || argazkia_fullPath}}" -->
-        <img src="images/erabiltzailea-neska.png" id="argazkia" alt="argazkia" />
+        <img src="images/erabiltzailea-neska.png" ng-src="{{argazkia_fullPath == '' && 'images/erabiltzailea.png' || argazkia_fullPath}}" id="argazkia" alt="argazkia" />
         <a ng-click="takePicture ()"><img src="images/ikonoak/kamara.png" id="kamera"/></a>
         <a ng-if="eremuak.argazkia != ''" ng-click="argazkia_ezabatu ()"><img src="images/ikonoak/cross.png" id="argazkia_ezabatu"/></a>
 
@@ -31,6 +29,6 @@
   </form>
 
   <a ng-if="ezabatu_button" ng-click="erabiltzailea_ezabatu ()"><img src="images/ikonoak/cross.png" id="erabiltzailea_ezabatu"/></a>
-  <a ng-click="erabiltzailea_gorde (formularioa)"><img src="images/ikonoak/check.png" id="check"/></button>
+  <a ng-click="erabiltzailea_gorde (formularioa)"><img src="images/ikonoak/check.png" id="check"/></a>
   <div style="clear:both"></div>
 </div>

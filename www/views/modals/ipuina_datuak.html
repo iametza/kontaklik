@@ -1,6 +1,4 @@
 <div class="modal-header">
-  <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
-  <h4 class="modal-title" id="myModalLabel">Ipuina</h4>
   <img class="itxi" src="images/ikonoak/itxi.png" ng-click="itxi ()" alt="itxi" />
 </div>
 <div class="modal-body">
@@ -9,8 +7,8 @@
     <span class="sr-only">Oharra:</span> {{errore_mezua}}
   </div>
 
-  <form name="formularioa" novalidate="" ng-submit="ipuina_gorde (formularioa)">
-    <div class="form-group" ng-class="{'has-error': errore_mezua !== '' || (submit && formularioa.izenburua.$invalid)}">
+  <form name="formularioa" novalidate="">
+    <div class="form-group testua" ng-class="{'has-error': errore_mezua !== '' || (submit && formularioa.izenburua.$invalid)}">
       <label for="izenburua">Izenburua</label>
       <input type="text" class="form-control" id="izenburua" name="izenburua" ng-model="eremuak.izenburua" placeholder="Izenburua" required autofocus />
     </div>
@@ -19,10 +17,8 @@
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
       <span class="sr-only">Oharra:</span> Izenburua eremua bete mesedez
     </div>
-
-    <div class="botoiak">
-      <button type="submit" class="btn btn-primary">Gorde</button>
-      <button type="button" class="btn btn-danger" ng-if="ezabatu_button" ng-click="ipuina_ezabatu ()">Ezabatu</button>
-    </div>
   </form>
+  <a ng-if="ezabatu_button" ng-click="ipuina_ezabatu ()"><img src="images/ikonoak/cross.png" id="erabiltzailea_ezabatu"/></a>
+  <a ng-click="ipuina_gorde (formularioa)"><img src="images/ikonoak/check.png" id="check"/></a>
+  <div style="clear: both"></div>
 </div>
