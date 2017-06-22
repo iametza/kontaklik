@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "description": "Kontaklik",
     "dependencies": {
+        "cordova-android": "^6.2.3",
         "cordova-plugin-browsersync": "~0.1.1",
         "cordova-plugin-camera": "~2.2.0",
         "cordova-plugin-device": "~1.1.2",
@@ -44,6 +45,9 @@
             "cordova.plugins.diagnostic": {},
             "info.protonet.imageresizer": {},
             "cordova-plugin-vibration": {}
-        }
+        },
+        "platforms": [
+            "android"
+        ]
     }
 }
