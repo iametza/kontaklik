@@ -6,4 +6,5 @@ node_modules/
 www/build/
 platforms/
 plugins/
+res/
 .DS_Store

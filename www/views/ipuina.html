@@ -84,7 +84,7 @@
       <div class="row">
         <div class="col-xs-3" ng-hide="uneko_audioa.izena != ''">
           <div class="mikro">
-            <img src="images/ikonoak/mikro.jpg" alt="mikrofonoa" />
+            <img src="images/ikonoak/mikroa.png" alt="mikrofonoa" />
             <p>{{uneko_audioa.counter | kontador}}</p>
           </div>
 
@@ -103,9 +103,9 @@
           <div class="kontrols">
             <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/play.png" class="" alt="entzun" /></a>
             <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/pause.png" class="" alt="pausatu" /></a>
-            <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/stop.png" class="itzal" alt="gelditu" /></a>
+            <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/stop.png" class="" alt="gelditu" /></a>
 
-            <a ng-click="audioa_delete ()" class="btn btn-danger btn-lg"><img src="images/ikonoak/trash.png" class="" alt="gelditu" /></a>
+            <a ng-click="audioa_delete ()"><img src="images/ikonoak/trash.png" class="" alt="gelditu" /></a>
           </div>
         </div>
 

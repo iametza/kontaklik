@@ -69,12 +69,15 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
   $scope.elkarbanatu = function() {
     Funtzioak.botoia_animatu(angular.element('#elkarbanatu'), 'images/ikonoak/elkarbanatu.png', 'images/ikonoak/elkarbanatu-press.png');
-    //Upload.ipuinaIgo($route.current.params.erabiltzailea_id, $route.current.params.ipuina_id);
+    Upload.ipuinaIgo($route.current.params.erabiltzailea_id, $route.current.params.ipuina_id);
   }
   $scope.init = function() {
     angular.element('.stop_erakutsi').hide();
     // Cargando....
     angular.element('#lanean').show();
+    
+    //KENDU!
+    angular.element('#elkarbanatu').show();
 
     // Paramos la musikilla de fondo
     $scope.soinuak.audio_fondo_stop();
@@ -90,7 +93,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
       if (emaitza.length === 1) {
         $scope.erabiltzailea = emaitza[0];
-        console.log('$scope.erabiltzailea', $scope.erabiltzailea);
+        //console.log('$scope.erabiltzailea', $scope.erabiltzailea);
         // Recogemos los datos del ipuina
         Database.getRows('ipuinak', {
           'fk_erabiltzailea': $scope.erabiltzailea.id,
