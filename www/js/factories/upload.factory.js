@@ -20,24 +20,22 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
       if (emaitza.length > 0) {
         ipuina.eszenak[ind].fondoa = emaitza[0];
         ipuina.eszenak[ind].fondoa.fullPath = Funtzioak.get_fullPath(emaitza[0]);
-        // Cargamos sus objetos
-        Database.query('SELECT i.cordova_file, i.path, i.izena, eo.* FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.fk_eszena=?', [eszena.id]).then(function(objektuak) {
-          ipuina.eszenak[ind].eszena_objektuak = objektuak;
-          // Cargamos sus textos
-          Database.query('SELECT i.cordova_file, i.path, i.izena, eo.* FROM eszena_testuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.fk_eszena=?', [eszena.id]).then(function(testuak) {
-            ipuina.eszenak[ind].eszena_testuak = testuak;
-            d.resolve();
-          }, function(err) {
-            onError();
-            d.reject(err);
-          });
+      }
+      // Cargamos sus objetos
+      Database.query('SELECT i.cordova_file, i.path, i.izena, eo.* FROM eszena_objektuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.fk_eszena=?', [eszena.id]).then(function(objektuak) {
+        ipuina.eszenak[ind].eszena_objektuak = objektuak;
+        // Cargamos sus textos
+        Database.query('SELECT i.cordova_file, i.path, i.izena, eo.* FROM eszena_testuak eo LEFT JOIN irudiak i ON eo.fk_objektua=i.id WHERE eo.fk_eszena=?', [eszena.id]).then(function(testuak) {
+          ipuina.eszenak[ind].eszena_testuak = testuak;
+          d.resolve();
         }, function(err) {
           onError();
           d.reject(err);
         });
-      } else {
-        d.resolve();
-      }
+      }, function(err) {
+        onError();
+        d.reject(err);
+      });
     }, function(err) {
       onError();
       d.reject(err);
