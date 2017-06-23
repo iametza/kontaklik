@@ -69,7 +69,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
   
   $scope.elkarbanatu = function() {
-    console.log ("KAIXOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     Funtzioak.botoia_animatu(angular.element('#elkarbanatu'), 'images/ikonoak/elkarbanatu.png', 'images/ikonoak/elkarbanatu-press.png');
     Upload.ipuinaIgo($route.current.params.erabiltzailea_id, $route.current.params.ipuina_id);
   };
