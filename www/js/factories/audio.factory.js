@@ -2,6 +2,7 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
   var Audio = {},
     media,
+    mediaMp3,
     egoera = 'stop',
     extension = '',
     tmp_path = '';
@@ -19,7 +20,7 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
         break;
     }
     $cordovaFile.checkDir(cordova.file.dataDirectory, 'audioak').then(function(res) {
-      if (res.isDirectory != true) {
+      if (res.isDirectory !== true) {
         $cordovaFile.createDir(cordova.file.dataDirectory, 'audioak');
       }
     }, function(error) {
@@ -84,11 +85,18 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     }
 
   };
+  
   Audio.playMp3 = function(src){
-    console.log('matzu play', cordova.file.applicationDirectory+ 'www/' +src);
-    var media = $cordovaMedia.newMedia(cordova.file.applicationDirectory+ 'www/' +src);
-     media.play(); // Android
-  }
+    //console.log('matzu play', cordova.file.applicationDirectory+ 'www/' +src);
+    mediaMp3 = $cordovaMedia.newMedia(cordova.file.applicationDirectory+ 'www/' +src);
+    mediaMp3.play(); // Android
+  };
+  
+  Audio.stopMp3 = function(){
+    if (mediaMp3 !== undefined)
+      mediaMp3.stop();
+  };
+  
   Audio.play = function(audioa) {
     var d = $q.defer();
 

@@ -1172,6 +1172,10 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     if (!lock_play) {
       lock_play = true;
       $scope.bideo_modua.uneko_eszena = 0;
+      
+      // Paramos la posible reproducción del audio
+      Audio.geratuMakinak();
+      Audio.stopMp3();
 
       var zenbat = angular.element('.play_gorde').length; // x elementos -> x callback
       angular.element('.play_gorde').fadeOut(500, function() {
@@ -1241,9 +1245,9 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       $timeout.cancel(portadaTimeout);
       $timeout.cancel(kontrazalaTimeout);
       
-      
       // Paramos la posible reproducción del audio
       Audio.geratuMakinak();
+      Audio.stopMp3(); // kontrazalaren audioa gelditzeko
 
       // Desbloqueamos los objetos/textos de la eszena
       $scope.$broadcast("bideo_modua_off");
