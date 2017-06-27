@@ -1,16 +1,12 @@
-<div class="modal-header">
-  <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
-  <h4 class="modal-title" id="myModalLabel">Menua</h4>
-  <img class="itxi" src="images/ikonoak/itxi.png" ng-click="itxi()" alt="itxi" />
-</div>
-<div class="modal-body">
+<div class="gardena">
     <div class="botoiak">
-      <button type="button" class="btn btn-primary" ng-click="bikoiztu()">Bikoiztu</button>
-      <button type="button" class="btn btn-primary" ng-click="buelta_eman()">Buelta eman</button>
-      <button type="button" class="btn btn-primary" ng-click="lehenengo_planora()">Lehenengo planora ekarri</button>
+      <a ng-click="bikoiztu()"><img src="images/ikonoak/kopiatu.png" width="120px" /></a>
+      <a ng-click="buelta_eman()"><img src="images/ikonoak/flip.png" width="120px" /></a>
+      <a ng-click="lehenengo_planora()"><img src="images/ikonoak/kapa.png" width="120px" /></a>
       <button type="button" class="btn btn-primary" ng-click="nondik()"><i class="glyphicon glyphicon-thumbs-up" ng-if="objektua.style1 != null"></i> Nondik</button>
       <button type="button" class="btn btn-primary" ng-click="nora()"><i class="glyphicon glyphicon-thumbs-up" ng-if="objektua.style2 != null"></i> Nora</button>
-      <button type="button" class="btn btn-danger" ng-click="ezabatu()">Ezabatu</button>
+      <a ng-click="ezabatu()"><img src="images/ikonoak/trash.png" width="120px" /></a>
+      <a ng-click="itxi()"><img src="images/ikonoak/check.png" width="120px" /></a>
     </div>
   </form>
 </div>

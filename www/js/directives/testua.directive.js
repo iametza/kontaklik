@@ -43,7 +43,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
 
       // Le damos "id" al elemento para poder hacer una txapuzilla luego
       element.children().attr('id', 'testua_' + testua_id);
-      Database.query('SELECT * FROM eszena_testuak WHERE id=?', [parseInt(testua_id)]).then(function(testua) {        
+      Database.query('SELECT * FROM eszena_testuak WHERE id=?', [parseInt(testua_id)]).then(function(testua) {
         if (testua.length === 1 && testua[0]['testua'] != undefined) {
           element.children('p').html(String(testua[0]['testua']).replace(/<[^>]+>/gm, ''));
         }

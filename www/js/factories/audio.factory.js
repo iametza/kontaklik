@@ -85,18 +85,18 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     }
 
   };
-  
+
   Audio.playMp3 = function(src){
     //console.log('matzu play', cordova.file.applicationDirectory+ 'www/' +src);
     mediaMp3 = $cordovaMedia.newMedia(cordova.file.applicationDirectory+ 'www/' +src);
     mediaMp3.play(); // Android
   };
-  
+
   Audio.stopMp3 = function(){
     if (mediaMp3 !== undefined)
       mediaMp3.stop();
   };
-  
+
   Audio.play = function(audioa) {
     var d = $q.defer();
 
@@ -192,12 +192,19 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     var d = $q.defer();
 
     if (audioa.trim() !== '') {
-
-      //window.resolveLocalFileSystemURL(cordova.file.dataDirectory + audioa, function(fileEntry) {
-        var m = new Media(tmp_path + '/' + audioa, function() {}, function(error) {
-          d.reject(error);
-          console.log("Audio factory, getDuration", error);
-        });
+        var audioStr = audioa.split('/');
+        //window.resolveLocalFileSystemURL(cordova.file.dataDirectory + audioa, function(fileEntry) {
+        if(Array.isArray(audioStr) && audioStr.length > 1) {
+          var m = new Media(tmp_path + '/' + audioa, function() {}, function(error) {
+            d.reject(error);
+            console.log("Audio factory, getDuration", error);
+          });
+        } else {
+          var m = new Media(audioa, function() {}, function(error) {
+            d.reject(error);
+            console.log("Audio factory, getDuration", error);
+          });
+        }
 
         // ojo que sin hacer play/stop no funtziona....
         m.play();

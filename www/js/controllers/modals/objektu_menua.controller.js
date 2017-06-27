@@ -68,7 +68,7 @@ app.controller('ObjektuMenuaCtrl', ['$scope', '$uibModalInstance', 'Database', '
       style = JSON.stringify({ transform: 'translate3d(200px, 350px, 0px) scale(-1, -1) rotate(0)' });
       style_object = { transform: 'translate3d(200px, 350px, 0px) scale(-1, -1) rotate(0)' };
     }
-
+console.log('style', style, style_object);
     Database.query('UPDATE eszena_objektuak SET style = ? WHERE id = ?', [style, parseInt(objektua_id)]).then(function(res) {
       $uibModalInstance.close({ aukera:3, style: style_object});
     }, function(error) {

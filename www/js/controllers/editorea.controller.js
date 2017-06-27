@@ -5,11 +5,13 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
       srcImage,
       objektua,
       dstImage,
+      panela = angular.element('#panela'),
       col12 = angular.element('.col-md-12'),
       eszenatokia = angular.element('#eszenatokia'),
-      moztuBotoia = angular.element('#moztu')
-      garbituBotoia = angular.element('#garbitu')
-      gordeBotoia = angular.element('#gorde')
+      moztuBotoia = angular.element('#moztu'),
+      atzeraBotoia = angular.element('#atzera')
+      garbituBotoia = angular.element('#garbitu'),
+      gordeBotoia = angular.element('#gorde'),
       ezabatuBotoia = angular.element('#ezabatu'),
       canvasElement = angular.element('#canvas');
   ezabatuBotoia.hide();
@@ -28,8 +30,8 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
       srcImage = new Image(); // create image object
       srcImage.src = objektua.fullPath;
       srcImage.onload = loadImage;
+      panela.css('height', window.screen.height);
     });
-
 
     canvas = document.getElementById('canvas');
     canvas.width = document.body.clientWidth; //document.width is obsolete
@@ -57,6 +59,7 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     ezabatuBotoia.hide();
     gordeBotoia.hide();
     garbituBotoia.show();
+    atzeraBotoia.show();
     moztuBotoia.show();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     allTouches = new Array;
@@ -68,7 +71,8 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     ezabatuBotoia.show();
     gordeBotoia.show();
     garbituBotoia.hide();
-    moztuBotoia.hide();
+    atzeraBotoia.hide();
+    moztuBotoia.hide();    
 
     if(allTouches.length > 0) {
       var img = new Image(); // create image object

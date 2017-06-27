@@ -1,6 +1,5 @@
 <div class="modal-header">
   <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="itxi ()"><span aria-hidden="true">&times;</span></button>-->
-  <h4 class="modal-title" id="myModalLabel">Testua</h4>
   <img class="itxi" src="images/ikonoak/itxi.png" ng-click="itxi ()" alt="itxi" />
 </div>
 
@@ -11,16 +10,14 @@
     <span class="sr-only">Oharra:</span> {{errore_mezua}}
   </div>
 
-  <form name="formularioa" novalidate="" ng-submit="testua_gorde (formularioa)">
+  <form name="formularioa" novalidate="" id="testu_form">
 
     <div class="form-group" ng-class="{'has-error' : submit && formularioa.testua.$invalid, 'has-success' : submit && formularioa.testua.$valid}">
       <label for="testua">Testua</label>
       <div contenteditable="true" id="testua-div" spellcheck="false" ng-model="formularioa.testua"></div>
     </div>
     <div class="botoiak">
-      <button type="submit" class="btn button-icon icon ion-checkmark btn-balanced">Gorde</button>
-      <button type="button" class="btn btn-danger" ng-click="lehenengo_planora ()" ng-if="!first">Lehenengo planoan jarri</button>
-      <button type="button" class="btn btn-danger" ng-click="testua_ezabatu ()" ng-if="!first">Ezabatu</button>
+
     </div>
     <div ng-if="submit && formularioa.testua.$invalid" class="alert alert-warning" role="alert">
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -31,52 +28,10 @@
       <strong>{{ zuzenketa.hitza }}</strong>
       <span ng-repeat="gomendioa in zuzenketa.gomendioak">, {{ gomendioa }}</span>
     </p>
-    <!--<div class="form-group">
-      <label for="fontSize">Letra tamaina</label>
-      <select class="form-control" id="fontSize" name="fontSize" ng-model="eremuak.fontSize" required>
-        <option value="16" ng-selected="eremuak.fontSize == 16">txikia</option>
-        <option value="24" ng-selected="eremuak.fontSize == 24">ertaina</option>
-        <option value="32" ng-selected="eremuak.fontSize == 32">handia</option>
-      </select>
-    </div>-->
-
-    <!--<div class="form-group">
-      <label for="color">Letra kolorea</label>
-      <input type="hidden" name="color" id="color" value="{{eremuak.color}}" ng-model="eremuak.color" />
-      <p>
-        <div ng-repeat="kolorea in koloreak" ng-click="aldaketa ('color', kolorea)" class="laukitxo" ng-class="{'aukeratuta': eremuak.color == kolorea}" style="background-color:{{kolorea}};"></div>
-      </p>
-    </div>
-
-    <div class="form-group">
-      <label for="class">Bunbuiloaren erpin norabidea</label>
-      <select class="form-control" id="class" name="class" ng-model="eremuak.class">
-        <option value="bubble none" ng-selected="eremuak.class == ''">erpin gabe</option>
-        <option value="bubble left" ng-selected="eremuak.class == 'bubble left'">ezkerrean</option>
-        <option value="bubble right" ng-selected="eremuak.class == 'bubble right'">eskubian</option>
-        <option value="bubble bottom" ng-selected="eremuak.class == 'bubble bottom'">behean</option>
-        <option value="bubble top" ng-selected="eremuak.class == 'bubble top'">goian</option>
-      </select>
-    </div>
-    -->
-    <!--<div class="form-group">
-      <label for="borderColor">Border Color</label>
-      <input type="hidden" name="borderColor" id="borderColor" value="{{eremuak.borderColor}}" ng-model="eremuak.borderColor" />
-      <p>
-        <div ng-repeat="kolorea in koloreak" ng-click="aldaketa ('borderColor', kolorea)" class="laukitxo" ng-class="{'aukeratuta': eremuak.borderColor == kolorea}" style="background-color:{{kolorea}};"></div>
-      </p>
-    </div>-->
-
-    <!--<div class="form-group">
-      <label for="backgroundColor">Background Color</label>
-      <input type="hidden" name="backgroundColor" id="backgroundColor" value="{{eremuak.backgroundColor}}" ng-model="eremuak.backgroundColor" />
-      <p>
-        <div ng-repeat="kolorea in koloreak" ng-click="aldaketa ('backgroundColor', kolorea)" class="laukitxo" ng-class="{'aukeratuta': eremuak.backgroundColor == kolorea}" style="background-color:{{kolorea}};"></div>
-      </p>
-    </div>-->
-
-
 
   </form>
-
+  <a ng-click="lehenengo_planora ()" ng-if="!first"><img src="images/ikonoak/kapa.png" id="lehenengo_planora"/></a>
+  <a ng-click="testua_ezabatu ()" ng-if="!first"><img src="images/ikonoak/trash.png" id="erabiltzailea_ezabatu" /></a>
+  <a ng-click="testua_gorde (formularioa)" id="erabiltzailea"><img src="images/ikonoak/check.png" id="check" /></a>
+<div style="clear: both"></div>
 </div>

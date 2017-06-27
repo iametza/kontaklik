@@ -165,9 +165,11 @@ app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Databa
         if (!loki) {
           var modala = $uibModal.open({
             animation: true,
+            size: 'lg',
             backdrop: 'static',
             templateUrl: 'views/modals/objektu_menua.html',
             controller: 'ObjektuMenuaCtrl',
+            windowClass: 'gardena',
             resolve: {
               objektua_id: function() {
                 return objektua_id;
@@ -205,11 +207,10 @@ app.directive('objektua', ['$uibModal', '$cordovaVibration', '$timeout', 'Databa
 
       };
 
-      scope.onRotate = function(event) {
-
+      scope.onRotate = function(event) {        
         if (event.target === element[0].children[0]) {
 
-          var new_angle = parseFloat(initAngle) + parseFloat(event.rotation - rotationInit);
+          var new_angle = (parseFloat(initAngle) + parseFloat(event.rotation - rotationInit)) * Math.sign(transform.scale);
 
           // en iOS se va la pinza si sueltas un dedo antes... De ahi las condiciones del ángulo
           var diff_angle = new_angle - transform.angle;
