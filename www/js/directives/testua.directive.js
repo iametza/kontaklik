@@ -86,7 +86,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
             if (bounds.top >= limits.top && bounds.bottom <= limits.bottom) {
               transform.translate.y = transform_new.translate.y;
             } else if (bounds.left >= limits.left && bounds.right <= limits.right) {
-              if(testua[0]['testua'] != undefined)
+              if (testua[0]['testua'] != undefined)
                 element.find('p').html(String(testua[0]['testua']).replace(/<[^>]+>/gm, ''));
               element.children().css(transform2css(transform));
             }
@@ -161,7 +161,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
         element.children().attr('id', 'testua_' + emaitza.testua_id);
 
         // Cargamos el texto del elemento
-        if(emaitza.testua != undefined)
+        if (emaitza.testua != undefined)
           element.find('.bokadilo-testua').html(String(emaitza.testua).replace(/<[^>]+>/gm, ''));
       };
       scope.onPress = function() {
@@ -193,7 +193,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
                 console.log('closed', result);
               });
               modala.result.then(function(result) {
-                switch(result.aukera) {
+                switch (result.aukera) {
                   case 1:
                     element.fadeOut(500, function() {
                       element.remove();

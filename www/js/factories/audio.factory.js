@@ -88,7 +88,7 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
   Audio.playMp3 = function(src){
     //console.log('matzu play', cordova.file.applicationDirectory+ 'www/' +src);
-    mediaMp3 = $cordovaMedia.newMedia(cordova.file.applicationDirectory+ 'www/' +src);
+    mediaMp3 = $cordovaMedia.newMedia(cordova.file.applicationDirectory + 'www/' + src);
     mediaMp3.play(); // Android
   };
 
@@ -97,19 +97,19 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
       mediaMp3.stop();
   };
 
-  Audio.play = function(audioa) {
+  Audio.play = function(audioa, mota) {
     var d = $q.defer();
-
+    var audio_file = mota == 'dataDirectory'? tmp_path + '/' + audioa : cordova.file.applicationDirectory + 'www/' + audioa
     if (audioa.trim() !== '') {
 
       //window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dirEntry) {
 
-        if (media === undefined || media.src != tmp_path + '/' + audioa) {
+        if (media === undefined || media.src != audio_file) {
 
           if (media !== undefined)
             media.release();
 
-          media = new Media(tmp_path + '/' + audioa, function() {
+          media = new Media(audio_file, function() {
 
             if (media !== undefined)
               media.release();
@@ -187,24 +187,18 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
 
   };
 
-  Audio.getDuration = function(audioa) {
+  Audio.getDuration = function(audioa, mota) {
     // Ojete: en esta función no uso la variable 'media' para que no interfiera en las otras funciones.
     var d = $q.defer();
 
     if (audioa.trim() !== '') {
-        var audioStr = audioa.split('/');
         //window.resolveLocalFileSystemURL(cordova.file.dataDirectory + audioa, function(fileEntry) {
-        if(Array.isArray(audioStr) && audioStr.length > 1) {
-          var m = new Media(tmp_path + '/' + audioa, function() {}, function(error) {
-            d.reject(error);
-            console.log("Audio factory, getDuration", error);
-          });
-        } else {
-          var m = new Media(audioa, function() {}, function(error) {
-            d.reject(error);
-            console.log("Audio factory, getDuration", error);
-          });
-        }
+        var audio_file = mota == 'dataDirectory'? tmp_path + '/' + audioa : cordova.file.applicationDirectory+ 'www/' + audioa;
+        var m = new Media(audio_file, function() {}, function(error) {
+          d.reject(error);
+          console.log("Audio factory, getDuration", error);
+        });
+
 
         // ojo que sin hacer play/stop no funtziona....
         m.play();

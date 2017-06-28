@@ -46,17 +46,33 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
         Funtzioak.maxZindex(testua.fk_eszena).then(function(res) {
           var zindex = parseInt(res) + 1;
           Database.query('UPDATE eszena_testuak SET zindex = ? WHERE id = ?', [zindex, parseInt(testua_id)]).then(function(res) {
-            $uibModalInstance.close({ aukera: 3, testua_id: testua_id, testua: testua, zindex: zindex});
+            $uibModalInstance.close({
+              aukera: 3,
+              testua_id: testua_id,
+              testua: testua,
+              zindex: zindex
+            });
           }, function(error) {
-            $uibModalInstance.close({ aukera: 3, testua_id: testua_id, testua: testua, zindex: zindex});
+            $uibModalInstance.close({
+              aukera: 3,
+              testua_id: testua_id,
+              testua: testua,
+              zindex: zindex
+            });
             console.log("Objektua directive lehenengo planoa UPDATE", error);
           });
         }, function(error) {
-          $uibModalInstance.close({ aukera:4, style: undefined});
+          $uibModalInstance.close({
+            aukera: 4,
+            style: undefined
+          });
           console.log("Objektua directive lehenengo plano maxZindex", error);
         });
       }, function(error) {
-        $uibModalInstance.close({ aukera:4, style: undefined});
+        $uibModalInstance.close({
+          aukera: 4,
+          style: undefined
+        });
         console.log("Objektua directive lehenengo planoko SELECT", error);
       });
     }
@@ -65,10 +81,17 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
     var testua = angular.element('#testua-div').html();
     $scope.submit = true;
     if (testua != '') {
-      Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {        
-        $uibModalInstance.close({ aukera: 2, testua_id: testua_id, testua: testua});
+      Database.query('UPDATE eszena_testuak SET testua = ? WHERE id = ?', [testua, testua_id]).then(function() {
+        $uibModalInstance.close({
+          aukera: 2,
+          testua_id: testua_id,
+          testua: testua
+        });
       }, function(error) {
-          $uibModalInstance.close({ aukera:4, style: undefined});
+        $uibModalInstance.close({
+          aukera: 4,
+          style: undefined
+        });
         console.log("ModalEszenaTestuaCtrl, testua_gorde insert", error);
         $scope.itxi();
       });
@@ -77,19 +100,26 @@ app.controller('ModalEszenaTestuaCtrl', ['$scope', '$compile', '$uibModalInstanc
 
   $scope.testua_ezabatu = function() {
     //$cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
-      //if (buttonIndex == 1) {
-        Database.query('DELETE FROM eszena_testuak WHERE id=?', [parseInt(testua_id)]).then(function() {
-          // Borramos el objeto de la escena AHORA SE HACE EN testua.directive.js
-          /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
-          angular.element (elementua).remove ();*/
-          $uibModalInstance.close({ aukera: 1, testua_id: testua_id, testua: undefined});
-        }, function(error) {
-            $uibModalInstance.close({ aukera:4, style: undefined});
-          console.log("ModalEszenaTestuaCtrl, testua_ezabatu DELETE", error);
-        });
-      //}
+    //if (buttonIndex == 1) {
+    Database.query('DELETE FROM eszena_testuak WHERE id=?', [parseInt(testua_id)]).then(function() {
+      // Borramos el objeto de la escena AHORA SE HACE EN testua.directive.js
+      /*var elementua = angular.element.find ('div[data-testua-id="' + testua_id + '"]');
+      angular.element (elementua).remove ();*/
+      $uibModalInstance.close({
+        aukera: 1,
+        testua_id: testua_id,
+        testua: undefined
+      });
+    }, function(error) {
+      $uibModalInstance.close({
+        aukera: 4,
+        style: undefined
+      });
+      console.log("ModalEszenaTestuaCtrl, testua_ezabatu DELETE", error);
+    });
+    //}
     //}, function(error) {
-      //console.log("ModalEszenaTestuaCtrl, testua_ezabatu dialog", error);
+    //console.log("ModalEszenaTestuaCtrl, testua_ezabatu dialog", error);
     //});
   };
 

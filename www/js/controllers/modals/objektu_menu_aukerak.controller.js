@@ -2,9 +2,15 @@ app.controller('ObjektuMenuAukerakCtrl', ['$scope', '$uibModalInstance', 'Databa
   $scope.ezabatu = function() {
     if (objektua_id > 0) {
       Database.query('DELETE FROM eszena_objektuak WHERE id=?', [parseInt(objektua_id)]).then(function() {
-        $uibModalInstance.close({ aukera:1, objektua_id: objektua_id});
+        $uibModalInstance.close({
+          aukera: 1,
+          objektua_id: objektua_id
+        });
       }, function(error) {
-        $uibModalInstance.close({ aukera:1, objektua_id: objektua_id});
+        $uibModalInstance.close({
+          aukera: 1,
+          objektua_id: objektua_id
+        });
         console.log("Objektua directive DELETE", error);
       });
     }
@@ -12,13 +18,19 @@ app.controller('ObjektuMenuAukerakCtrl', ['$scope', '$uibModalInstance', 'Databa
 
   $scope.editatu = function() {
     if (objektua_id > 0) {
-      $uibModalInstance.close({ aukera: 0, objektua_id: objektua_id });
+      $uibModalInstance.close({
+        aukera: 0,
+        objektua_id: objektua_id
+      });
       window.location = '#/editorea/' + objektua_id;
     }
   };
 
   $scope.itxi = function() {
-    $uibModalInstance.close({ aukera: 0, objektua_id: objektua_id });
+    $uibModalInstance.close({
+      aukera: 0,
+      objektua_id: objektua_id
+    });
   };
 
 }]);

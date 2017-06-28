@@ -1,19 +1,19 @@
 app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'Funtzioak', 'Files', 'Kamera', function($scope, $rootScope, $route, Database, Funtzioak, Files, Kamera) {
   //https://stackoverflow.com/questions/29273808/how-to-crop-a-polynomial-shape-from-an-image
   var canvas,
-      ctx,
-      srcImage,
-      objektua,
-      dstImage,
-      panela = angular.element('#panela'),
-      col12 = angular.element('.col-md-12'),
-      eszenatokia = angular.element('#eszenatokia'),
-      moztuBotoia = angular.element('#moztu'),
-      atzeraBotoia = angular.element('#atzera')
-      garbituBotoia = angular.element('#garbitu'),
-      gordeBotoia = angular.element('#gorde'),
-      ezabatuBotoia = angular.element('#ezabatu'),
-      canvasElement = angular.element('#canvas');
+    ctx,
+    srcImage,
+    objektua,
+    dstImage,
+    panela = angular.element('#panela'),
+    col12 = angular.element('.col-md-12'),
+    eszenatokia = angular.element('#eszenatokia'),
+    moztuBotoia = angular.element('#moztu'),
+    atzeraBotoia = angular.element('#atzera')
+    garbituBotoia = angular.element('#garbitu'),
+    gordeBotoia = angular.element('#gorde'),
+    ezabatuBotoia = angular.element('#ezabatu'),
+    canvasElement = angular.element('#canvas');
   ezabatuBotoia.hide();
   gordeBotoia.hide();
   eszenatokia.css('background', "none");
@@ -26,7 +26,7 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     }, '').then(function(objektuak) {
 
       objektua = objektuak[0];
-      objektua.fullPath =  Funtzioak.get_fullPath(objektua);
+      objektua.fullPath = Funtzioak.get_fullPath(objektua);
       srcImage = new Image(); // create image object
       srcImage.src = objektua.fullPath;
       srcImage.onload = loadImage;
@@ -72,9 +72,9 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     gordeBotoia.show();
     garbituBotoia.hide();
     atzeraBotoia.hide();
-    moztuBotoia.hide();    
+    moztuBotoia.hide();
 
-    if(allTouches.length > 0) {
+    if (allTouches.length > 0) {
       var img = new Image(); // create image object
       img.src = "assets/fondoak/baserria.png";
       img.onload = crop;
@@ -118,34 +118,35 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
 
   function loadImage() {
     var imgWidth = srcImage.naturalWidth;
-    var screenWidth  = $(window).width() - 20;
+    var screenWidth = $(window).width() - 20;
     var scaleX = 1;
     if (imgWidth > screenWidth)
-        scaleX = screenWidth/imgWidth;
+      scaleX = screenWidth / imgWidth;
     var imgHeight = srcImage.naturalHeight;
-    var screenHeight = $(window).height() - canvas.offsetTop-10;
+    var screenHeight = $(window).height() - canvas.offsetTop - 10;
     var scaleY = 1;
     if (imgHeight > screenHeight)
-        scaleY = screenHeight/imgHeight;
+      scaleY = screenHeight / imgHeight;
     var scale = scaleY;
-    if(scaleX < scaleY)
-        scale = scaleX;
-    if(scale < 1){
-        imgHeight = imgHeight*scale;
-        imgWidth = imgWidth*scale;
+    if (scaleX < scaleY)
+      scale = scaleX;
+    if (scale < 1) {
+      imgHeight = imgHeight * scale;
+      imgWidth = imgWidth * scale;
     }
     canvas.height = imgHeight;
     canvas.width = imgWidth;
-    ctx.drawImage(srcImage, 0, 0, srcImage.naturalWidth, srcImage.naturalHeight, 0,0, imgWidth, imgHeight);
+    ctx.drawImage(srcImage, 0, 0, srcImage.naturalWidth, srcImage.naturalHeight, 0, 0, imgWidth, imgHeight);
     //ctx.drawImage(srcImage, 0, 0,  srcImage.width, srcImage.height);
   };
+
   function crop() {
     // do the cropping, provide callback
     cropImage(srcImage, allTouches, function(img) {
       // img is the cropped image - add to DOM for demo
       canvasElement.hide();
       //ctx.drawImage(img, 0, 0);
-      col12.append('<img src="'+img.src+'" class="irudi_moztua" />');
+      col12.append('<img src="' + img.src + '" class="irudi_moztua" />');
     })
   };
 
@@ -173,7 +174,10 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
 
     for (var i = 0; i < touches.length; i++) {
       ongoingTouches.push(touches[i]);
-      allTouches.push({ x: touches[i].pageX, y: touches[i].pageY });
+      allTouches.push({
+        x: touches[i].pageX,
+        y: touches[i].pageY
+      });
 
       var color = colorForTouch(touches[i]);
       ctx.fillStyle = color;
@@ -189,10 +193,13 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     for (var i = 0; i < touches.length; i++) {
       var color = colorForTouch(touches[i]);
       var idx = ongoingTouchIndexById(touches[i].identifier);
-      allTouches.push({ x: touches[i].pageX, y: touches[i].pageY });
+      allTouches.push({
+        x: touches[i].pageX,
+        y: touches[i].pageY
+      });
       ctx.fillStyle = color;
       ctx.beginPath();
-      if(ongoingTouches[idx] != undefined) {
+      if (ongoingTouches[idx] != undefined) {
         ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
       }
       ctx.lineTo(touches[i].pageX, touches[i].pageY);
@@ -234,8 +241,11 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     // create a canvas element, and get 2D context for it:
     // create a canvas element, and get 2D context for it:
     var canvas2 = document.createElement("canvas"),
-        ctx = canvas2.getContext("2d"),
-        i, minx = 10000, miny = 10000, maxx = -1, maxy = -1;
+      ctx = canvas2.getContext("2d"),
+      i, minx = 10000,
+      miny = 10000,
+      maxx = -1,
+      maxy = -1;
 
     // find min max of array points here:
     for (i = 0; i < arr.length; i++) {
@@ -253,7 +263,7 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     ctx.translate(-minx, -miny);
 
     // draw in image;
-    ctx.drawImage(image, 0, 0,  canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
     // create a clip path:
     ctx.moveTo(arr[0].x, arr[0].y);

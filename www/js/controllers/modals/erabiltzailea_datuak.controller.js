@@ -159,7 +159,7 @@ app.controller('ModalErabiltzaileaDatuakCtrl', ['$q', '$scope', '$uibModalInstan
       quality: 50,
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA,
-      encodingType: Camera.EncodingType.JPEG,      
+      encodingType: Camera.EncodingType.JPEG,
       cameraDirection: 1,
       saveToPhotoAlbum: true,
       correctOrientation: true

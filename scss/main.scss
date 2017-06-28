@@ -347,6 +347,7 @@ label {
   top: 35px;
   z-index: 1001;
 }
+#atzera_ipuina,
 #play_ipuina,
 #stop_ipuina {
   position: fixed;
@@ -483,7 +484,11 @@ body.modal-open {
   margin: 50px auto !important;
 
 }
-
+.modal-content p {
+  color: #fff;
+  font-family: ARCHRISTY;
+  font-size: 28px;
+}
 .modal-content{
   background-color: #f7414a !important;
   border-radius: 15px !important;

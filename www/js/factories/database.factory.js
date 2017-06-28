@@ -50,6 +50,7 @@ app.factory('Database', ['$cordovaSQLite', '$q', function($cordovaSQLite, $q) {
       "`fk_ipuina` INTEGER NOT NULL," +
       "`fk_fondoa` INTEGER NOT NULL," +
       "`audioa` TEXT NOT NULL," +
+      "`cordova_file` TEXT," + // applicationDirectory edo dataDirectory
       "`orden` INTEGER NOT NULL," +
       "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" +
       "CREATE INDEX fk_ipuina ON eszenak (fk_ipuina);";

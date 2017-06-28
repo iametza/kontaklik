@@ -6,11 +6,11 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
   var onError = function(err) {
     console.log(err);
   };
-  
+
   var onProgress = function(progress) {
     //console.log(Math.round((progress.loaded / progress.total) * 10000) / 100);
   };
-  
+
   var getEszenaDatuak = function(eszena, ind) {
     var d = $q.defer();
     Database.getRows('irudiak', {
@@ -42,12 +42,12 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
     });
     return d.promise;
   };
-  
+
   var igotzenHasi = function() {
     //console.log('ipuina', ipuina);
     $http({ method: 'POST', url: server, data:ipuina }).then(function(res) {
       //console.log('POST', res);
-      
+
       if (ipuina.eszenak.length > 0 && res.status === 200 && res.data.cod === 0) {
         // Erabiltzaile argazkia igo
         if (ipuina.erabiltzailea.argazkia.trim () !== '') {
@@ -58,17 +58,17 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
             chunkedMode: false,
             params : {'mota':'argazkia', 'izena':ipuina.erabiltzailea.argazkia, 'erabiltzailea_id': ipuina.erabiltzailea.id, 'ipuina_id':ipuina.datuak.id, 'uuid':ipuina.uuid}
           };
-          
+
           $cordovaFileTransfer.upload(server, targetPath, options, true).then(function(res) {
             console.log('erabiltzaile argazkia upload ongi!', res);
           }, function(err) {
             console.log('cordovaFileTransfer.upload erabiltzaile argazkia', err);
           }, onProgress);
         }
-        
+
         // Eszena bakoitzaren gauzak igo
         ipuina.eszenak.forEach(function(eszena) {
-          
+
           // 1. Fondoa
           if (eszena.fondoa !== undefined) {
             var options = {
@@ -77,14 +77,14 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
               chunkedMode: false,
               params : {'mota':'fondoa', 'izena':eszena.fondoa.izena, 'erabiltzailea_id': ipuina.erabiltzailea.id, 'ipuina_id':ipuina.datuak.id, 'uuid':ipuina.uuid}
             };
-            
+
             $cordovaFileTransfer.upload(server, eszena.fondoa.fullPath, options, true).then(function(res) {
               console.log('fondoa upload ongi!', res);
             }, function(err) {
               console.log('cordovaFileTransfer.upload fondoa', err);
             }, onProgress);
           }
-          
+
           // 2. Objektuak
           if (eszena.eszena_objektuak !== undefined && eszena.eszena_objektuak.length > 0) {
             eszena.eszena_objektuak.forEach(function(objektua) {
@@ -95,7 +95,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
                 chunkedMode: false,
                 params : {'mota':'objektua', 'izena':objektua.izena, 'erabiltzailea_id': ipuina.erabiltzailea.id, 'ipuina_id':ipuina.datuak.id, 'uuid':ipuina.uuid}
               };
-              
+
               $cordovaFileTransfer.upload(server, targetPath, options, true).then(function(res) {
                 console.log('objektua upload ongi!', res);
               }, function(err) {
@@ -103,7 +103,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
               }, onProgress);
             });
           }
-          
+
           // 3. Bokadiloak
           if (eszena.eszena_testuak !== undefined && eszena.eszena_testuak.length > 0) {
             eszena.eszena_testuak.forEach(function(testua) {
@@ -114,7 +114,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
                 chunkedMode: false,
                 params : {'mota':'bokadiloa', 'izena':testua.izena, 'erabiltzailea_id': ipuina.erabiltzailea.id, 'ipuina_id':ipuina.datuak.id, 'uuid':ipuina.uuid}
               };
-              
+
               $cordovaFileTransfer.upload(server, targetPath, options, true).then(function(res) {
                 console.log('bokadiloa upload ongi!', res);
               }, function(err) {
@@ -122,29 +122,30 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
               }, onProgress);
             });
           }
-              
+
           // 4. Audioa
           if (eszena.audioa.trim () !== '') {
-            var targetPath = cordova.file.dataDirectory + 'audioak/' + eszena.audioa;
+            var targetPath = eszena.cordova_file == 'dataDirectory'? cordova.file.dataDirectory + 'audioak/' + eszena.audioa_osoa : cordova.file.applicationDirectory + 'www/' + eszena.audioa_osoa;
+
             var options = {
               fileKey: "file",
               fileName: eszena.audioa,
               chunkedMode: false,
               params : {'mota':'audioa', 'izena':eszena.audioa, 'erabiltzailea_id': ipuina.erabiltzailea.id, 'ipuina_id':ipuina.datuak.id, 'uuid':ipuina.uuid}
             };
-            
+
             $cordovaFileTransfer.upload(server, targetPath, options, true).then(function(res) {
               console.log('audioa upload ongi!', res);
             }, function(err) {
               console.log('cordovaFileTransfer.upload audioa', err);
             }, onProgress);
           }
-          
+
         });
       }
     }, onError);
   };
-  
+
   Upload.ipuinaIgo = function(erabiltzaile_id, ipuina_id) {
     //console.log('ipuinaIgo', ipuina_id, erabiltzaile_id);
     ipuina = {};
@@ -175,7 +176,10 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
                 ipuina.eszenak = eszenak;
                 if (eszenak.length > 0) {
                   eszenak.forEach(function(eszena, ind) {
-                    // Empezamos con el fondo
+                    // Audioaren path osoa gorde eta izena banatu eginen dugu
+                    eszena.audioa_osoa = eszena.audioa;
+                    eszena.audioa = eszena.cordova_file == 'applicationDirectory'? eszena.audioa.split('/').pop(): eszena.audioa;
+
                     promises.push(getEszenaDatuak(eszena, ind));
                   });
                   $q.all(promises).then(igotzenHasi, onError);
@@ -187,7 +191,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
       }, onError);
     }
   };
-  
+
   return Upload;
 
 }]);
