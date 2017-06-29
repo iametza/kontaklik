@@ -77,7 +77,7 @@ label {
   width: 90%;
   border: 10px solid #fff;
   border-radius: 20px;
-  height: 270px;
+  height: 290px;
   padding: 35px 10px;
   background-color: rgba(255,255,255,0.5);
   margin-right: auto;
@@ -89,7 +89,6 @@ label {
 #menua-kutxa #elementuak {
   width: 100%;
   white-space: nowrap;
-  margin-left: 20px;
   overflow-x: scroll;
 }
 
@@ -103,7 +102,7 @@ label {
 }
 
 #menua-kutxa #elementuak .ipuin-elementua {
-  margin-top:25px;
+  margin-top: 25px;
 }
 
 #menua-kutxa #elementuak .elementua:last-child {
@@ -135,15 +134,13 @@ label {
 }
 
 #menua-kutxa #berria {
-  position:absolute;
+  position: absolute;
   width: 80px;
   height: auto;
   top: -45px;
   right: -45px;
   animation: torloju 2s ease-out 0s infinite;
 }
-
-
 
 #menua-kutxa #berria a,
 #menua-kutxa #berria a:focus,
@@ -182,9 +179,11 @@ label {
   z-index: 2000;
   transition: opacity 3s linear;
 }
+
 .xuria_gorde {
   opacity: 0;
 }
+
 .menu-fondoa {
   border-radius: 12px 12px 12px 12px;
   -moz-border-radius: 12px 12px 12px 12px;
@@ -301,6 +300,7 @@ label {
   width: auto;
   margin: 0 5px;
 }
+
 #goiko-menua #eszenak .fondoak .eszena-zenbakia {
   position: absolute;
   background-color: rgba(255, 255, 255,0.7);
@@ -323,8 +323,9 @@ label {
 #goiko-menua #eszenak .fondoak .fondo:last-child {
   margin-right: 0;
 }
+
 #portada_izenburua {
-  display:none;
+  display: none;
   font-family: ARCHRISTY;
   color: #333;
   font-size: 36px;
@@ -335,11 +336,11 @@ label {
   top: 35%;
   text-align: center;
   /* margin is -0.5 * dimension */
-
   z-index: 1001;
 }
+
 #elkarbanatu {
-  display:none;
+  display: none;
   height: 100px;
   width: auto;
   position: fixed;
@@ -347,6 +348,7 @@ label {
   top: 35px;
   z-index: 1001;
 }
+
 #atzera_ipuina,
 #play_ipuina,
 #stop_ipuina {
@@ -389,6 +391,20 @@ label {
   margin: 0 5px 0 0;
 }
 
+#beheko-menua .tab-edukia .elementuak .audioa {
+  display: inline-block;
+  width: 90px;
+  margin-left: 10px;
+}
+
+#beheko-menua .tab-edukia .elementuak .audioa img {
+  width: 60px;
+}
+
+#beheko-menua .tab-edukia .elementuak .audioa p {
+  white-space: normal;
+}
+
 #beheko-menua .tab-edukia .elementuak a:last-child .irudia {
   margin-right: 0;
 }
@@ -406,9 +422,7 @@ label {
   width: auto;
 }
 
-#beheko-menua .tab-edukia .kargatu .ikon {
-
-}
+#beheko-menua .tab-edukia .kargatu .ikon {}
 
 #beheko-menua .tab-edukia .mikro {
   float: left;
@@ -434,8 +448,12 @@ label {
   padding-top: 10px;
 }
 
+#beheko-menua .kontrolak {
+  border-right: 5px solid #e73d64;
+}
+
 #beheko-menua .tab-edukia .kontrols img {
-  height: 50px;
+  height: 45px;
   width: auto;
   /*margin-right: 5px;*/
 }
@@ -482,24 +500,27 @@ body.modal-open {
 
 .modal-dialog {
   margin: 50px auto !important;
-
 }
+
 .modal-content p {
   color: #fff;
   font-family: ARCHRISTY;
   font-size: 28px;
 }
-.modal-content{
+
+.modal-content {
   background-color: #f7414a !important;
   border-radius: 15px !important;
   border: 10px solid #fff !important;
 }
+
 .gardena .modal-content {
   background-color: rgba(255, 255, 255, 0) !important;
   border: none !important;
   box-shadow: none;
   margin-top: 100px;
 }
+
 .modal-header {
   padding: 0;
   border-bottom: none !important;
@@ -518,55 +539,66 @@ body.modal-open {
   width: 70px;
   height: auto;
 }
+
 .modal-body .fotua {
   float: left;
   position: relative;
   width: 30%;
 }
-.modal-body #argazkia{
+
+.modal-body #argazkia {
   max-width: 140px;
   margin-left: 15px;
   margin-bottom: 20px;
   border: 10px solid #fff !important;
 }
+
 .modal-body .testua {
   float: left;
   width: 70%;
 }
-.modal-body .testua input{
+
+.modal-body .testua input {
   font-family: ARCHRISTY;
   color: #333;
   font-size: 24px;
 }
+
 .modal-body #kamera {
   bottom: -15px;
   left: -10px;
 }
+
 .modal-body #argazkia_ezabatu {
   bottom: -15px;
   right: -15px;
 }
-.modal-body #kamera,
+
 .modal-body #argazkia_ezabatu,
-.modal-body #erabiltzailea_ezabatu,
 .modal-body #check,
+.modal-body #erabiltzailea_ezabatu,
+.modal-body #kamera,
 .modal-body #lehenengo_planora {
   position: absolute;
   width: 70px !important;
   height: auto;
 }
+
 .modal-body #lehenengo_planora {
   right: 105px;
   bottom: -35px;
 }
+
 .modal-body #erabiltzailea_ezabatu {
   right: 35px;
   bottom: -35px;
 }
+
 .modal-body #check {
   bottom: -35px;
   right: -35px;
 }
+
 .modal-body label {
   color: #fff;
   font-size: 32px;
@@ -579,7 +611,6 @@ body.modal-open {
   box-shadow: none;
 }
 
-
 .modal-body .has-error .form-control {
   border-color: #e73d64;
 }
@@ -589,11 +620,9 @@ body.modal-open {
   background-color: #fff;
   border-color: #e73d64;
 }
-
 /** Cojón, digo cajón desastre **/
 .laukia {
   position: absolute;
-  /*background: silver;*/
   max-width: 150px;
   max-height: 150px;
   text-align: center;
@@ -605,10 +634,10 @@ body.modal-open {
 
 .bokadilo-testua {
   position: absolute;
-  width: 100px;
+  width: 80px;
   word-wrap: break-word;
-  top: 40px;
-  left: 40px;
+  top: 30px;
+  left: 50px;
 }
 
 .objektua {
@@ -724,21 +753,27 @@ body.modal-open {
 #testua-div {
   width: 80%;
   padding: 1em;
-
   border-radius: 3px;
   outline: none;
   border: 2px solid transparent;
   background: #FFF;
   text-decoration: none;
 }
+
 #testu_form {
   margin-bottom: 40px;
 }
+
 #testua-div:focus,
 section > #testua-div:focus:hover {
   background: #FFF;
   border-color: #69c773;
   box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
+}
+
+.aktibatua {
+  border: 7px solid #82b521;
+  border-radius: 45px;
 }
 
 .gorringo {
@@ -748,6 +783,7 @@ section > #testua-div:focus:hover {
 .botoia-haunditu {
   animation: botoia-haunditu 0.5s ease-in;
 }
+
 .goiko-menua-gorde {
   animation: goiko-menua-gorde 1s ease-in forwards;
 }
@@ -778,20 +814,28 @@ section > #testua-div:focus:hover {
   transform: translateY(5px);
 }
 
-#canvas {
-
+#editorea {
+  background-color: #e73d64;
+  height: 1000px;
 }
+
+#canvas {}
 
 #panela {
-padding-top: 70px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #333 !important;
+  padding-top: 70px;
   float: right;
   width: 140px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
-    background-color: #fff;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+  -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+  background-color: #fff;
 }
-#panela img{
+
+#panela img {
   width: 100px;
   margin-left: 20px;
 }

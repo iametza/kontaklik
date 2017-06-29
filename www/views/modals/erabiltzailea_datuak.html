@@ -8,7 +8,7 @@
     <span class="sr-only">Oharra:</span> {{errore_mezua}}
   </div>
 
-  <form name="formularioa" novalidate="">
+  <form name="formularioa" novalidate="" ng-submit="erabiltzailea_gorde (formularioa)">
     <div class="form-group fotua">
         <img src="images/erabiltzailea-neska.png" ng-src="{{argazkia_fullPath == '' && 'images/erabiltzailea.png' || argazkia_fullPath}}" id="argazkia" alt="argazkia" />
         <a ng-click="takePicture ()"><img src="images/ikonoak/kamara.png" id="kamera"/></a>

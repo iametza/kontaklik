@@ -4,7 +4,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
     restrict: 'AE',
     scope: {},
     template: '<img class="laukia" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()" alt="objektua" fallback-src="images/erabiltzailea.png" />' +
-      '<p class="bokadilo-testua" hm-press="onPress"></p>',
+      '<p class="bokadilo-testua" hm-rotatestart="onRotateStart" hm-rotate="onRotate" hm-rotateend="onRotateEnd" hm-pinch="onPinch" hm-pinchend="onPinchEnd" hm-panstart="onPanStart" hm-panmove="onPan" hm-panend="onPanEnd" hm-press="onPress" ng-dblclick="onDblClick()"></p>',
     link: function(scope, element, attrs) {
 
       var testua_id = attrs.testuaId !== undefined ? attrs.testuaId : 0,
@@ -226,7 +226,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
 
       scope.onRotate = function(event) {
 
-        if (event.target === element[0].children[0]) {
+        if (event.target === element[0].children[0] || event.target === element[0].children[1]) {
 
           var new_angle = parseFloat(initAngle) + parseFloat(event.rotation - rotationInit);
 
@@ -263,7 +263,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
 
       scope.onPinch = function(event) {
 
-        if (event.target === element[0].children[0]) {
+        if (event.target === element[0].children[0] || event.target === element[0].children[1]) {
 
           var t = {
             translate: {
@@ -302,7 +302,7 @@ app.directive('testua', ['$cordovaDialogs', '$timeout', '$uibModal', '$q', 'Data
 
       scope.onPan = function(event) {
 
-        if (event.target === element[0].children[0]) {
+        if (event.target === element[0].children[0] || event.target === element[0].children[1]) {
 
           var t = {
             translate: {

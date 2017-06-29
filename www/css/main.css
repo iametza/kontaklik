@@ -70,7 +70,7 @@ label {
   width: 90%;
   border: 10px solid #fff;
   border-radius: 20px;
-  height: 270px;
+  height: 290px;
   padding: 35px 10px;
   background-color: rgba(255, 255, 255, 0.5);
   margin-right: auto;
@@ -81,7 +81,6 @@ label {
 #menua-kutxa #elementuak {
   width: 100%;
   white-space: nowrap;
-  margin-left: 20px;
   overflow-x: scroll; }
 
 #menua-kutxa #elementuak .elementua {
@@ -343,6 +342,17 @@ label {
   width: auto;
   margin: 0 5px 0 0; }
 
+#beheko-menua .tab-edukia .elementuak .audioa {
+  display: inline-block;
+  width: 90px;
+  margin-left: 10px; }
+
+#beheko-menua .tab-edukia .elementuak .audioa img {
+  width: 60px; }
+
+#beheko-menua .tab-edukia .elementuak .audioa p {
+  white-space: normal; }
+
 #beheko-menua .tab-edukia .elementuak a:last-child .irudia {
   margin-right: 0; }
 
@@ -377,8 +387,11 @@ label {
   float: left;
   padding-top: 10px; }
 
+#beheko-menua .kontrolak {
+  border-right: 5px solid #e73d64; }
+
 #beheko-menua .tab-edukia .kontrols img {
-  height: 50px;
+  height: 45px;
   width: auto;
   /*margin-right: 5px;*/ }
 
@@ -480,10 +493,10 @@ body.modal-open {
   bottom: -15px;
   right: -15px; }
 
-.modal-body #kamera,
 .modal-body #argazkia_ezabatu,
-.modal-body #erabiltzailea_ezabatu,
 .modal-body #check,
+.modal-body #erabiltzailea_ezabatu,
+.modal-body #kamera,
 .modal-body #lehenengo_planora {
   position: absolute;
   width: 70px !important;
@@ -522,7 +535,6 @@ body.modal-open {
 /** Cojón, digo cajón desastre **/
 .laukia {
   position: absolute;
-  /*background: silver;*/
   max-width: 150px;
   max-height: 150px;
   text-align: center;
@@ -533,10 +545,10 @@ body.modal-open {
 
 .bokadilo-testua {
   position: absolute;
-  width: 100px;
+  width: 80px;
   word-wrap: break-word;
-  top: 40px;
-  left: 40px; }
+  top: 30px;
+  left: 50px; }
 
 .objektua {
   z-index: 10; }
@@ -650,6 +662,10 @@ section > #testua-div:focus:hover {
   border-color: #69c773;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset; }
 
+.aktibatua {
+  border: 7px solid #82b521;
+  border-radius: 45px; }
+
 .gorringo {
   color: #F00; }
 
@@ -681,13 +697,21 @@ section > #testua-div:focus:hover {
   filter: none;
   transform: translateY(5px); }
 
+#editorea {
+  background-color: #e73d64;
+  height: 1000px; }
+
 #panela {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #333 !important;
   padding-top: 70px;
   float: right;
   width: 140px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
   background-color: #fff; }
 
 #panela img {

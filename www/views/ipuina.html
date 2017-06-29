@@ -82,7 +82,7 @@
 
     <div class="tab-edukia menu-fondoa">
       <div class="row">
-        <div class="col-xs-3" ng-hide="uneko_audioa.izena != ''">
+        <div class="col-xs-3 kontrolak" ng-hide="uneko_audioa.izena != ''">
           <div class="mikro">
             <img src="images/ikonoak/mikroa.png" alt="mikrofonoa" />
             <p>{{uneko_audioa.counter | kontador}}</p>
@@ -94,7 +94,7 @@
           </div>
         </div>
 
-        <div class="col-xs-3" ng-hide="uneko_audioa.izena == ''">
+        <div class="col-xs-3 kontrolak" ng-hide="uneko_audioa.izena == ''">
           <div class="mikro">
             <img src="images/ikonoak/mikroa.png" alt="mikrofonoa" />
             <p>{{uneko_audioa.counter | kontador}}</p>
@@ -102,7 +102,7 @@
 
           <div class="kontrols">
             <a ng-click="audioa_play ()" ng-hide="uneko_audioa.egoera == 'play'"><img src="images/ikonoak/play.png" class="" alt="entzun" /></a>
-            <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/pause.png" class="" alt="pausatu" /></a>
+            <!-- <a ng-click="audioa_pause ()" ng-hide="uneko_audioa.egoera != 'play'"><img src="images/ikonoak/pause.png" class="" alt="pausatu" /></a> -->
             <a ng-click="audioa_stop ()" ng-hide="uneko_audioa.egoera != 'play' && uneko_audioa.egoera != 'pause'"><img src="images/ikonoak/stop.png" class="" alt="gelditu" /></a>
 
             <a ng-click="audioa_delete ()"><img src="images/ikonoak/trash.png" class="" alt="gelditu" /></a>
@@ -111,11 +111,11 @@
 
         <div class="col-xs-9">
           <div class="elementuak">
-            <span ng-repeat="ahotsa in ahotsak">
-              <img src="images/kantari.png" class="irudia" alt="ahotsa"/>
-              <img ng-click="playAudioa (ahotsa)" src="images/ikonoak/play.png" class="irudia" alt="ahotsa"/>
-              <img ng-click="saveAudioa (ahotsa)" src="images/ikonoak/check.png" class="irudia" alt="ahotsa"/>
-              {{ ahotsa.izena }}
+            <span ng-repeat="ahotsa in ahotsak" class="audioa" ng-click="openAudioa(ahotsa)">
+              <img src="images/ikonoak/audioak.png" alt="ahotsa"/>
+              <p>
+                {{ ahotsa.izena }}
+              </p>
             </span>
           </div>
         </div>
