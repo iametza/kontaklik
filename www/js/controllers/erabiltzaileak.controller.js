@@ -4,8 +4,8 @@ app.controller('ErabiltzaileakCtrl', ['$scope', 'Database', '$uibModal', functio
 
   $scope.init = function() {
     $scope.soinuak.audio_fondo_play('sarrera');
-    angular.element('#eszenatokia').css('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
-    angular.element('#eszenatokia').css('background-size', "cover");
+    //angular.element('#eszenatokia').css('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
+    //angular.element('#eszenatokia').css('background-size', "cover");
     // Recogemos los erabiltzaileak
     $scope.getErabiltzaileak();
 

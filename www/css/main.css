@@ -3,16 +3,12 @@
   font-family: ARCHRISTY;
   src: url("../fonts/ARCHRISTY.ttf"); }
 
-html {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0; }
-
+html,
 body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  margin: 0;
   /* Lo siguiente impide que se puedan seleccionar los textos */
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -31,16 +27,36 @@ label {
 #eszenatokia {
   width: 100%;
   height: 100%;
-  background: url("../images/defektuzko-fondoa.png") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  padding: 10px;
   margin: 0;
   /* lo siguiente está añadido para probar las animaciones en la primera pantalla, afectará luego? */
   overflow: hidden;
   position: relative; }
+
+.planoa {
+  width: 110%;
+  margin: 0; }
+
+#zerua {
+  left: -0.75%;
+  position: fixed;
+  z-index: 1; }
+
+#lainoak {
+  animation: mugimentua3 30s infinite linear;
+  position: fixed;
+  z-index: 2; }
+
+#mendiak {
+  animation: mugimentua 6s infinite linear;
+  position: fixed;
+  left: -0.75%;
+  z-index: 3; }
+
+#arbolak {
+  animation: mugimentua2 6s infinite linear;
+  position: fixed;
+  left: -1%;
+  z-index: 4; }
 
 /** Hasiera pantailak (erabiltzaileak/ipuinak) **/
 #menua-burua {
@@ -65,7 +81,7 @@ label {
   animation: erabiltzailea_sartu 1s linear 0.5s backwards; }
 
 #menua-kutxa {
-  position: relative;
+  position: fixed;
   font-family: ARCHRISTY;
   width: 90%;
   border: 10px solid #fff;
@@ -74,9 +90,9 @@ label {
   padding: 35px 10px;
   background-color: rgba(255, 255, 255, 0.5);
   margin-right: auto;
-  margin-left: auto;
+  margin-left: 5%;
   margin-top: 15%;
-  animation: menua_sarrera 1s ease-out; }
+  z-index: 5; }
 
 #menua-kutxa #elementuak {
   width: 100%;
@@ -720,4 +736,6 @@ section > #testua-div:focus:hover {
 
 .irudi_moztua {
   display: block;
-  margin: 15px auto; }
+  position: fixed;
+  z-index: 30;
+  top: 0; }

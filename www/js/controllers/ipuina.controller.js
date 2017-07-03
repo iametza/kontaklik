@@ -222,15 +222,14 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   var saveAudioa = function(ahotsa) {
+    console.log('saveAudioa applicationDirectory');
     // Guardamos el audio en la base de datos
     Database.query('UPDATE eszenak SET audioa=?, cordova_file=? WHERE id=?', [ahotsa.audioa, 'applicationDirectory', $scope.uneko_eszena_id]).then(function() {
 
       // Cambiamos el audio en la lista
       angular.forEach($scope.eszenak, function(eszena) {
-
         if (eszena.id === $scope.uneko_eszena_id)
           eszena.audioa = ahotsa.audioa;
-
       });
 
       $scope.uneko_audioa.izena = ahotsa.audioa;
@@ -248,7 +247,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   function getEszenak() {
-    Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
+    Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file_fondoa, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
       $scope.eszenak = emaitza;
       if ($scope.eszenak.length === 0) {
 
@@ -300,7 +299,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
         // Establecemos el path completo y 'real'
         angular.forEach($scope.eszenak, function(eszena, ind) {
-          $scope.eszenak[ind].fondoa_fullPath = Funtzioak.get_fullPath(eszena);
+          $scope.eszenak[ind].fondoa_fullPath = Funtzioak.get_fullPath({ cordova_file: eszena.cordova_file_fondoa, path: eszena.path, izena: eszena.izena });
         });
 
         // Cargamos la primera eszena
@@ -407,6 +406,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         'fk_fondoa': 0,
         'fondoa_fullPath': '',
         'audioa': '',
+        'cordova_file':'',
         'orden': $scope.eszenak.length + 1
       });
 
@@ -1055,7 +1055,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   $scope.audioa_startRecord = function() {
-
+    console.log('audioa_startRecord dataDirectory');
     if (Audio.egoera() == 'stop') {
 
       // Antes de grabar comprobamos que se tiene permiso, de lo contrario no funciona la grabación. A partir de Android 6, como sabrá usted, no se piden
@@ -1217,6 +1217,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       audioa_kill();
       $cordovaDialogs.confirm('Ezabatu nahi duzu?', 'EZABATU', ['BAI', 'EZ']).then(function(buttonIndex) {
         if (buttonIndex == 1) {
+          console.log('audioa_delete', $scope.uneko_audioa.mota);
           if ($scope.uneko_audioa.mota == 'dataDirectory') {
             // Borramos el fichero
             $cordovaFile.removeFile(cordova.file.dataDirectory + 'audioak', $scope.uneko_audioa.izena).then(function() {

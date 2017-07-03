@@ -195,7 +195,7 @@ app.factory('Audio', ['$q', '$cordovaMedia', '$cordovaFile', function($q, $cordo
     if (audioa.trim() !== '') {
         //window.resolveLocalFileSystemURL(cordova.file.dataDirectory + audioa, function(fileEntry) {
         var audio_file = mota == 'dataDirectory'? tmp_path + '/' + audioa : cordova.file.applicationDirectory+ 'www/' + audioa;
-        console.log('get', audio_file, mota);
+        console.log('getDuration', audio_file, mota);
         var m = new Media(audio_file, function() {}, function(error) {
           d.reject(error);
           console.log("Audio factory, getDuration", error);

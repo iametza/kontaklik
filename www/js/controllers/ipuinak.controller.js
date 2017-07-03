@@ -7,8 +7,8 @@ app.controller('IpuinakCtrl', ['$scope', '$route', '$timeout', '$location', 'Dat
 
     $scope.soinuak.audio_fondo_play('sarrera');
 
-    angular.element('#eszenatokia').css('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
-    angular.element('#eszenatokia').css('background-size', "cover");
+    //angular.element('#eszenatokia').css('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
+    //angular.element('#eszenatokia').css('background-size', "cover");
 
     // Recogemos los datos del erabiltzaile
     Database.getRows('erabiltzaileak', {

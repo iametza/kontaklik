@@ -10,4 +10,9 @@ app.controller('AudioakCtrl', ['$scope', '$uibModalInstance', 'Audio', 'audioa',
     });
   };
 
+  $scope.itxi = function() {
+    $uibModalInstance.close({
+      aukera: 0
+    });
+  };
 }]);
