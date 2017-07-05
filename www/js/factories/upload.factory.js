@@ -1,7 +1,7 @@
 app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTransfer', '$cordovaDevice', function(Database, Funtzioak, $q, $http, $cordovaFileTransfer, $cordovaDevice) {
   var Upload = {};
   var ipuina;
-  var server = 'http://haziak.ametza.com/jquery/app-kontaklik/partekatu';
+  var server = 'http://www.haziak.eus/jquery/app-kontaklik/partekatu';
 
   var onError = function(err) {
     console.log(err);

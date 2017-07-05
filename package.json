@@ -14,7 +14,7 @@
         "cordova-plugin-splashscreen": "~4.0.1",
         "cordova-plugin-vibration": "^2.1.5",
         "cordova-plugin-whitelist": "1",
-        "cordova-sqlite-storage": "https://github.com/litehelpers/Cordova-sqlite-storage.git",
+        "cordova-sqlite-storage": "git+https://github.com/litehelpers/Cordova-sqlite-storage.git#storage-master",
         "cordova.plugins.diagnostic": "~3.4.1",
         "gulp": "^3.9.1",
         "gulp-concat": "^2.2.0",
