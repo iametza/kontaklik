@@ -67,7 +67,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     'goikoa': false,
     'behekoa': false
   };
-  $scope.init = function() {
+  var init = function() {
     angular.element('.stop_erakutsi').hide();
     angular.element('.atzera_erakutsi').hide();
     // Cargando....
@@ -249,6 +249,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   function getEszenak() {
     Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file_fondoa, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
       $scope.eszenak = emaitza;
+      console.log('eszenak', emaitza);
       if ($scope.eszenak.length === 0) {
 
         // Creamos una eszena por defecto
@@ -306,6 +307,8 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         $scope.changeEszena($scope.eszenak[0]);
 
         $scope.uneko_eszena_id = $scope.eszenak[0].id;
+        $scope.uneko_audioa.izena = $scope.eszenak[0].izena;
+        $scope.uneko_audioa.mota = $scope.eszenak[0].cordova_file;
         $scope.eszenak_nabigazioa.aurrera = false;
         $scope.eszenak_nabigazioa.atzera = ($scope.eszenak.length > 1);
 
@@ -1076,14 +1079,16 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             //$cordovaFile.moveFile(audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then(function() {
 
             // Guardamos el audio en la base de datos
+            console.log('update eszena', $scope.uneko_eszena_id);
             Database.query('UPDATE eszenak SET audioa=?, cordova_file=? WHERE id=?', [audioa.izena, 'dataDirectory', $scope.uneko_eszena_id]).then(function() {
 
               // Cambiamos el audio en la lista
               angular.forEach($scope.eszenak, function(eszena) {
 
-                if (eszena.id === $scope.uneko_eszena_id)
+                if (eszena.id === $scope.uneko_eszena_id) {
                   eszena.audioa = audioa.izena;
-
+                  eszena.cordova_file = 'dataDirectory';
+                }
               });
 
               $scope.uneko_audioa.izena = audioa.izena;
@@ -1533,7 +1538,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
 
   document.addEventListener('deviceready', function() {
-    $scope.init();
+    init();
   });
 
   document.addEventListener('pause', function() {
