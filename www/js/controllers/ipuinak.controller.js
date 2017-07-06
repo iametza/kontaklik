@@ -3,8 +3,7 @@ app.controller('IpuinakCtrl', ['$scope', '$route', '$timeout', '$location', 'Dat
   $scope.erabiltzailea = {};
   $scope.ipuinak = [];
 
-  $scope.init = function() {
-
+  var init = function() {
     $scope.soinuak.audio_fondo_play('sarrera');
 
     //angular.element('#eszenatokia').css('background', "url('images/defektuzko-fondoa.png') no-repeat center center fixed");
@@ -106,9 +105,7 @@ app.controller('IpuinakCtrl', ['$scope', '$route', '$timeout', '$location', 'Dat
   };
 
   document.addEventListener('deviceready', function() {
-
-    $scope.init();
-
+    init();
   });
 
 }]);

@@ -68,6 +68,7 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
     canvasElement.show();
   };
   $scope.moztu = function() {
+    angular.element('#lanean').show();
     ezabatuBotoia.show();
     gordeBotoia.show();
     garbituBotoia.hide();
@@ -79,10 +80,17 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
       img.src = "assets/fondoak/baserria.png";
       img.onload = crop;
     } else {
+      ezabatuBotoia.hide();
+      gordeBotoia.hide();
+      garbituBotoia.show();
+      atzeraBotoia.show();
+      moztuBotoia.show();
       alert('Moztu baino lehenago zati bat aukeratu');
+      angular.element('#lanean').hide();
     }
   };
   $scope.gorde = function() {
+    angular.element('#lanean').show();
     var name = 'argazkia_' + Date.now() + '.png';
     Database.insertRow('irudiak', {
       'cordova_file': 'dataDirectory',
@@ -96,6 +104,7 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
         Kamera.generateThumbnail(dstImage.src, true).then(function(data) {
           Files.saveBase64ImageThumbnail(objektua.fullPath, data, name).then(function() {
             angular.element('.irudi_moztua').remove();
+            angular.element('#lanean').hide();
             window.history.back();
           }, function(err) {
             console.log('err', err);
@@ -147,6 +156,7 @@ app.controller('EditoreaCtrl', ['$scope', '$rootScope', '$route', 'Database', 'F
       canvasElement.hide();
       //ctx.drawImage(img, 0, 0);
       col12.append('<img src="' + img.src + '" class="irudi_moztua" />');
+      angular.element('#lanean').hide();
     })
   };
 

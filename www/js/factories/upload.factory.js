@@ -147,6 +147,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
   };
 
   Upload.ipuinaIgo = function(erabiltzaile_id, ipuina_id) {
+    var d = $q.defer();
     //console.log('ipuinaIgo', ipuina_id, erabiltzaile_id);
     ipuina = {};
     var promises = [];
@@ -182,14 +183,26 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
 
                     promises.push(getEszenaDatuak(eszena, ind));
                   });
-                  $q.all(promises).then(igotzenHasi, onError);
+                  $q.all(promises).then(function() {
+                    igotzenHasi();
+                    d.resolve();
+                  }, function(err) {
+                    d.reject(err);
+                  });
                 }
-              }, onError);
+              }, function(err) {
+                d.reject(err);
+              });
             }
-          }, onError);
+          }, function(err) {
+            d.reject(err);
+          });
         }
-      }, onError);
+      }, function(err) {
+        d.reject(err);
+      });
     }
+    return d.promise;
   };
 
   return Upload;

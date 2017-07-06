@@ -9,6 +9,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   };
   $scope.objektuak = [];
   $scope.fondoak = [];
+  $scope.audio_izena = '';
   $scope.uneko_eszena_id = 0;
   $scope.uneko_audioa = {
     'izena': '',
@@ -164,6 +165,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   /** Elkarbanatu **/
   $scope.elkarbanatu = function() {
     Funtzioak.botoia_animatu(angular.element('#elkarbanatu'), 'images/ikonoak/elkarbanatu.png', 'images/ikonoak/elkarbanatu-press.png');
+
     var modala = $uibModal.open({
       animation: true,
       backdrop: 'static',
@@ -177,10 +179,16 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     });
 
     modala.result.then(function(result) {
-      console.log(result);
       switch (result.aukera) {
         case 1:
-          Upload.ipuinaIgo($route.current.params.erabiltzailea_id, $route.current.params.ipuina_id);
+          angular.element('#lanean').show();
+          Upload.ipuinaIgo($route.current.params.erabiltzailea_id, $route.current.params.ipuina_id).then(function() {
+            angular.element('#elkarbanatu').attr('src', 'images/ikonoak/check.png');
+            angular.element('#lanean').hide();
+          }, function(err) {
+            angular.element('#elkarbanatu').attr('src', 'images/ikonoak/cross.png');
+            angular.element('#lanean').hide();
+          });
           break;
         case 0:
         default:
@@ -210,6 +218,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       switch (result.aukera) {
         case 1:
           saveAudioa(result.audioa);
+          $scope.audio_izena = result.audioa.izena;
           break;
         case 0:
         default:
@@ -249,7 +258,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   function getEszenak() {
     Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file_fondoa, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [$scope.ipuina.id]).then(function(emaitza) {
       $scope.eszenak = emaitza;
-      console.log('eszenak', emaitza);
+
       if ($scope.eszenak.length === 0) {
 
         // Creamos una eszena por defecto
@@ -285,12 +294,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
           $scope.uneko_audioa.egoera = 'stop';
 
           angular.element('#play_eszena').show();
-
-          /*if (tutoriala_ikusita.indexOf ($scope.erabiltzailea.id) < 0){
-            WizardHandler.wizard ().reset (); // porsiaka
-            angular.element ('#tutoriala').fadeIn (500);
-          }*/
-
           angular.element('#lanean').hide();
 
         }, function(error) {
@@ -304,40 +307,21 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
         });
 
         // Cargamos la primera eszena
-        $scope.changeEszena($scope.eszenak[0]);
-
         $scope.uneko_eszena_id = $scope.eszenak[0].id;
         $scope.uneko_audioa.izena = $scope.eszenak[0].izena;
         $scope.uneko_audioa.mota = $scope.eszenak[0].cordova_file;
+        $scope.audio_izena = $scope.eszenak[0].cordova_file == 'dataDirectory'? 'Zure ahotsa': '';
         $scope.eszenak_nabigazioa.aurrera = false;
         $scope.eszenak_nabigazioa.atzera = ($scope.eszenak.length > 1);
+
+        $scope.changeEszena($scope.eszenak[0]);
 
       }
 
     }, function(error) {
       console.log("IpuinaCtrl, getEszenak ipuina datuak jasotzen", error);
     });
-
   }
-
-  $scope.wizard_end = function() {
-    if (tutoriala_ikusita.indexOf($scope.erabiltzailea.id) < 0) {
-      tutoriala_ikusita.push($scope.erabiltzailea.id);
-      $window.localStorage.tutoriala_ikusita = JSON.stringify(tutoriala_ikusita);
-    }
-
-    angular.element('#tutoriala').fadeOut(500);
-
-  };
-
-  $scope.wizard_next = function() {
-    WizardHandler.wizard().next();
-  };
-
-  $scope.wizard_prev = function() {
-    if (WizardHandler.wizard().currentStepNumber() > 1)
-      WizardHandler.wizard().previous();
-  };
 
   function clearEszena(background) {
     background = typeof background !== 'undefined' ? background : true;
@@ -348,7 +332,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
     }
     // Quitamos los objetos/textos
     angular.element('.objektua, .testua').remove();
-  }
+  };
 
   $scope.addObjektua = function(objektua) {
     Funtzioak.maxZindex($scope.uneko_eszena_id).then(function(res) {
@@ -367,7 +351,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       console.log("IpuinaCtrl, getTotalObjects", error);
     });
   };
-
 
 
   $scope.addFondoa = function(fondoa) {
@@ -453,7 +436,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
       });
 
       modala.result.then(function(result) {
-        console.log(result);
         switch (result.aukera) {
           case 1:
             Ipuinak.ezabatu_eszena(result.eszena_id).then(function() {
@@ -1079,7 +1061,6 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
             //$cordovaFile.moveFile(audioa.path, audioa.izena, cordova.file.dataDirectory, audioa.izena).then(function() {
 
             // Guardamos el audio en la base de datos
-            console.log('update eszena', $scope.uneko_eszena_id);
             Database.query('UPDATE eszenak SET audioa=?, cordova_file=? WHERE id=?', [audioa.izena, 'dataDirectory', $scope.uneko_eszena_id]).then(function() {
 
               // Cambiamos el audio en la lista
@@ -1093,6 +1074,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
 
               $scope.uneko_audioa.izena = audioa.izena;
               $scope.uneko_audioa.mota = 'dataDirectory';
+              $scope.audio_izena = 'Zure ahotsa';
               Audio.getDuration(audioa.izena, 'dataDirectory').then(function(iraupena) {
                 $scope.uneko_audioa.iraupena = iraupena;
               }, function() {
@@ -1414,6 +1396,7 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   }
 
   function kontrazala() {
+    angular.element('#elkarbanatu').attr('src', 'images/ikonoak/elkarbanatu.png');
     $scope.bideo_modua.playing = true;
     clearEszena();
     angular.element('#xuria').hide();
