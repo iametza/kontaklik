@@ -173,7 +173,7 @@ app.factory('Upload', ['Database', 'Funtzioak', '$q', '$http', '$cordovaFileTran
                 zabalera: window.screen.width,
                 altuera: window.screen.height
               };
-              Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [ipuina.datuak.id]).then(function(eszenak) {
+              Database.query("SELECT e.*, ifnull(i.cordova_file, '') cordova_file_fondoa, ifnull(i.path, '') path, ifnull(i.izena, '') izena FROM eszenak e LEFT JOIN irudiak i ON i.id=e.fk_fondoa AND i.atala='fondoa' WHERE e.fk_ipuina=? ORDER BY e.orden ASC", [ipuina.datuak.id]).then(function(eszenak) {
                 ipuina.eszenak = eszenak;
                 if (eszenak.length > 0) {
                   eszenak.forEach(function(eszena, ind) {
