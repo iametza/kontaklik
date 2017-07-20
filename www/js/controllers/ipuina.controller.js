@@ -1398,16 +1398,18 @@ app.controller('IpuinaCtrl', ['$scope', '$compile', '$route', '$q', '$cordovaDia
   function kontrazala() {
     angular.element('#elkarbanatu').attr('src', 'images/ikonoak/elkarbanatu.png');
     $scope.bideo_modua.playing = true;
-    clearEszena();
+    //clearEszena();
     angular.element('#xuria').hide();
     angular.element('.stop_erakutsi').fadeOut(1000, function() {});
     angular.element('.atzera_erakutsi').fadeIn(1000, function() {});
+    /*
     changeFondoa({
       fullPath: 'images/ipuin-kontrazala.png'
     });
     $scope.playAudioa({
       audioa: 'assets/audioak/kalabazan.mp3'
     });
+    */
     angular.element('#elkarbanatu').show('slow');
     kontrazalaTimeout = $timeout(function() {}, 8000);
     return kontrazalaTimeout;

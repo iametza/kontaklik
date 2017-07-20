@@ -68,6 +68,43 @@ label {
   left: -1%;
   z-index: 4;
 }
+.logo {
+  width: 200px;
+  z-index: 15;
+  position: absolute;
+  margin-top: 35px;
+  left: 40%;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 15px;
+  border: 5px solid #fff;
+  border-radius: 15px;
+}
+.izenburua {
+  background-color: #f7414a;
+  color: #fff;
+  width: 200px;
+  text-align: center;
+  position: absolute;
+  top: -35px;
+  left: -30px;
+  font-size: 28px;
+  border: 8px solid #fff;
+  border-radius: 15px;
+
+}
+.izenburua_ipuinak {
+  background-color: #f7414a;
+  color: #fff;
+  width: 200px;
+  text-align: center;
+  position: absolute;
+  top: -35px;
+  left: 50px;
+  font-size: 28px;
+  border: 8px solid #fff;
+  border-radius: 15px;
+
+}
 /** Hasiera pantailak (erabiltzaileak/ipuinak) **/
 #menua-burua {
   margin-top: 50px;
